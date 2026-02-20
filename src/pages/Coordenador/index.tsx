@@ -14,7 +14,7 @@ export const Coordenador = () => {
 
   return (
     <div style={{ padding: 32, background: "white" }}>
-      <Title>Área Coordenação SGA</Title>
+      <Title>Área Coordenação SG</Title>
       <Paragraph>
         Você está em uma rota privada renderizando um componente específico de
         admin.
