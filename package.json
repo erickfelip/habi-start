@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "start-sga",
-=======
-  "name": "hab-start-sga",
->>>>>>> c06213cd6d7b0736c57dc9723a8392a57aa2919a
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@ant-design/icons": "^6.1.0",
     "antd": "^6.2.3",
     "axios": "^1.13.5",
@@ -24,10 +19,6 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.13.0",
     "styled-components": "^6.3.9"
-=======
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
->>>>>>> c06213cd6d7b0736c57dc9723a8392a57aa2919a
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
