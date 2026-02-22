@@ -8,7 +8,7 @@ export const Coordenador = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.removeItem("auth");
+    localStorage.clear();
     navigate("/login");
   };
 

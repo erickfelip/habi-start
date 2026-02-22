@@ -1,15 +1,14 @@
-import React, { useState } from "react";
 import { HabImage, StartLogo } from "./styles";
 import img from "../../assets/img.jpg";
 import start from "../../assets/start.png";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useAuth } from "../../contexts/AuthContext";
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { login, user }: any = useAuth();
+  const { login }: any = useAuth();
+
   const onFinish = async (values: any) => {
     // Mock de autenticação
     // if (values.username && values.password) {
@@ -21,8 +20,6 @@ export const Login = () => {
 
     try {
       await login(values.username, values.password);
-      console.log("apos login", { user });
-
       navigate("/home");
     } catch (err) {
       // setError(err.response?.data?.message || "Erro ao fazer login");
