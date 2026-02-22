@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IoAlert } from "react-icons/io5";
 
 import {
@@ -24,25 +24,28 @@ import {
   Pagination,
   notification,
   Button,
+  Alert,
+  Popover,
 } from "antd";
 import moment from "moment";
 
 import "antd/dist/reset.css";
 import {
+  MdDelete,
   MdOutlineFilterList,
   MdOutlinePublishedWithChanges,
 } from "react-icons/md";
 import { FiEye } from "react-icons/fi";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { getMunicipios } from "../../services/sga.requests";
+import { deleteMunicipio, getMunicipios } from "../../services/sga.requests";
 import { ModalCreateMunicipio } from "../../components/ModalCreateMunicipio";
 
 export const Municipios = () => {
   const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
+  const queryClient = useQueryClient();
 
-  // BUSCA DE MUNICIPOS
   const { data: municipios = [], isLoading } = useQuery({
     queryKey: ["GET_MUNICIPIOS"],
     queryFn: async () => {
@@ -52,6 +55,43 @@ export const Municipios = () => {
     retry: true,
     refetchOnWindowFocus: false,
   });
+
+  const [openPopOver, setOpenPopOver] = useState<string | null>(null);
+
+  const hide = () => {
+    setOpenPopOver(null);
+  };
+
+  const handleOpenPopOverChange = (visible: boolean, id: string) => {
+    if (visible) {
+      setOpenPopOver(id);
+    } else {
+      setOpenPopOver(null);
+    }
+  };
+
+  const handleDeleteMunicipio = async (id: string) => {
+    await deleteMunicipio({ id: id })
+      .then(() => {
+        notification.success({
+          duration: 3,
+          message: "Sucesso!",
+          description: `Município deletado.`,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["GET_MUNICIPIOS"],
+        });
+        hide();
+      })
+      .catch((error) => {
+        notification.error({
+          duration: 1,
+          message: "Erro!",
+          description: `${error?.response?.data?.message}`,
+        });
+        return;
+      });
+  };
 
   const columns: any = [
     {
@@ -90,56 +130,106 @@ export const Municipios = () => {
               }}
             >
               <Tooltip title="Detalhes">
-                {record?.priority !== null ? (
+                <FiEye
+                  size={20}
+                  color="#1677ff"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setOrderData(record);
+                    setOpenOrderDetailsModal(true);
+                  }}
+                />
+              </Tooltip>
+            </span>
+
+            <Popover
+              content={
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Divider style={{ margin: "15px 0px" }} />
+
+                  <div style={{ display: "flex", maxWidth: "430px" }}>
+                    <Alert
+                      message={
+                        <span style={{ fontWeight: "bold" }}>Atenção!</span>
+                      }
+                      type="warning"
+                      showIcon
+                      description={
+                        <span
+                          style={{
+                            fontFamily: "Inter",
+                            fontSize: "14px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          Você está prestes a deletar o munípio{" "}
+                          <span style={{ fontWeight: "500", color: "black" }}>
+                            {record?.nome},
+                          </span>{" "}
+                          tem certeza que deseja seguir com essa ação?
+                        </span>
+                      }
+                    />
+                  </div>
+
+                  <Divider style={{ margin: "15px 0px" }} />
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      flexDirection: "row",
+                      gap: "10px",
+                      marginLeft: "auto",
                     }}
                   >
-                    <Badge
-                      offset={[5, -3]}
-                      count={
-                        <div
-                          style={{
-                            background: "red",
-                            borderRadius: "16px",
-                            height: "16px",
-                            width: "16px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <IoAlert color="white" size={"14px"} />
-                        </div>
-                      }
+                    <Button danger onClick={hide}>
+                      Cancelar
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleDeleteMunicipio(record!?.id);
+                      }}
                     >
-                      <FiEye
-                        size={20}
-                        color="#1677ff"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          setOrderData(record); // segurando cache?
-                          setOpenOrderDetailsModal(true);
-                        }}
-                      />
-                    </Badge>
+                      Confirmar
+                    </Button>
                   </div>
-                ) : (
-                  <FiEye
-                    size={20}
-                    color="#1677ff"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setOrderData(record);
-                      setOpenOrderDetailsModal(true);
-                    }}
-                  />
-                )}
+                </div>
+              }
+              trigger="click"
+              open={openPopOver === record?.id}
+              onOpenChange={(visible) =>
+                handleOpenPopOverChange(visible, record?.id)
+              }
+            >
+              <Tooltip title="Deletar usuário" placement="bottom">
+                <Button
+                  style={{
+                    cursor: "pointer",
+                    background: "#ff16162c",
+                    height: "30px",
+                    width: "30px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "5px",
+                    boxShadow:
+                      "rgba(0, 0, 0, 0.10) 0px 1px 3px, rgba(0, 0, 0, 0.10) 0px 1px 2px",
+                  }}
+                  icon={
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <MdDelete
+                        style={{ color: "#ff2020b3", fontSize: "19px" }}
+                      />
+                    </div>
+                  }
+                />
               </Tooltip>
-            </span>
+            </Popover>
           </div>
         </>
       ),
@@ -255,6 +345,8 @@ export const Municipios = () => {
                     gap: "7px",
                     padding: "20px",
                     fontSize: "14px",
+                    fontWeight: "500",
+                    fontFamily: "Inter",
                   }}
                 >
                   <IoAdd color="white" size={15} />
