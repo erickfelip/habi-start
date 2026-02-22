@@ -5,6 +5,7 @@ import PrivateRoute from "../src/routes/router";
 import { Admin } from "./pages/Admin";
 import { Coordenador } from "./pages/Coordenador";
 import { Home } from "./pages/Home";
+import { Municipios } from "./pages/Municipios";
 
 export const App = () => {
   // validar role do usuario para direcionar as rotas
@@ -38,6 +39,15 @@ export const App = () => {
         element={
           <PrivateRoute role="coordenador">
             <Coordenador />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/municipios"
+        element={
+          <PrivateRoute>
+            <Municipios />
           </PrivateRoute>
         }
       />
