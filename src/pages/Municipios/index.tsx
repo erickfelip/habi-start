@@ -257,9 +257,6 @@ export const Municipios = () => {
       >
         <div>
           <Label>Municipios Cadastrados </Label>
-          {/* <GreetignLabelSub style={{ marginLeft: "auto" }}>
-            | {loadingCompanyName ? "..." : companyData?.name}
-          </GreetignLabelSub> */}
         </div>
       </div>
       <div

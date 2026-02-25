@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// import t1 from "../../assets/t1.png";
 
 export const StartLogo = styled.img`
   height: 120px;
@@ -93,7 +92,7 @@ export const ContainerRouteWrapper = styled.div`
   transition: all 0.3s ease;
 
   &:hover {
-    background: #fff6ee; /* laranja bem clean */
+    background: #fff6ee;
     box-shadow: 0 4px 10px rgba(255, 140, 0, 0.05);
     transform: translateY(-2px);
   }

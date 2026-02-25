@@ -1,51 +1,82 @@
-import { createContext, useContext, useState } from "react";
-import { authService } from "../services/authService";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
-const AuthContext: any = createContext(null);
+import {
+  getToken,
+  setToken,
+  removeToken,
+  getRefreshToken,
+  setRefreshToken,
+  removeRefreshToken,
+} from "../utils/token";
 
-export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState(null);
-  const [loading, _setLoading] = useState(false);
+interface AuthContextData {
+  accessToken: string | null;
+  refreshToken: string | null;
+  isAuthenticated: boolean;
+  login: (accessToken: string, refreshToken: string) => void;
+  logout: () => void;
+}
 
-  // Verifica autenticação ao carregar
-  //   useEffect(() => {
-  //     checkAuthentication()
-  //   }, []);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-  //   const checkAuthentication = async () => {
-  //     try {
-  //       const userData = await authService.checkAuth();
-  //       setUser(userData);
-  //     } catch (error) {
-  //       setUser(null);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-  const login = async (email: string, password: string) => {
-    const data = await authService.login(email, password);
-    localStorage.setItem("USER_TOKEN", JSON.stringify(data));
-    setUser(data);
-    return data;
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [accessTokenState, setAccessTokenState] = useState<string | null>(null);
+  const [refreshTokenState, setRefreshTokenState] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    const storedAccess = getToken();
+    const storedRefresh = getRefreshToken();
+    console.log({ storedRefresh });
+
+    if (storedAccess && storedRefresh) {
+      setAccessTokenState(storedAccess);
+      setRefreshTokenState(storedRefresh);
+    }
+  }, []);
+
+  const login = (accessToken: string, refreshToken: string) => {
+    setToken(accessToken);
+    setRefreshToken(refreshToken);
+
+    setAccessTokenState(accessToken);
+    setRefreshTokenState(refreshToken);
   };
 
-  const logout = async () => {
-    await authService.logout();
-    setUser(null);
+  const logout = () => {
+    removeToken();
+    removeRefreshToken();
+
+    setAccessTokenState(null);
+    setRefreshTokenState(null);
+
+    window.location.href = "/login";
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        accessToken: accessTokenState,
+        refreshToken: refreshTokenState,
+        isAuthenticated: !!accessTokenState,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth deve ser usado dentro de AuthProvider");
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

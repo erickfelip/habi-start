@@ -12,7 +12,6 @@ export const HabImage = styled.img`
   width: 100%;
   object-fit: cover;
   margin-left: 0px;
-  background-color: red;
 `;
 
 export const StartLogo = styled.img`

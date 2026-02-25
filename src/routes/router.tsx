@@ -1,14 +1,14 @@
 import { Navigate } from "react-router-dom";
+import { getToken } from "../utils/token";
 
 export default function PrivateRoute({ children, role }: any) {
-  const getUserData = localStorage.getItem("USER_TOKEN");
-  const parsedUserData = JSON.parse(getUserData!);
+  const token = getToken();
 
   // if (loading) {
   //   return <div>Carregando...</div>;
   // }
 
-  if (!parsedUserData.accessToken) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
 

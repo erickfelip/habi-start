@@ -4,28 +4,19 @@ import start from "../../assets/start.png";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { AuthService } from "../../services/authService";
 
 export const Login = () => {
   const navigate = useNavigate();
   const { login }: any = useAuth();
 
   const onFinish = async (values: any) => {
-    // Mock de autenticação
-    // if (values.username && values.password) {
-    //   const role =
-    //     values.username.toLowerCase() === "admin" ? "admin" : "coordenador";
-    //   localStorage.setItem("auth", JSON.stringify({ role }));
-    //   navigate(role === "admin" ? "/admin" : "/coordenador");
-    // }
-
-    try {
-      await login(values.username, values.password);
-      navigate("/home");
-    } catch (err) {
-      // setError(err.response?.data?.message || "Erro ao fazer login");
-    } finally {
-      // setLoading(false);
-    }
+    const response = await AuthService.login({
+      email: values.username,
+      password: values.password,
+    });
+    login(response.accessToken, response.refreshToken);
+    navigate("/home");
   };
 
   return (

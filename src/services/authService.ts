@@ -1,32 +1,20 @@
-import api from "../api/axios";
+import { AuthResponse, LoginDTO } from "../@types/auth";
+import { api } from "../api/axios";
+import { setToken } from "../utils/token";
 
-export const authService = {
-  // Login do usuário
-  async login(email: string, password: string) {
-    const response = await api.post("/auth/login", { email, password });
-    // opção com cookies HttpOnly pelo backend :: 
+export const AuthService = {
+  async login(data: LoginDTO): Promise<AuthResponse> {
+    const response = await api.post<AuthResponse>("/auth/login", data);
+
+    const { accessToken } = response.data;
+
+    setToken(accessToken);
+
     return response.data;
   },
 
-  // Logout do usuário
-  async logout() {
-    const response = await api.post("/auth/logout");
-    return response.data;
-  },
-
-  // Verifica se o usuário está autenticado
-  //   async checkAuth() {
-  //     try {
-  //       const response = await api.get("/auth/me");
-  //       return response.data;
-  //     } catch (error) {
-  //       return null;
-  //     }
-  //   },
-
-  // Refresh do token
-  async refreshToken() {
-    const response = await api.post("/auth/refresh");
-    return response.data;
+  logout(): void {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
   },
 };
