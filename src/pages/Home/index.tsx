@@ -22,10 +22,22 @@ import { useGreeting } from "../../hooks/useGreeting";
 import { GiPodium } from "react-icons/gi";
 
 import start from "../../assets/start.png";
+import { useQuery } from "@tanstack/react-query";
+import { getUserData } from "../../services/sga.requests";
 
 export const Home = () => {
   const greeting = useGreeting();
   const navigate = useNavigate();
+
+  const { data: userData, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
 
   // const logout = () => {
   //   localStorage.removeItem("auth");
@@ -53,7 +65,9 @@ export const Home = () => {
               alignItems: "flex-start",
             }}
           >
-            <GreetignLabel>{greeting}, Usuário!</GreetignLabel>
+            <GreetignLabel>
+              {greeting}, {userData!?.primeiroNome}!
+            </GreetignLabel>
             <GreetignLabelSub style={{ marginLeft: "auto" }}>
               {/* {companyData?.name} */}
             </GreetignLabelSub>
