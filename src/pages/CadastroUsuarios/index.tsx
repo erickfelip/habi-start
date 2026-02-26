@@ -3,7 +3,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ButtonSolicitation,
   Container,
-  
   Label,
   LabelSub,
   WrapperTable,
@@ -11,13 +10,9 @@ import {
 import { IoAdd } from "react-icons/io5";
 
 import {
-
   Divider,
-
   Tooltip,
   Table,
-
-
   Input,
   Pagination,
   notification,
@@ -27,16 +22,12 @@ import {
 } from "antd";
 
 import "antd/dist/reset.css";
-import {
-  MdDelete,
-} from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { FiEye } from "react-icons/fi";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import {
-  getUsers,
-  deleteUser
-} from "../../services/sga.requests";
+import { getUsers, deleteUser } from "../../services/sga.requests";
 import { ModalCreateUser } from "../../components/ModalCreateUser";
+import { Navbar } from "../../components/NavBar";
 
 export const CadastroUsuarios = () => {
   const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
@@ -116,6 +107,15 @@ export const CadastroUsuarios = () => {
         return <>{record?.cargo}</>;
       },
     },
+        {
+      title: "E-mail",
+      dataIndex: "login",
+      key: "login",
+      align: "start",
+      render: (_: any, record: any) => {
+        return <>{record?.login?.email}</>;
+      },
+    },
     {
       title: "Ações",
       key: "action",
@@ -128,7 +128,7 @@ export const CadastroUsuarios = () => {
               gap: "10px",
             }}
           >
-            <span
+            {/* <span
               style={{
                 cursor: "pointer",
                 background: "#1677ff2d",
@@ -153,7 +153,7 @@ export const CadastroUsuarios = () => {
                   }}
                 />
               </Tooltip>
-            </span>
+            </span> */}
 
             <Popover
               content={
@@ -258,8 +258,8 @@ export const CadastroUsuarios = () => {
 
   return (
     <Container>
-      {/* <Navbar /> */}
-      {/* <Chat /> */}
+      <Navbar />
+
       <div
         style={{
           display: "flex",

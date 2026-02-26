@@ -39,6 +39,7 @@ import { FiEye } from "react-icons/fi";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { deleteMunicipio, getMunicipios } from "../../services/sga.requests";
 import { ModalCreateMunicipio } from "../../components/ModalCreateMunicipio";
+import { Navbar } from "../../components/NavBar";
 
 export const Municipios = () => {
   const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
@@ -53,7 +54,7 @@ export const Municipios = () => {
       return response;
     },
     retry: true,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
   const [openPopOver, setOpenPopOver] = useState<string | null>(null);
@@ -245,8 +246,7 @@ export const Municipios = () => {
 
   return (
     <Container>
-      {/* <Navbar /> */}
-      {/* <Chat /> */}
+      <Navbar />
       <div
         style={{
           display: "flex",
