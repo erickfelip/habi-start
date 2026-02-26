@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { IoAlert } from "react-icons/io5";
-
 import {
   ButtonSolicitation,
   Container,
-  GreetignLabelSub,
+  
   Label,
   LabelSub,
   WrapperTable,
@@ -13,13 +11,13 @@ import {
 import { IoAdd } from "react-icons/io5";
 
 import {
-  Badge,
+
   Divider,
-  Dropdown,
+
   Tooltip,
   Table,
-  Tag,
-  Tabs,
+
+
   Input,
   Pagination,
   notification,
@@ -27,34 +25,36 @@ import {
   Alert,
   Popover,
 } from "antd";
-import moment from "moment";
 
 import "antd/dist/reset.css";
 import {
   MdDelete,
-  MdOutlineFilterList,
-  MdOutlinePublishedWithChanges,
 } from "react-icons/md";
 import { FiEye } from "react-icons/fi";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { deleteMunicipio, getMunicipios } from "../../services/sga.requests";
-import { ModalCreateMunicipio } from "../../components/ModalCreateMunicipio";
+import {
+  getUsers,
+  deleteUser
+} from "../../services/sga.requests";
+import { ModalCreateUser } from "../../components/ModalCreateUser";
 
-export const Municipios = () => {
+export const CadastroUsuarios = () => {
   const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
   const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<any>(["GET_USERDATA"]);
 
-  const { data: municipios = [], isLoading } = useQuery({
-    queryKey: ["GET_MUNICIPIOS"],
+  const { data: users = [], isLoading } = useQuery({
+    queryKey: ["GET_USUARIOS"],
     queryFn: async () => {
-      const response = await getMunicipios();
+      const response = await getUsers(user!?.idMunicipio);
       return response;
     },
     retry: true,
     refetchOnWindowFocus: false,
   });
+  console.log({ users });
 
   const [openPopOver, setOpenPopOver] = useState<string | null>(null);
 
@@ -71,15 +71,15 @@ export const Municipios = () => {
   };
 
   const handleDeleteMunicipio = async (id: string) => {
-    await deleteMunicipio({ id: id })
+    await deleteUser({ id: id })
       .then(() => {
         notification.success({
           duration: 3,
           message: "Sucesso!",
-          description: `Município deletado.`,
+          description: `Usuário deletado.`,
         });
         queryClient.invalidateQueries({
-          queryKey: ["GET_MUNICIPIOS"],
+          queryKey: ["GET_USUARIOS"],
         });
         hide();
       })
@@ -95,12 +95,25 @@ export const Municipios = () => {
 
   const columns: any = [
     {
-      title: "Nome do municipio",
+      title: "Nome do usuário",
       dataIndex: "nome",
       key: "nome",
       align: "start",
       render: (_: any, record: any) => {
-        return record?.nome;
+        return (
+          <>
+            {record?.primeiroNome} {record?.segundoNome}
+          </>
+        );
+      },
+    },
+    {
+      title: "Cargo",
+      dataIndex: "cargo",
+      key: "cargo",
+      align: "start",
+      render: (_: any, record: any) => {
+        return <>{record?.cargo}</>;
       },
     },
     {
@@ -162,9 +175,9 @@ export const Municipios = () => {
                             fontWeight: "400",
                           }}
                         >
-                          Você está prestes a deletar o município{" "}
+                          Você está prestes a deletar o usuário{" "}
                           <span style={{ fontWeight: "500", color: "black" }}>
-                            {record?.nome},
+                            {record?.primeiroNome} {record.segundoNome},
                           </span>{" "}
                           tem certeza que deseja seguir com essa ação?
                         </span>
@@ -256,13 +269,13 @@ export const Municipios = () => {
         }}
       >
         <div>
-          <Label>Municipios Cadastrados </Label>
+          <Label>Usuários cadastrados </Label>
         </div>
       </div>
       <div
         style={{ display: "flex", alignItems: "center", marginLeft: "20px" }}
       >
-        <LabelSub>Últimos municipios cadastrados.</LabelSub>
+        <LabelSub>Últimos usuários cadastrados.</LabelSub>
       </div>
       <div
         style={{
@@ -288,7 +301,7 @@ export const Municipios = () => {
               }}
             >
               <Input
-                placeholder="Informe o nome do municipio"
+                placeholder="Informe o nome do usuario"
                 allowClear
                 size="large"
                 onChange={(e) => setOrderNumber(e.target.value)}
@@ -347,7 +360,7 @@ export const Municipios = () => {
                   }}
                 >
                   <IoAdd color="white" size={15} />
-                  Adicionar município
+                  Cadastrar usuário
                 </div>
               </ButtonSolicitation>
             </div>
@@ -368,7 +381,7 @@ export const Municipios = () => {
                   width: "100%",
                 }}
                 columns={columns}
-                dataSource={municipios}
+                dataSource={users}
                 pagination={false}
                 locale={{ emptyText: "Nenhum dado disponível" }}
               />
@@ -395,7 +408,7 @@ export const Municipios = () => {
             orderData={orderData}
           /> */}
           {/* ADICIONAR MUNICIPOS */}
-          <ModalCreateMunicipio
+          <ModalCreateUser
             isOpen={openSolicitationModal}
             handleClose={() => setOpenSolicitationModal(false)}
           />

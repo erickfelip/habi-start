@@ -15,7 +15,30 @@ export const createMunicipio = async (payload: { nome: string }) => {
   return response.data;
 };
 
+export const createUser = async (payload: {
+  primeiroNome: string;
+  segundoNome: string;
+  cargo: string;
+  idMunicipio: string;
+  email: string;
+  senha: string;
+}) => {
+  const response = await api.post(`/usuarios`, payload);
+  return response.data;
+};
+
+export const getUsers = async (idMunicipio: string) => {
+  const response = await api.get(`/usuarios?idMunicipio=${idMunicipio}`);
+  return response.data;
+};
+
 export const deleteMunicipio = async ({ id }: { id: string }) => {
   const response = await api.delete(`/municipios/${id}`);
+  return response.data;
+};
+
+
+export const deleteUser = async ({ id }: { id: string }) => {
+  const response = await api.delete(`/usuarios/${id}`);
   return response.data;
 };

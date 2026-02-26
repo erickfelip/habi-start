@@ -6,6 +6,7 @@ import { Admin } from "./pages/Admin";
 import { Coordenador } from "./pages/Coordenador";
 import { Home } from "./pages/Home";
 import { Municipios } from "./pages/Municipios";
+import { CadastroUsuarios } from "./pages/CadastroUsuarios";
 
 export const App = () => {
   // validar role do usuario para direcionar as rotas
@@ -48,6 +49,15 @@ export const App = () => {
         element={
           <PrivateRoute>
             <Municipios />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/usuarios"
+        element={
+          <PrivateRoute>
+            <CadastroUsuarios />
           </PrivateRoute>
         }
       />
