@@ -46,6 +46,9 @@ export const Navbar = () => {
             <li className={location.pathname === "/municipios" ? "active" : ""}>
               <RouteLabel to="/municipios">Municípios</RouteLabel>
             </li>
+            <li className={location.pathname === "/empreendimentos" ? "active" : ""}>
+              <RouteLabel to="/empreendimentos">Empreendimentos</RouteLabel>
+            </li>
           </NavLinks>
           <LastElement></LastElement>
         </>
@@ -95,6 +98,7 @@ export const Navbar = () => {
           <RouteLabelDrawer to="/home">Home</RouteLabelDrawer>
           <RouteLabelDrawer to="/usuarios">Usuários</RouteLabelDrawer>
           <RouteLabelDrawer to="/municipios">Municípios</RouteLabelDrawer>
+          <RouteLabelDrawer to="/empreendimentos">Municípios</RouteLabelDrawer>
         </NavDrawer>
       </Drawer>
     </Nav>

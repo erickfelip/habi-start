@@ -268,7 +268,7 @@ export const Home = () => {
           </ContainerRouteWrapper>
 
           <ContainerRouteWrapper
-            onClick={() => navigate("/projetos")}
+            onClick={() => navigate("/empreendimentos")}
             style={{
               background: "white",
               // cursor: "not-allowed",
@@ -313,7 +313,7 @@ export const Home = () => {
                 padding: "20px 20px 0px",
               }}
             >
-              <RouteName>Cadastro de Projetos</RouteName>
+              <RouteName>Cadastro de Empreendimentos</RouteName>
             </div>
 
             <div
@@ -326,7 +326,7 @@ export const Home = () => {
               }}
             >
               <GridRoutes>
-                <RouteSubText>Vinculos de projetos</RouteSubText>
+                <RouteSubText>Vinculos de empreendimentos</RouteSubText>
                 <RouteSubText>Informações Gerais</RouteSubText>
               </GridRoutes>
             </div>

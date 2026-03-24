@@ -3,10 +3,11 @@ import { Login } from "../src/pages/Login";
 import { Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoute from "../src/routes/router";
 import { Admin } from "./pages/Admin";
-import { Coordenador } from "./pages/Coordenador";
+// import { Coordenador } from "./pages/Coordenador";
 import { Home } from "./pages/Home";
 import { Municipios } from "./pages/Municipios";
 import { CadastroUsuarios } from "./pages/CadastroUsuarios";
+import { Empreendimentos } from "./pages/Empreedimentos";
 
 export const App = () => {
   // validar role do usuario para direcionar as rotas
@@ -35,20 +36,29 @@ export const App = () => {
         }
       />
 
-      <Route
+      {/* <Route
         path="/coordenador"
         element={
           <PrivateRoute role="coordenador">
             <Coordenador />
           </PrivateRoute>
         }
-      />
+      /> */}
 
       <Route
         path="/municipios"
         element={
           <PrivateRoute>
             <Municipios />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/empreendimentos"
+        element={
+          <PrivateRoute>
+            <Empreendimentos />
           </PrivateRoute>
         }
       />
