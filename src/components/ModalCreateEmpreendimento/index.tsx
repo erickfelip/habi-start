@@ -1,4 +1,12 @@
-import { Modal, Divider, Input, Form, Button, notification } from "antd";
+import {
+  Modal,
+  Divider,
+  Input,
+  Form,
+  Button,
+  notification,
+  Select,
+} from "antd";
 import { UserDeleteOutlined } from "@ant-design/icons";
 
 import { useState } from "react";
@@ -8,6 +16,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { TiDeleteOutline } from "react-icons/ti";
 import moment from "moment";
 import { createMunicipio } from "../../services/sga.requests";
+import { Grid } from "./styles";
 
 interface IOrderModalDetails {
   isOpen: boolean;
@@ -27,6 +36,12 @@ export const ModalCreateEmpreendimento = ({
     const payload = {
       nome: values.nome,
       qtd: values.qtd,
+      classificacao: values.classificacao,
+      p_vulnerabilidade: values.p_vulnerabilidade,
+      p_idosos: values.p_idosos,
+      p_pcd: values.p_pcd,
+      p_area_risco: values.p_area_risco,
+      p_mulher_chefe_familia: values.p_mulher_chefe_familia,
     };
     console.log("@empreendimento cadastrado", { payload });
     form.resetFields();
@@ -59,6 +74,16 @@ export const ModalCreateEmpreendimento = ({
     //   });
   };
 
+  const faixas = [
+    { label: "Faixa 1", value: "faixa_1" },
+    { label: "Faixa 2", value: "faixa_2" },
+    { label: "Faixa 3", value: "faixa_3" },
+  ];
+
+  const filterOption = (input: any, option: any) => {
+    return option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  };
+
   return (
     <Modal
       title={<h3 style={{ fontFamily: "Inter" }}>Adicionar empreendimento</h3>}
@@ -66,7 +91,7 @@ export const ModalCreateEmpreendimento = ({
       onCancel={handleClose}
       footer={null}
       closeIcon={true}
-      width="65%"
+      width="75%"
     >
       <Divider />
 
@@ -84,9 +109,67 @@ export const ModalCreateEmpreendimento = ({
           name="qtd"
           rules={[{ required: true, message: "Campo obrigatório" }]}
         >
-          {/* validar numeros negativos */}
           <Input size="large" placeholder="qtd" type="number" min={1} />
         </Form.Item>
+
+        <Form.Item
+          label="Classificação empreendimento:"
+          name="classificacao"
+          rules={[{ required: true, message: "Campo obrigatório" }]}
+        >
+          <Select
+            placeholder="Selecione a classificação"
+            showSearch
+            allowClear
+            size="large"
+            filterOption={filterOption}
+            optionFilterProp="children"
+            options={faixas}
+          />
+        </Form.Item>
+
+        <Grid>
+          <Form.Item
+            label="Famílias em vulnerabilidade (%):"
+            name="p_vulnerabilidade"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input size="large" placeholder="%"  type="number" min={1} />
+          </Form.Item>
+
+          <Form.Item
+            label="Idosos (%):"
+            name="p_idosos"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input size="large" placeholder="%"  type="number" min={1} />
+          </Form.Item>
+
+          <Form.Item
+            label="PCD (%):"
+            name="p_pcd"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input size="large" placeholder="%"  type="number" min={1} />
+          </Form.Item>
+
+          <Form.Item
+            label="Área de risco (%):"
+            name="p_area_risco"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input size="large" placeholder="%"  type="number" min={1} />
+          </Form.Item>
+
+          <Form.Item
+            label="Mulher chefe de familia (%):"
+            name="p_mulher_chefe_familia"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input size="large" placeholder="(%" type="number" min={1} />
+          </Form.Item>
+        </Grid>
+
         <Divider style={{ margin: "10px 0px" }} />
         <Button
           type="primary"
