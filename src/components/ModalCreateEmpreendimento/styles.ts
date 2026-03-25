@@ -4,13 +4,13 @@ export const Grid = styled.div`
   /* padding: 25px 20px; */
   padding-bottom: 0px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   @media (max-width: 1600px) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   @media (max-width: 1300px) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   @media (max-width: 1000px) {

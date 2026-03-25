@@ -37,11 +37,11 @@ export const ModalCreateEmpreendimento = ({
       nome: values.nome,
       qtd: values.qtd,
       classificacao: values.classificacao,
-      p_vulnerabilidade: values.p_vulnerabilidade,
-      p_idosos: values.p_idosos,
-      p_pcd: values.p_pcd,
-      p_area_risco: values.p_area_risco,
-      p_mulher_chefe_familia: values.p_mulher_chefe_familia,
+      p_vulnerabilidade: values.p_vulnerabilidade, // cotas para sorteio
+      p_idosos: values.p_idosos, // cotas para sorteio
+      p_pcd: values.p_pcd, // cotas para sorteio
+      p_area_risco: values.p_area_risco, // cotas para sorteio
+      // SUPLENTES SÃO 30% DO TOTAL DE VAGAS DE APARTAMENTOS - VALOR FIXO API
     };
     console.log("@empreendimento cadastrado", { payload });
     form.resetFields();
@@ -134,7 +134,7 @@ export const ModalCreateEmpreendimento = ({
             name="p_vulnerabilidade"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
-            <Input size="large" placeholder="%"  type="number" min={1} />
+            <Input size="large" placeholder="%" type="number" min={1} />
           </Form.Item>
 
           <Form.Item
@@ -142,7 +142,7 @@ export const ModalCreateEmpreendimento = ({
             name="p_idosos"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
-            <Input size="large" placeholder="%"  type="number" min={1} />
+            <Input size="large" placeholder="%" type="number" min={1} />
           </Form.Item>
 
           <Form.Item
@@ -150,7 +150,7 @@ export const ModalCreateEmpreendimento = ({
             name="p_pcd"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
-            <Input size="large" placeholder="%"  type="number" min={1} />
+            <Input size="large" placeholder="%" type="number" min={1} />
           </Form.Item>
 
           <Form.Item
@@ -158,15 +158,7 @@ export const ModalCreateEmpreendimento = ({
             name="p_area_risco"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
-            <Input size="large" placeholder="%"  type="number" min={1} />
-          </Form.Item>
-
-          <Form.Item
-            label="Mulher chefe de familia (%):"
-            name="p_mulher_chefe_familia"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
-          >
-            <Input size="large" placeholder="(%" type="number" min={1} />
+            <Input size="large" placeholder="%" type="number" min={1} />
           </Form.Item>
         </Grid>
 
