@@ -10,7 +10,7 @@ import {
   RouteLabelDrawer,
 } from "./styles";
 import start from "../../assets/start.png";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Drawer } from "antd";
 
 export const Navbar = () => {
@@ -46,8 +46,15 @@ export const Navbar = () => {
             <li className={location.pathname === "/municipios" ? "active" : ""}>
               <RouteLabel to="/municipios">Municípios</RouteLabel>
             </li>
-            <li className={location.pathname === "/empreendimentos" ? "active" : ""}>
+            <li
+              className={
+                location.pathname === "/empreendimentos" ? "active" : ""
+              }
+            >
               <RouteLabel to="/empreendimentos">Empreendimentos</RouteLabel>
+            </li>
+            <li className={location.pathname === "/sorteio" ? "active" : ""}>
+              <RouteLabel to="/sorteio">Sorteio</RouteLabel>
             </li>
           </NavLinks>
           <LastElement></LastElement>
@@ -98,7 +105,10 @@ export const Navbar = () => {
           <RouteLabelDrawer to="/home">Home</RouteLabelDrawer>
           <RouteLabelDrawer to="/usuarios">Usuários</RouteLabelDrawer>
           <RouteLabelDrawer to="/municipios">Municípios</RouteLabelDrawer>
-          <RouteLabelDrawer to="/empreendimentos">Municípios</RouteLabelDrawer>
+          <RouteLabelDrawer to="/empreendimentos">
+            Empreendimentos
+          </RouteLabelDrawer>
+          <RouteLabelDrawer to="/sorteio">Sorteio</RouteLabelDrawer>
         </NavDrawer>
       </Drawer>
     </Nav>

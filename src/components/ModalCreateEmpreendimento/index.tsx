@@ -153,9 +153,10 @@ export const ModalCreateEmpreendimento = ({
             <Input size="large" placeholder="%" type="number" min={1} />
           </Form.Item>
 
+          {/* // resto das porcentagens especificadas */}
           <Form.Item
-            label="Área de risco (%):"
-            name="p_area_risco"
+            label="Ampla concorrência(%):"
+            name="p_ampla_concorrencia"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Input size="large" placeholder="%" type="number" min={1} />

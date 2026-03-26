@@ -45,7 +45,6 @@ export const CadastroUsuarios = () => {
     retry: true,
     refetchOnWindowFocus: false,
   });
-  console.log({ users });
 
   const [openPopOver, setOpenPopOver] = useState<string | null>(null);
 

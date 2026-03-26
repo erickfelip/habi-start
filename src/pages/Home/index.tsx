@@ -333,7 +333,7 @@ export const Home = () => {
           </ContainerRouteWrapper>
 
           <ContainerRouteWrapper
-            onClick={() => navigate("/beneficiarios")}
+            onClick={() => navigate("/sorteio")}
             style={{
               background: "white",
               // cursor: "not-allowed",
