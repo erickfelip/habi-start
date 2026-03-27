@@ -8,7 +8,7 @@ import {
   LabelSub,
   SelectableCard,
 } from "./styles";
-import { Divider, Input, notification, Form, Select, List } from "antd";
+import { Divider, Input, notification, Form, Select, List, Tabs } from "antd";
 import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
 import { ModalSorteio } from "../../components/ModalSorteio";
@@ -80,6 +80,7 @@ const mockListas = {
 };
 
 export const Sorteio = () => {
+  const [tab, setTab] = useState<string>("1");
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [selected, setSelected] = useState(null);
   const [form] = Form.useForm();
@@ -93,8 +94,11 @@ export const Sorteio = () => {
 
   const handleConfirm = () => {
     if (!selected) return;
-
     setListaSelecionada(mockListas[selected]);
+  };
+
+  const onChange = (key: string) => {
+    setTab(key);
   };
 
   const handleChangeEmpreendimento = (_value: any, option: any) => {
@@ -141,6 +145,19 @@ export const Sorteio = () => {
     return option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
 
+  const items = [
+    {
+      key: "1",
+      label: "Realizar sorteio",
+      children: <></>,
+    },
+    {
+      key: "2",
+      label: "Sorteio realizados",
+      children: <></>,
+    },
+  ];
+
   return (
     <Container>
       <Navbar />
@@ -172,43 +189,55 @@ export const Sorteio = () => {
         }}
       >
         {/* ADD UMA TAB DE REALIZAÇÃO DE SORTEIO E OUTRA DE VISUALIZAÇÃO DE SORTEIOS REALIZADOS COM FILTRO POR COTA E LISTA DE SUPLENTES */}
-        <Divider style={{ margin: "20px 0" }} />
+        {/* <Divider style={{ margin: "20px 0" }} /> */}
+
+        <div style={{ width: "100%" }}>
+          <Tabs defaultActiveKey="1" activeKey={tab} onChange={onChange}>
+            {items.map((item) => (
+              <Tabs.TabPane tab={item.label} key={item.key}>
+                {item.children}
+              </Tabs.TabPane>
+            ))}
+          </Tabs>
+        </div>
         <>
-          <Form
-            layout="vertical"
-            form={form}
-            onFinish={onFinish}
-            style={{ width: "100%" }}
-          >
-            <GridSelected>
-              <Form.Item
-                label="Nome do empreendimento:"
-                name="empreendimento"
-                rules={[{ required: true, message: "Campo obrigatório" }]}
+          {tab.includes("1") ? (
+            <>
+              <Form
+                layout="vertical"
+                form={form}
+                onFinish={onFinish}
+                style={{ width: "100%" }}
               >
-                <Select
-                  placeholder="Selecione o empreedimento"
-                  showSearch
-                  allowClear
-                  size="large"
-                  filterOption={filterOption}
-                  optionFilterProp="children"
-                  options={mockEmpreendimento}
-                  onChange={(value, option) =>
-                    handleChangeEmpreendimento(value, option)
-                  }
-                />
-              </Form.Item>
+                <GridSelected>
+                  <Form.Item
+                    label="Nome do empreendimento:"
+                    name="empreendimento"
+                    rules={[{ required: true, message: "Campo obrigatório" }]}
+                  >
+                    <Select
+                      placeholder="Selecione o empreedimento"
+                      showSearch
+                      allowClear
+                      size="large"
+                      filterOption={filterOption}
+                      optionFilterProp="children"
+                      options={mockEmpreendimento}
+                      onChange={(value, option) =>
+                        handleChangeEmpreendimento(value, option)
+                      }
+                    />
+                  </Form.Item>
 
-              <Form.Item
-                label="Semente:"
-                name="semente"
-                rules={[{ required: true, message: "Campo obrigatório" }]}
-              >
-                <Input size="large" placeholder="Semente loteria federal" />
-              </Form.Item>
+                  <Form.Item
+                    label="Semente:"
+                    name="semente"
+                    rules={[{ required: true, message: "Campo obrigatório" }]}
+                  >
+                    <Input size="large" placeholder="Semente loteria federal" />
+                  </Form.Item>
 
-              {/* <Button
+                  {/* <Button
                   type="primary"
                   htmlType="submit"
                   block
@@ -217,91 +246,97 @@ export const Sorteio = () => {
                 >
                   Iniciar Sorteio
                 </Button> */}
-            </GridSelected>
-          </Form>
+                </GridSelected>
+              </Form>
 
-          <div style={{ width: "100%" }}>
-            <Grid>
-              {cards?.map((item: any) => (
-                <SelectableCard
-                  key={item.key}
-                  $selected={selected === item.key}
-                  onClick={() => setSelected(item.key)}
+              <div style={{ width: "100%" }}>
+                <Grid>
+                  {cards?.map((item: any) => (
+                    <SelectableCard
+                      key={item.key}
+                      $selected={selected === item.key}
+                      onClick={() => setSelected(item.key)}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          gap: "10px",
+                          padding: "20px",
+                        }}
+                      >
+                        <span
+                          style={{ fontFamily: "Inter", fontWeight: "400" }}
+                        >
+                          {item.label}
+                        </span>
+                        <Divider style={{ margin: "5px 0px" }} />
+                        <span
+                          style={{
+                            fontFamily: "Inter",
+                            fontWeight: "bold",
+                            fontSize: "20px",
+                          }}
+                        >
+                          {item.value}
+                        </span>
+                      </div>
+                    </SelectableCard>
+                  ))}
+                </Grid>
+              </div>
+
+              <>
+                <ButtonSolicitation
+                  onClick={handleConfirm}
+                  size="large"
+                  color="blue"
+                  variant="solid"
                 >
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "center",
                       justifyContent: "center",
-                      flexDirection: "column",
-                      gap: "10px",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      gap: "7px",
                       padding: "20px",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      fontFamily: "Inter",
                     }}
                   >
-                    <span style={{ fontFamily: "Inter", fontWeight: "400" }}>
-                      {item.label}
-                    </span>
-                    <Divider style={{ margin: "5px 0px" }} />
-                    <span
-                      style={{
-                        fontFamily: "Inter",
-                        fontWeight: "bold",
-                        fontSize: "20px",
-                      }}
-                    >
-                      {item.value}
-                    </span>
+                    Iniciar sorteio {selected}
                   </div>
-                </SelectableCard>
-              ))}
-            </Grid>
-          </div>
+                </ButtonSolicitation>
+              </>
 
-          <>
-            <ButtonSolicitation
-              onClick={handleConfirm}
-              size="large"
-              color="blue"
-              variant="solid"
-            >
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  gap: "7px",
-                  padding: "20px",
-                  fontSize: "16px",
-                  fontWeight: "500",
-                  fontFamily: "Inter",
+                  borderRadius: "20px",
+                  marginBottom: "3px",
+                  width: "100%",
                 }}
               >
-                Iniciar sorteio {selected}
-              </div>
-            </ButtonSolicitation>
-          </>
-
-          <div
-            style={{
-              borderRadius: "20px",
-              marginBottom: "3px",
-              width: "100%",
-            }}
-          >
-            {listaSelecionada.length > 0 && (
-              <List
-                style={{ marginTop: 24, background: "white" }}
-                bordered
-                dataSource={listaSelecionada}
-                renderItem={(item: any) => (
-                  <List.Item>
-                    <strong>{item!?.nome}</strong> — {item!?.cpf}
-                  </List.Item>
+                {listaSelecionada.length > 0 && (
+                  <List
+                    style={{ marginTop: 24, background: "white" }}
+                    bordered
+                    dataSource={listaSelecionada}
+                    renderItem={(item: any) => (
+                      <List.Item>
+                        <strong>{item!?.nome}</strong> — {item!?.cpf}
+                      </List.Item>
+                    )}
+                  />
                 )}
-              />
-            )}
-          </div>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
 
           <ModalSorteio
             isOpen={openSolicitationModal}
