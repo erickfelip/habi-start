@@ -9,6 +9,7 @@ import { Municipios } from "./pages/Municipios";
 import { CadastroUsuarios } from "./pages/CadastroUsuarios";
 import { Empreendimentos } from "./pages/Empreedimentos";
 import { Sorteio } from "./pages/Sorteio";
+import { CadastroBeneficiario } from "./pages/CadastroBeneficiarios";
 
 export const App = () => {
   // validar role do usuario para direcionar as rotas
@@ -60,6 +61,15 @@ export const App = () => {
         element={
           <PrivateRoute>
             <Empreendimentos />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/beneficiarios"
+        element={
+          <PrivateRoute>
+            <CadastroBeneficiario />
           </PrivateRoute>
         }
       />

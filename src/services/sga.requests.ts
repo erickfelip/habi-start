@@ -10,8 +10,41 @@ export const getMunicipios = async () => {
   return response.data;
 };
 
+export const getEmpreendimentos = async () => {
+  const response = await api.get(`/empreendimentos?page=0&limit=10`);
+  return response.data;
+};
+
+export const getBeneficiarios = async ({
+  page = 0,
+  limit = 10,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  const response = await api.get(
+    `/beneficiarios?page=${page}&limit=${limit}`
+  );
+  return response.data;
+};
+
+export const getFaixas = async () => {
+  const response = await api.get(`/faixas?page=0&limit=10`);
+  return response.data;
+};
+
 export const createMunicipio = async (payload: { nome: string }) => {
   const response = await api.post(`/municipios`, payload);
+  return response.data;
+};
+
+export const createEmpreendimento = async (payload: any) => {
+  const response = await api.post(`/empreendimentos`, payload);
+  return response.data;
+};
+
+export const createBeneficiario = async (payload: any) => {
+  const response = await api.post(`/beneficiarios`, payload);
   return response.data;
 };
 
@@ -37,6 +70,10 @@ export const deleteMunicipio = async ({ id }: { id: string }) => {
   return response.data;
 };
 
+export const deleteEmpreendimento = async ({ id }: { id: string }) => {
+  const response = await api.delete(`/empreendimentos/${id}`);
+  return response.data;
+};
 
 export const deleteUser = async ({ id }: { id: string }) => {
   const response = await api.delete(`/usuarios/${id}`);

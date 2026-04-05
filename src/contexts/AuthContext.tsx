@@ -38,7 +38,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const storedAccess = getToken();
     const storedRefresh = getRefreshToken();
-    console.log({ storedRefresh });
 
     if (storedAccess && storedRefresh) {
       setAccessTokenState(storedAccess);

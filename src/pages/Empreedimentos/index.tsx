@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IoAlert } from "react-icons/io5";
-
 import {
   ButtonSolicitation,
   Container,
@@ -11,7 +10,6 @@ import {
   WrapperTable,
 } from "./styles";
 import { IoAdd } from "react-icons/io5";
-
 import {
   Badge,
   Divider,
@@ -37,7 +35,11 @@ import {
 } from "react-icons/md";
 import { FiEye } from "react-icons/fi";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { deleteMunicipio, getMunicipios } from "../../services/sga.requests";
+import {
+  deleteEmpreendimento,
+  deleteMunicipio,
+  getEmpreendimentos,
+} from "../../services/sga.requests";
 import { ModalCreateMunicipio } from "../../components/ModalCreateMunicipio";
 import { Navbar } from "../../components/NavBar";
 import { ModalCreateEmpreendimento } from "../../components/ModalCreateEmpreendimento";
@@ -46,19 +48,18 @@ export const Empreendimentos = () => {
   const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
+  const [openPopOver, setOpenPopOver] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: municipios = [], isLoading } = useQuery({
-    queryKey: ["GET_MUNICIPIOS"],
+  const { data: empreendimentos = [], isLoading } = useQuery({
+    queryKey: ["GET_EMPREENDIMENTOS"],
     queryFn: async () => {
-      const response = await getMunicipios();
-      return response;
+      const response = await getEmpreendimentos();
+      return response!?.rows;
     },
     retry: true,
     refetchOnWindowFocus: true,
   });
-
-  const [openPopOver, setOpenPopOver] = useState<string | null>(null);
 
   const hide = () => {
     setOpenPopOver(null);
@@ -73,15 +74,15 @@ export const Empreendimentos = () => {
   };
 
   const handleDeleteEmpreedimento = async (id: string) => {
-    await deleteMunicipio({ id: id })
+    await deleteEmpreendimento({ id: id })
       .then(() => {
         notification.success({
           duration: 3,
           message: "Sucesso!",
-          description: `Município deletado.`,
+          description: `Empreendimento deletado.`,
         });
         queryClient.invalidateQueries({
-          queryKey: ["GET_MUNICIPIOS"],
+          queryKey: ["GET_EMPREENDIMENTOS"],
         });
         hide();
       })
@@ -98,11 +99,49 @@ export const Empreendimentos = () => {
   const columns: any = [
     {
       title: "Nome do empreedimento",
-      dataIndex: "nome",
-      key: "nome",
+      dataIndex: "label",
+      key: "label",
       align: "start",
       render: (_: any, record: any) => {
-        return record?.nome;
+        return record?.label;
+      },
+    },
+    {
+      title: "Quantidade de vagas",
+      dataIndex: "qtd",
+      key: "qtd",
+      align: "start",
+      render: (_: any, record: any) => {
+        return record?.qtd;
+      },
+    },
+    {
+      title: "Faixa MCMV",
+      dataIndex: "faixaNome",
+      key: "faixaNome",
+      align: "start",
+      render: (_: any, record: any) => {
+        return record?.faixaNome;
+      },
+    },
+    {
+      title: "Cotas",
+      dataIndex: "data",
+      key: "data",
+      align: "start",
+      render: (_: any, record: any) => {
+        return (
+          <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+            <Tag color={"red"}>
+              Vulnerabilidade {record!?.pVulnerabilidade}%
+            </Tag>
+            <Tag color={"blue"}>Idosos {record!?.pIdosos}%</Tag>
+            <Tag color={"blue"}> PCD {record!?.pPcd}%</Tag>
+            <Tag color={"geekblue"}>
+              Ampla concorrência {record!?.pAmplaConcorrencia}%
+            </Tag>
+          </div>
+        );
       },
     },
 
@@ -203,7 +242,7 @@ export const Empreendimentos = () => {
                 handleOpenPopOverChange(visible, record?.id)
               }
             >
-              <Tooltip title="Deletar usuário" placement="bottom">
+              <Tooltip title="Deletar empreendimento" placement="bottom">
                 <Button
                   style={{
                     cursor: "pointer",
@@ -370,7 +409,7 @@ export const Empreendimentos = () => {
                   width: "100%",
                 }}
                 columns={columns}
-                dataSource={municipios}
+                dataSource={empreendimentos}
                 pagination={false}
                 locale={{ emptyText: "Nenhum dado disponível" }}
               />

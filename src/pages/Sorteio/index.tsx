@@ -132,7 +132,7 @@ export const Sorteio = () => {
       qtd: values.qtd,
       classificacao: values.classificacao,
     };
-    console.log("@sorteio", { payload });
+
     form.resetFields();
     notification.success({
       duration: 3,
@@ -188,9 +188,6 @@ export const Sorteio = () => {
           paddingRight: "20px",
         }}
       >
-        {/* ADD UMA TAB DE REALIZAÇÃO DE SORTEIO E OUTRA DE VISUALIZAÇÃO DE SORTEIOS REALIZADOS COM FILTRO POR COTA E LISTA DE SUPLENTES */}
-        {/* <Divider style={{ margin: "20px 0" }} /> */}
-
         <div style={{ width: "100%" }}>
           <Tabs defaultActiveKey="1" activeKey={tab} onChange={onChange}>
             {items.map((item) => (

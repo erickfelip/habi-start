@@ -7,15 +7,13 @@ import {
   notification,
   Select,
 } from "antd";
-import { UserDeleteOutlined } from "@ant-design/icons";
-
 import { useState } from "react";
-
-import { IoAlert } from "react-icons/io5";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { TiDeleteOutline } from "react-icons/ti";
-import moment from "moment";
-import { createMunicipio } from "../../services/sga.requests";
+import {
+  createEmpreendimento,
+  getFaixas,
+  getMunicipios,
+} from "../../services/sga.requests";
 import { Grid } from "./styles";
 
 interface IOrderModalDetails {
@@ -27,61 +25,75 @@ interface IOrderModalDetails {
 export const ModalCreateEmpreendimento = ({
   isOpen,
   handleClose,
-  orderData,
 }: IOrderModalDetails) => {
+  const { data: faixas = [] } = useQuery({
+    queryKey: ["GET_FAIXAS"],
+    queryFn: async () => {
+      const response = await getFaixas();
+      return response!?.rows;
+    },
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
+
+  const { data: municipios = [], isLoading } = useQuery({
+    queryKey: ["GET_MUNICIPIOS"],
+    queryFn: async () => {
+      const response = await getMunicipios();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
+
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
+  const [faixaLabel, setFaixaLabel] = useState<string>("");
 
   const onFinish = async (values: any) => {
+    const valorInt = parseInt(values.faixa, 10);
+
     const payload = {
-      nome: values.nome,
-      qtd: values.qtd,
-      classificacao: values.classificacao,
-      p_vulnerabilidade: values.p_vulnerabilidade, // cotas para sorteio
-      p_idosos: values.p_idosos, // cotas para sorteio
-      p_pcd: values.p_pcd, // cotas para sorteio
-      p_area_risco: values.p_area_risco, // cotas para sorteio
-      // SUPLENTES SÃO 30% DO TOTAL DE VAGAS DE APARTAMENTOS - VALOR FIXO API
+      value: values!?.idMunicipio,
+      faixaNome: faixaLabel,
+      faixaValor: valorInt,
+      label: values.nome,
+      qtd: Number(values.qtd),
+      pVulnerabilidade: Number(values.p_vulnerabilidade), // cotas para sorteio
+      pIdosos: Number(values.p_idosos), // cotas para sorteio
+      pPcd: Number(values.p_pcd), // cotas para sorteio
+      pAmplaConcorrencia: Number(values.p_ampla_concorrencia), // cotas para sorteio
     };
-    console.log("@empreendimento cadastrado", { payload });
-    form.resetFields();
-    notification.success({
-      duration: 3,
-      message: "Sucesso!",
-      description: `Novo empreendimento cadastrado.`,
-    });
-    handleClose();
 
-    // await createMunicipio(payload)
-    //   .then(() => {
-    //     form.resetFields();
-    //     notification.success({
-    //       duration: 3,
-    //       message: "Sucesso!",
-    //       description: `Novo município cadastrado.`,
-    //     });
-    //     queryClient.invalidateQueries({
-    //       queryKey: ["GET_MUNICIPIOS"],
-    //     });
-    //     handleClose();
-    //   })
-    //   .catch((error) => {
-    //     notification.error({
-    //       duration: 1,
-    //       message: "Erro!",
-    //       description: `${error?.response?.data?.message}`,
-    //     });
-    //   });
+    await createEmpreendimento(payload)
+      .then(() => {
+        setFaixaLabel("");
+        form.resetFields();
+        notification.success({
+          duration: 3,
+          message: "Sucesso!",
+          description: `Novo empreendimento cadastrado.`,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["GET_EMPREENDIMENTOS"],
+        });
+        handleClose();
+      })
+      .catch((error) => {
+        notification.error({
+          duration: 1,
+          message: "Erro!",
+          description: `${error?.response?.data?.message}`,
+        });
+      });
   };
-
-  const faixas = [
-    { label: "Faixa 1", value: "faixa_1" },
-    { label: "Faixa 2", value: "faixa_2" },
-    { label: "Faixa 3", value: "faixa_3" },
-  ];
 
   const filterOption = (input: any, option: any) => {
     return option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  };
+
+  const handleChange = (_: any, option: any) => {
+    setFaixaLabel(option?.label);
   };
 
   return (
@@ -96,6 +108,27 @@ export const ModalCreateEmpreendimento = ({
       <Divider />
 
       <Form layout="vertical" form={form} onFinish={onFinish}>
+        <Form.Item
+          label="Município:"
+          name="idMunicipio"
+          rules={[{ required: true, message: "Campo obrigatório" }]}
+        >
+          <Select
+            placeholder="Selecione o municipio do usuario"
+            showSearch
+            allowClear
+            size="large"
+            filterOption={filterOption}
+            optionFilterProp="children"
+            loading={isLoading}
+            options={municipios!?.map((muni: { id: string; nome: string }) => {
+              return {
+                value: muni?.id,
+                label: muni?.nome,
+              };
+            })}
+          />
+        </Form.Item>
         <Form.Item
           label="Nome do empreendimento:"
           name="nome"
@@ -114,7 +147,7 @@ export const ModalCreateEmpreendimento = ({
 
         <Form.Item
           label="Classificação empreendimento:"
-          name="classificacao"
+          name="faixa"
           rules={[{ required: true, message: "Campo obrigatório" }]}
         >
           <Select
@@ -124,7 +157,14 @@ export const ModalCreateEmpreendimento = ({
             size="large"
             filterOption={filterOption}
             optionFilterProp="children"
-            options={faixas}
+            options={faixas?.map((faixa: any) => {
+              return {
+                label: faixa?.nome,
+                value: faixa?.valorReais,
+                option: faixa,
+              };
+            })}
+            onChange={(_, option) => handleChange(_, option)}
           />
         </Form.Item>
 
