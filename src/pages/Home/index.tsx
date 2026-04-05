@@ -21,9 +21,10 @@ import {
 import { useGreeting } from "../../hooks/useGreeting";
 import { GiPodium } from "react-icons/gi";
 
-import start from "../../assets/start.png";
+import start from "../../assets/logo.png";
 import { useQuery } from "@tanstack/react-query";
 import { getUserData } from "../../services/sga.requests";
+import { Divider } from "antd";
 
 export const Home = () => {
   const greeting = useGreeting();
@@ -75,10 +76,20 @@ export const Home = () => {
           </div>
           <StartLogo src={start} style={{ marginLeft: "auto" }} />
         </div>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            paddingLeft: "20px",
+            paddingRight: "20px",
+          }}
+        >
+          <Divider style={{ margin: "10px 0px" }} />
+        </div>
         <Grid>
           <ContainerRouteWrapper
             onClick={() => navigate("/usuarios")}
-            style={{ background: "white", cursor: "pointer" }}
+            style={{ background: "#EAF3DE", cursor: "pointer" }}
           >
             <ContainerRoute style={{ display: "flex" }}>
               <div
@@ -95,15 +106,13 @@ export const Home = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: "white",
+                    background: "#C0DD97",
                     borderRadius: "100px",
                     height: "70px",
                     width: "70px",
-                    boxShadow:
-                      "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
                   }}
                 >
-                  <LuUsersRound size={"30px"} />
+                  <LuUsersRound size={"30px"} color="#27500A" />
                 </div>
               </div>
             </ContainerRoute>
@@ -117,7 +126,9 @@ export const Home = () => {
                 padding: "20px 20px 0px",
               }}
             >
-              <RouteName>Cadastro de Usuários</RouteName>
+              <RouteName style={{ color: "#27500A" }}>
+                Cadastro de Usuários
+              </RouteName>
             </div>
 
             <div
@@ -139,8 +150,8 @@ export const Home = () => {
           <ContainerRouteWrapper
             onClick={() => navigate("/municipios")}
             style={{
-              background: "white",
-              // cursor: "not-allowed",
+              background: "#E6F1FB",
+              cursor: "pointer",
               // pointerEvents: "none",
               // opacity: "0.35",
             }}
@@ -160,15 +171,13 @@ export const Home = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: "white",
+                    background: "#B5D4F4",
                     borderRadius: "100px",
                     height: "70px",
                     width: "70px",
-                    boxShadow:
-                      "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
                   }}
                 >
-                  <MdOutlinePlace size={"30px"} />
+                  <MdOutlinePlace size={"30px"} color="#0C447C" />
                 </div>
               </div>
             </ContainerRoute>
@@ -182,7 +191,9 @@ export const Home = () => {
                 padding: "20px 20px 0px",
               }}
             >
-              <RouteName>Cadastro de Municípios</RouteName>
+              <RouteName style={{ color: "#0C447C" }}>
+                Cadastro de Municípios
+              </RouteName>
             </div>
 
             <div
@@ -204,8 +215,8 @@ export const Home = () => {
           <ContainerRouteWrapper
             onClick={() => navigate("/beneficiarios")}
             style={{
-              background: "white",
-              // cursor: "not-allowed",
+              background: "#FAECE7",
+              cursor: "pointer",
               // pointerEvents: "none",
               // opacity: "0.35",
             }}
@@ -225,7 +236,7 @@ export const Home = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: "white",
+                    background: "#F5C4B3",
                     borderRadius: "100px",
                     height: "70px",
                     width: "70px",
@@ -233,7 +244,7 @@ export const Home = () => {
                       "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
                   }}
                 >
-                  <AiOutlineUsergroupAdd size={"30px"} />
+                  <AiOutlineUsergroupAdd size={"30px"} color="#712B13" />
                 </div>
               </div>
             </ContainerRoute>
@@ -247,7 +258,9 @@ export const Home = () => {
                 padding: "20px 20px 0px",
               }}
             >
-              <RouteName>Cadastro de Beneficiários</RouteName>
+              <RouteName style={{ color: "#712B13" }}>
+                Cadastro de Beneficiários
+              </RouteName>
             </div>
 
             <div
@@ -270,8 +283,8 @@ export const Home = () => {
           <ContainerRouteWrapper
             onClick={() => navigate("/empreendimentos")}
             style={{
-              background: "white",
-              // cursor: "not-allowed",
+              background: "#E1F5EE",
+              cursor: "pointer",
               // pointerEvents: "none",
               // opacity: "0.35",
             }}
@@ -291,15 +304,15 @@ export const Home = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: "white",
+                    background: "#9FE1CB",
                     borderRadius: "100px",
                     height: "70px",
                     width: "70px",
-                    boxShadow:
-                      "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
+                    // boxShadow:
+                    //   "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
                   }}
                 >
-                  <LuFolderPlus size={"30px"} />
+                  <LuFolderPlus size={"30px"} color="#085041" />
                 </div>
               </div>
             </ContainerRoute>
@@ -313,7 +326,9 @@ export const Home = () => {
                 padding: "20px 20px 0px",
               }}
             >
-              <RouteName>Cadastro de Empreendimentos</RouteName>
+              <RouteName style={{ color: "#085041" }}>
+                Cadastro de Empreendimentos
+              </RouteName>
             </div>
 
             <div
@@ -333,10 +348,10 @@ export const Home = () => {
           </ContainerRouteWrapper>
 
           <ContainerRouteWrapper
-            onClick={() => navigate("/sorteio")}
+            onClick={() => navigate("/hierarquizacao")}
             style={{
-              background: "white",
-              // cursor: "not-allowed",
+              background: "#EEEDFE",
+              cursor: "pointer",
               // pointerEvents: "none",
               // opacity: "0.35",
             }}
@@ -353,18 +368,18 @@ export const Home = () => {
               >
                 <div
                   style={{
+                    background: "#CCC9F5",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: "white",
                     borderRadius: "100px",
                     height: "70px",
                     width: "70px",
-                    boxShadow:
-                      "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
+                    // boxShadow:
+                    //   "rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px",
                   }}
                 >
-                  <GiPodium size={"30px"} />
+                  <GiPodium size={"30px"} color="#3C3489" />
                 </div>
               </div>
             </ContainerRoute>
@@ -378,7 +393,7 @@ export const Home = () => {
                 padding: "20px 20px 0px",
               }}
             >
-              <RouteName>Sorteio</RouteName>
+              <RouteName style={{ color: "#3C3489" }}>Hierarquização</RouteName>
             </div>
 
             <div
@@ -391,8 +406,10 @@ export const Home = () => {
               }}
             >
               <GridRoutes>
-                <RouteSubText>Sorteio habitacionais</RouteSubText>
-                <RouteSubText>Consulta de sorteios realizados</RouteSubText>
+                <RouteSubText>Hierarquização familiar</RouteSubText>
+                <RouteSubText>
+                  Consulta de hierarquizações realizadas
+                </RouteSubText>
               </GridRoutes>
             </div>
           </ContainerRouteWrapper>

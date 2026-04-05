@@ -79,7 +79,7 @@ const mockListas = {
   ],
 };
 
-export const Sorteio = () => {
+export const Hierarquizacao = () => {
   const [tab, setTab] = useState<string>("1");
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -148,12 +148,12 @@ export const Sorteio = () => {
   const items = [
     {
       key: "1",
-      label: "Realizar sorteio",
+      label: "Realizar hierarquização",
       children: <></>,
     },
     {
       key: "2",
-      label: "Sorteio realizados",
+      label: "Hierarquizações realizadas",
       children: <></>,
     },
   ];
@@ -170,13 +170,13 @@ export const Sorteio = () => {
         }}
       >
         <div>
-          <Label>Sorteios</Label>
+          <Label>Hierarquização</Label>
         </div>
       </div>
       <div
         style={{ display: "flex", alignItems: "center", marginLeft: "20px" }}
       >
-        <LabelSub>Conectando famílias ao sonho da moradia 💙</LabelSub>
+        <LabelSub>Conectando famílias ao sonho da moradia.</LabelSub>
       </div>
       <div
         style={{

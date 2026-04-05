@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StartLogo = styled.img`
   height: 120px;
-  width: 120px;
+  width: 220px;
   object-fit: contain;
   margin-left: 0px;
 `;
@@ -121,7 +121,7 @@ export const RouteSubText = styled.span`
   font-size: 1.1rem;
   color: #5d5d5d;
   /* width: 250px; */
-  width: 300px;
+  width: 350px;
 
   @media (max-width: 1600px) {
     width: 230px;

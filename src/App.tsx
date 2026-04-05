@@ -8,7 +8,7 @@ import { Home } from "./pages/Home";
 import { Municipios } from "./pages/Municipios";
 import { CadastroUsuarios } from "./pages/CadastroUsuarios";
 import { Empreendimentos } from "./pages/Empreedimentos";
-import { Sorteio } from "./pages/Sorteio";
+import { Hierarquizacao } from "./pages/Hierarquizacao";
 import { CadastroBeneficiario } from "./pages/CadastroBeneficiarios";
 
 export const App = () => {
@@ -75,10 +75,10 @@ export const App = () => {
       />
 
       <Route
-        path="/sorteio"
+        path="/hierarquizacao"
         element={
           <PrivateRoute>
-            <Sorteio />
+            <Hierarquizacao />
           </PrivateRoute>
         }
       />
