@@ -18,12 +18,16 @@ export const getEmpreendimentos = async () => {
 export const getBeneficiarios = async ({
   page = 0,
   limit = 10,
+  filter,
+  param,
 }: {
   page: number;
   limit: number;
+  filter: string;
+  param: string;
 }) => {
   const response = await api.get(
-    `/beneficiarios?page=${page}&limit=${limit}`
+    `/beneficiarios?page=${page}&limit=${limit}&${filter}=${param}`
   );
   return response.data;
 };

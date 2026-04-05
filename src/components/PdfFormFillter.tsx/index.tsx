@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PDFDocument, PDFName, PDFString } from "pdf-lib";
 import { saveAs } from "file-saver";
 import { BsFiletypePdf } from "react-icons/bs";
-import pdf from "../../assets/teste2.pdf";
+import pdf from "../../assets/teste2funcionando.pdf";
 import { Button } from "antd";
 
 // chaves do PDF só funcionam com snake_case

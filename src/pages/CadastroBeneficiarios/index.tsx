@@ -11,8 +11,8 @@ import {
   notification,
   Divider,
   Pagination,
+  Dropdown,
 } from "antd";
-import * as Yup from "yup";
 import {
   Container,
   GridAddress,
@@ -42,95 +42,18 @@ import {
 } from "../../services/sga.requests.ts";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
-
-export const stepSchemas = [
-  // =========================
-  // ETAPA 1
-  // =========================
-  Yup.object().shape({
-    cpf: Yup.string().required("CPF é obrigatório"),
-    nis: Yup.string().required("NIS é obrigatório"),
-    nome: Yup.string().required("Nome é obrigatório"),
-    rg: Yup.string().required("RG é obrigatório"),
-    orgao: Yup.string().required("Órgão é obrigatório"),
-    estado: Yup.string().required("Estado é obrigatório"),
-    dataNascimento: Yup.string().required("Data de nascimento é obrigatória"),
-    emancipado: Yup.boolean().nullable(),
-    estadoCivil: Yup.string().required("Estado civil é obrigatório"),
-    sexo: Yup.string().required("Sexo é obrigatório"),
-    email: Yup.string().email("Email inválido").required("Email é obrigatório"),
-    telefone1: Yup.string().required("Telefone é obrigatório"),
-    telefone2: Yup.string().nullable(),
-    mae: Yup.string().required("Nome da mãe é obrigatório"),
-    rendaPessoal: Yup.string()
-      .typeError("Informe um número")
-      .required("Renda pessoal é obrigatória"),
-    chefeDeFamilia: Yup.boolean().nullable(),
-    possuiDeficiencia: Yup.boolean().nullable(),
-    deficiencia: Yup.string().nullable(),
-    profissao: Yup.string().required("Profissão é obrigatória"),
-    totalPessoas: Yup.number()
-      .typeError("Informe um número")
-      .required("Total de pessoas é obrigatório"),
-    rendaFamiliar: Yup.string()
-      .typeError("Informe um número")
-      .required("Renda familiar é obrigatória"),
-    condicaoMoradia: Yup.string().required("Condição moradia é obrigatória"),
-    recebemBolsaFamilia: Yup.boolean().nullable(),
-    deficientesNaFamilia: Yup.boolean().nullable(),
-    idososNaFamilia: Yup.boolean().nullable(),
-    tipoMoradia: Yup.string().required("Tipo moradia é obrigatório"),
-    trabalhoOcupacao: Yup.string().required("Trabalho/Ocupação é obrigatório"),
-    filhos0a6Anos: Yup.number().typeError("Informe um número").required(),
-    filhos7a18Anos: Yup.number().typeError("Informe um número").required(),
-    cep: Yup.string().required("CEP é obrigatório"),
-    logradouro: Yup.string().required("Logradouro é obrigatório"),
-    numero: Yup.string().required("Número é obrigatório"),
-    bairro: Yup.string().required("Bairro é obrigatório"),
-    cidade: Yup.string().required("Cidade é obrigatória"),
-    complemento: Yup.string().required("Complemento é obrigatório"),
-    localStatusInscricao: Yup.string().required(
-      "Local status inscrição é obrigatório"
-    ),
-  }),
-
-  // =========================
-  // ETAPA 2
-  // =========================
-  Yup.object().shape({
-    nomeConjuge: Yup.string().nullable(),
-    estadoCivilConjuge: Yup.string().nullable(),
-    profissaoConjuge: Yup.string().nullable(),
-    rgConjuge: Yup.string().nullable(),
-    cpfConjuge: Yup.string().nullable(),
-    rendaConjuge: Yup.string().typeError("Informe um número").nullable(),
-    possuiDeficienciaConjuge: Yup.boolean().nullable(),
-    conjugeVaraoAusente: Yup.boolean().nullable(),
-  }),
-
-  // =========================
-  // ETAPA 3
-  // =========================
-  Yup.object().shape({
-    mulherResponsavelUnidadeFamiliar: Yup.boolean().nullable(),
-    titularOuConjugeNegro: Yup.boolean().nullable(),
-    pessoaComDeficienciaNaComposicaoFamiliar: Yup.boolean().nullable(),
-    idosoNaComposicaoFamiliar: Yup.boolean().nullable(),
-    criancaOuAdolescenteNaComposicaoFamiliar: Yup.boolean().nullable(),
-    pessoaComCancerOuDoencaRaraCronicaDegenerativa: Yup.boolean().nullable(),
-    mulherVitimaViolenciaDomestica: Yup.boolean().nullable(),
-    situacaoRiscoVulnerabilidade: Yup.boolean().nullable(),
-    povosTradicionaisQuilombolas: Yup.boolean().nullable(),
-    residentesEmAreasDeRisco: Yup.boolean().nullable(),
-    situacaoDeRuaOuTrajetoriaRua: Yup.boolean().nullable(),
-  }),
-];
+import { MdOutlineFilterList } from "react-icons/md";
+import useDebounce from "../../hooks/useDebounce.tsx";
+import { stepSchemas } from "./schema.ts";
 
 export const CadastroBeneficiario = () => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("nome");
+  const [param, setParam] = useState("");
+  const debouncedValue = useDebounce(param, 500);
 
   useEffect(() => {
     form.setFieldsValue(formData);
@@ -138,9 +61,14 @@ export const CadastroBeneficiario = () => {
 
   const { data: beneficiarios = [], isLoading: isLoadingBeneficiarios } =
     useQuery({
-      queryKey: ["GET_BENEFICIARIOS", page],
+      queryKey: ["GET_BENEFICIARIOS", page, filter, debouncedValue],
       queryFn: async () => {
-        const response = await getBeneficiarios({ page: page, limit: 10 });
+        const response = await getBeneficiarios({
+          page: page - 1,
+          limit: 10,
+          filter: filter,
+          param: param,
+        });
         return response;
       },
       retry: true,
@@ -828,7 +756,16 @@ export const CadastroBeneficiario = () => {
           nome: record!?.nome,
           cpf: record!?.cpf,
           profissao: record!?.profissao,
-          data_nascimento: record.dataNascimento, //exemplo
+          // data_nascimento: record.dataNascimento, //exemplo
+          logradouro: record.logradouro,
+          complemento: record.complemento,
+          bairro: record.bairro,
+          municipio: record.municipio, // pegar do que está cadastrado no banco
+          numero: record.numero,
+          uf: record.estado,
+          cep: record.cep,
+          telefone1: record.telefone1,
+          telefone2: record.telefone2,
         };
 
         return (
@@ -843,24 +780,6 @@ export const CadastroBeneficiario = () => {
           </div>
         );
       },
-    },
-  ];
-
-  const mockBenef = [
-    {
-      nome: "Fulano Brasileiro",
-      cpf: "123.456.789-00",
-      profissao: "autonomo",
-    },
-    {
-      nome: "João da Silva",
-      cpf: "123.456.789-00",
-      profissao: "autonomo",
-    },
-    {
-      nome: "Maria da Silva",
-      cpf: "123.456.789-00",
-      profissao: "autonomo",
     },
   ];
 
@@ -947,6 +866,50 @@ export const CadastroBeneficiario = () => {
           </>
         ) : (
           <>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                paddingBottom: "20px",
+                gap: "8px",
+              }}
+            >
+              <Input
+                placeholder={`Informe o ${filter} do beneficiário`}
+                allowClear
+                size="large"
+                onChange={(e) => setParam(e.target.value)}
+                value={param}
+                style={{ width: "500px", borderRadius: "20px" }}
+              />
+
+              <Dropdown
+                arrow={{ pointAtCenter: true }}
+                menu={{
+                  selectedKeys: [filter],
+                  onClick: (e) => setFilter(e.key),
+                  items: [
+                    {
+                      key: "nome",
+                      label: "Nome do beneficiário",
+                    },
+                    {
+                      key: "cpf",
+                      label: "CPF",
+                    },
+                  ],
+                }}
+              >
+                <MdOutlineFilterList
+                  style={{ cursor: "pointer" }}
+                  size={"33px"}
+                  color="#626262"
+                />
+              </Dropdown>
+            </div>
+
             <div
               style={{
                 borderRadius: "20px",
