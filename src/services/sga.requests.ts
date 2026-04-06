@@ -42,6 +42,13 @@ export const createMunicipio = async (payload: { nome: string }) => {
   return response.data;
 };
 
+export const createHierarquizacao = async (payload: {
+  idEmpreendimento: string;
+}) => {
+  const response = await api.post(`/sorteio`, payload);
+  return response.data;
+};
+
 export const createEmpreendimento = async (payload: any) => {
   const response = await api.post(`/empreendimentos`, payload);
   return response.data;

@@ -75,12 +75,12 @@ export const ButtonExport = styled.button`
 
 export const ButtonSolicitation = styled(Button)`
   /* background: #f07620; */
-  margin-top: 20px;
+
   color: white;
   display: flex;
   align-items: center;
   width: 100%;
-  height: 50px;
+  height: 40px;
 
   border: 0.2px solid #dadada;
   border-radius: 10px;
@@ -126,6 +126,7 @@ export const Grid = styled.div`
 
 export const GridSelected = styled.div`
   /* padding: 25px 20px; */
+  width: 100%;
   padding-bottom: 0px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);

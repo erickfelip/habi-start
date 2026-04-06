@@ -9,6 +9,21 @@ export const parseCurrencyBRL = (value?: string): number => {
   return Number(numeric);
 };
 
+export const formatLabel = (value: string) => {
+  const exceptions: Record<string, string> = {
+    PCD: "PCD",
+    IDOSO: "Idoso",
+  };
+
+  if (exceptions[value]) return exceptions[value];
+
+  return value
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 export const items = [
   {
     key: "1",
