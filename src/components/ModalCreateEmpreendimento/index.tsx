@@ -32,7 +32,7 @@ export const ModalCreateEmpreendimento = ({
       const response = await getFaixas();
       return response!?.rows;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: false,
   });
 
@@ -42,7 +42,7 @@ export const ModalCreateEmpreendimento = ({
       const response = await getMunicipios();
       return response;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: false,
   });
 
@@ -54,7 +54,7 @@ export const ModalCreateEmpreendimento = ({
     const valorInt = parseInt(values.faixa, 10);
 
     const payload = {
-      value: values!?.idMunicipio,
+      idMunicipio: values!?.idMunicipio,
       faixaNome: faixaLabel,
       faixaValor: valorInt,
       label: values.nome,
