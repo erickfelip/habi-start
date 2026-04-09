@@ -344,7 +344,7 @@ export const CadastroBeneficiario = () => {
               />
             </Form.Item>
 
-            <Form.Item name="email" label="Email" required>
+            <Form.Item name="email" label="E-mail" required>
               <Input size="large" />
             </Form.Item>
 
@@ -356,7 +356,7 @@ export const CadastroBeneficiario = () => {
               <Input size="large" />
             </Form.Item>
 
-            <Form.Item name="mae" label="Mãe" required>
+            <Form.Item name="mae" label="Nome da Mãe" required>
               <Input size="large" />
             </Form.Item>
 
@@ -374,7 +374,7 @@ export const CadastroBeneficiario = () => {
               />
             </Form.Item>
 
-            <Form.Item name="profissao" label="profissao" required>
+            <Form.Item name="profissao" label="Profissão" required>
               <Input size="large" />
             </Form.Item>
 
@@ -402,7 +402,7 @@ export const CadastroBeneficiario = () => {
               <Checkbox>Possui Deficiência</Checkbox>
             </Form.Item>
 
-            <Form.Item name="deficiencia" label="Deficiência">
+            <Form.Item name="deficiencia" label="Nome da deficiência">
               <Input size="large" />
             </Form.Item>
           </GridPersonalData>
@@ -444,7 +444,7 @@ export const CadastroBeneficiario = () => {
               />
             </Form.Item>
 
-            <Form.Item name="condicaoMoradia" label="condicaoMoradia" required>
+            <Form.Item name="condicaoMoradia" label="Condição moradia" required>
               <Input size="large" />
             </Form.Item>
 
@@ -453,7 +453,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>recebemBolsaFamilia</Checkbox>
+              <Checkbox>Recebem bolsa família</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -461,7 +461,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>deficientesNaFamilia</Checkbox>
+              <Checkbox>Deficientes na família</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -469,15 +469,15 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>idososNaFamilia</Checkbox>
+              <Checkbox>Idosos na família</Checkbox>
             </Form.Item>
 
-            <Form.Item name="tipoMoradia" label="tipoMoradia" required>
+            <Form.Item name="tipoMoradia" label="Tipo moradia" required>
               <Input size="large" />
             </Form.Item>
             <Form.Item
               name="trabalhoOcupacao"
-              label="trabalhoOcupacao"
+              label="Trabalho ocupação"
               required
             >
               <Input size="large" />
@@ -485,7 +485,7 @@ export const CadastroBeneficiario = () => {
 
             <Form.Item
               name="filhos0a6Anos"
-              label="filhos0a6Anos"
+              label="Filhos de 0 a 6 anos"
               required
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
@@ -496,7 +496,7 @@ export const CadastroBeneficiario = () => {
 
             <Form.Item
               name="filhos7a18Anos"
-              label="filhos7a18Anos"
+              label="Filhos de 7 a 18 anos"
               required
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
@@ -510,7 +510,7 @@ export const CadastroBeneficiario = () => {
           <Divider style={{ margin: "20px 0px" }}>Endereço</Divider>
           {/* ...continuação endereço */}
           <GridAddress>
-            <Form.Item name="cep" label="cep" required>
+            <Form.Item name="cep" label="CEP" required>
               <Input
                 placeholder="00000-000"
                 onChange={handleCepChange}
@@ -518,24 +518,24 @@ export const CadastroBeneficiario = () => {
                 size="large"
               />
             </Form.Item>
-            <Form.Item name="logradouro" label="logradouro" required>
+            <Form.Item name="logradouro" label="Logradouro" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="numero" label="numero casa" required>
+            <Form.Item name="numero" label="Nº imóvel" required>
               <Input ref={numeroRef} size="large" />
             </Form.Item>
-            <Form.Item name="bairro" label="bairro" required>
+            <Form.Item name="bairro" label="Bairro" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="cidade" label="cidade" required>
+            <Form.Item name="cidade" label="Cidade" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="complemento" label="complemento" required>
+            <Form.Item name="complemento" label="Complemento" required>
               <Input size="large" />
             </Form.Item>
             <Form.Item
               name="localStatusInscricao" // nome municipio
-              label="localStatusInscricao"
+              label="Local do status inscrição"
               required
             >
               <Input size="large" />
@@ -550,7 +550,7 @@ export const CadastroBeneficiario = () => {
         <>
           <Divider style={{ margin: "20px 0px" }}>Situação Conjuge</Divider>
           <GridAddress>
-            <Form.Item name="cpfConjuge" label="cpfConjuge" required>
+            <Form.Item name="cpfConjuge" label="CPF" required>
               <Input
                 placeholder="000.000.000-00"
                 onChange={handleCpfConjugeChange}
@@ -558,30 +558,22 @@ export const CadastroBeneficiario = () => {
                 // disabled={loadingCep}
               />
             </Form.Item>
-            <Form.Item name="nomeConjuge" label="nomeConjuge" required>
+            <Form.Item name="nomeConjuge" label="Nome cônjuge" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item
-              name="estadoCivilConjuge"
-              label="estadoCivilConjuge"
-              required
-            >
+            <Form.Item name="estadoCivilConjuge" label="Estado civil" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item
-              name="profissaoConjuge"
-              label="profissaoConjuge"
-              required
-            >
+            <Form.Item name="profissaoConjuge" label="Profissão" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="rgConjuge" label="rgConjuge" required>
+            <Form.Item name="rgConjuge" label="RG" required>
               <Input size="large" />
             </Form.Item>
 
             <Form.Item
               name="rendaConjuge"
-              label="Renda Conjuge"
+              label="Renda"
               required
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
@@ -602,7 +594,7 @@ export const CadastroBeneficiario = () => {
 
             <Form.Item
               name="possuiDeficienciaConjuge" // nome municipio
-              label="possuiDeficienciaConjuge"
+              label="Cônjuge possui deficiencia"
               required
             >
               <Input size="large" />
@@ -610,7 +602,7 @@ export const CadastroBeneficiario = () => {
 
             <Form.Item
               name="conjugeVaraoAusente" // nome municipio
-              label="conjugeVaraoAusente"
+              label="Cônjuge varão ausente"
               required
             >
               <Input size="large" />
@@ -633,7 +625,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>mulherResponsavelUnidadeFamiliar</Checkbox>
+              <Checkbox>Mulher responsável pela unidade familiar</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -641,7 +633,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>titularOuConjugeNegro</Checkbox>
+              <Checkbox>Titular ou cônjuge negro</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -649,7 +641,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>pessoaComDeficienciaNaComposicaoFamiliar</Checkbox>
+              <Checkbox>Pessoa com deficiência na composição familiar</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -657,7 +649,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>idosoNaComposicaoFamiliar</Checkbox>
+              <Checkbox>Idosos na composição familiar</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -665,7 +657,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>criancaOuAdolescenteNaComposicaoFamiliar</Checkbox>
+              <Checkbox>Criança ou adolescente na composição familiar</Checkbox>
             </Form.Item>
             <Form.Item
               name="pessoaComCancerOuDoencaRaraCronicaDegenerativa"
@@ -673,7 +665,7 @@ export const CadastroBeneficiario = () => {
               initialValue={false}
             >
               <Checkbox>
-                pessoaComCancerOuDoencaRaraCronicaDegenerativa
+                Pessoa com cancer ou doença rara cronica degenerativa
               </Checkbox>
             </Form.Item>
 
@@ -682,35 +674,35 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>mulherVitimaViolenciaDomestica</Checkbox>
+              <Checkbox>Mulher vítima de violência doméstica</Checkbox>
             </Form.Item>
             <Form.Item
               name="situacaoRiscoVulnerabilidade"
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>situacaoRiscoVulnerabilidade</Checkbox>
+              <Checkbox>Situação de risco e vulnerabilidade</Checkbox>
             </Form.Item>
             <Form.Item
               name="povosTradicionaisQuilombolas"
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>povosTradicionaisQuilombolas</Checkbox>
+              <Checkbox>Povos tradicionais e quilombolas</Checkbox>
             </Form.Item>
             <Form.Item
               name="residentesEmAreasDeRisco"
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>residentesEmAreasDeRisco</Checkbox>
+              <Checkbox>Residentes em área de risco</Checkbox>
             </Form.Item>
             <Form.Item
               name="situacaoDeRuaOuTrajetoriaRua"
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>situacaoDeRuaOuTrajetoriaRua</Checkbox>
+              <Checkbox>Encontra-se em situação de rua ou com trajetória</Checkbox>
             </Form.Item>
           </GridCriterios>
         </>
