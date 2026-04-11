@@ -76,6 +76,13 @@ export const getUsers = async (idMunicipio: string) => {
   return response.data;
 };
 
+export const getHierarquizacao = async (idEmpreendimento: string) => {
+  const response = await api.get(
+    `/sorteio/?idEmpreendimento=${idEmpreendimento}&page=0&limit=100`
+  );
+  return response.data;
+};
+
 export const deleteMunicipio = async ({ id }: { id: string }) => {
   const response = await api.delete(`/municipios/${id}`);
   return response.data;

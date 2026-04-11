@@ -702,7 +702,9 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>Encontra-se em situação de rua ou com trajetória</Checkbox>
+              <Checkbox>
+                Encontra-se em situação de rua ou com trajetória
+              </Checkbox>
             </Form.Item>
           </GridCriterios>
         </>
@@ -818,7 +820,7 @@ export const CadastroBeneficiario = () => {
         </div>
         {tab.includes("1") ? (
           <>
-            <WrapperSteps>
+            <WrapperSteps style={{ marginTop: "20px" }}>
               <div style={{ marginTop: "10px" }}>
                 <Steps
                   current={current}

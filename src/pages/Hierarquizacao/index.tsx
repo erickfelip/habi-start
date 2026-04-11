@@ -6,7 +6,16 @@ import {
   Label,
   LabelSub,
 } from "./styles";
-import { notification, Select, List, Tabs, Tag, Badge, Tooltip } from "antd";
+import {
+  notification,
+  Select,
+  List,
+  Tabs,
+  Tag,
+  Badge,
+  Tooltip,
+  Empty,
+} from "antd";
 import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
 import { ModalSorteio } from "../../components/ModalSorteio";
@@ -14,6 +23,7 @@ import { formatLabel } from "../../utils";
 import {
   createHierarquizacao,
   getEmpreendimentos,
+  getHierarquizacao,
 } from "../../services/sga.requests";
 import { useQuery } from "@tanstack/react-query";
 
@@ -39,6 +49,7 @@ export const Hierarquizacao = () => {
   const [selected, setSelected] = useState<any>("");
   const [loading, setLoading] = useState(false);
   const [vagas, setVagas] = useState<Vagas>({});
+  const [vagasGet, setVagasGet] = useState<Vagas>({});
   const [activeTab, setActiveTab] = useState<string>("PCD");
   const [pageByTab, setPageByTab] = useState<Record<string, number>>({});
 
@@ -51,6 +62,20 @@ export const Hierarquizacao = () => {
     retry: true,
     refetchOnWindowFocus: true,
   });
+
+  const { data: _hierarquizacao = [], isLoading: _loadingHierarquizacao } =
+    useQuery({
+      queryKey: ["GET_HIERARQUIZACAO", selected],
+      queryFn: async () => {
+        const response = await getHierarquizacao(selected);
+        const vagas = response!?.rows!?.[0]!?.resultado!?.vagas;
+        setVagasGet(vagas ?? []);
+        return response!?.rows!?.[0]!?.resultado;
+      },
+      retry: true,
+      refetchOnWindowFocus: false,
+      enabled: selected !== null && tab.includes("2") ? true : false,
+    });
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -80,7 +105,7 @@ export const Hierarquizacao = () => {
       });
   };
 
-  const listaCombinada = useMemo(() => {
+  const listaCombinadaPost = useMemo(() => {
     if (!vagas[activeTab]) return [];
 
     const vagaAtual = vagas[activeTab];
@@ -96,6 +121,23 @@ export const Hierarquizacao = () => {
       })),
     ];
   }, [activeTab, vagas]);
+
+  const listaCombinadaGet = useMemo(() => {
+    if (!vagasGet[activeTab]) return [];
+
+    const vagaAtual = vagasGet[activeTab];
+
+    return [
+      ...vagaAtual.sorteados.map((item) => ({
+        ...item,
+        tipo: "SORTEADO",
+      })),
+      ...vagaAtual.cadastroReserva.map((item) => ({
+        ...item,
+        tipo: "RESERVA",
+      })),
+    ];
+  }, [activeTab, vagasGet]);
 
   const onChange = (key: string) => {
     setTab(key);
@@ -234,6 +276,24 @@ export const Hierarquizacao = () => {
                 }}
               >
                 <List
+                  locale={{
+                    emptyText: (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginTop: "20px",
+                        }}
+                      >
+                        <Empty description={false} />
+                        <span>Nenhuma hierarquização registrada.</span>
+                        <span>
+                          Para iniciar o processo de hierarquização, selecione o
+                          empreendimento e clique em "Iniciar hierarquização"
+                        </span>
+                      </div>
+                    ),
+                  }}
                   pagination={{
                     current: pageByTab[activeTab] || 1,
                     pageSize: 10,
@@ -277,7 +337,7 @@ export const Hierarquizacao = () => {
                   }
                   style={{ marginTop: 0, background: "white", padding: "3px" }}
                   bordered
-                  dataSource={listaCombinada}
+                  dataSource={listaCombinadaPost}
                   renderItem={(item: any) => (
                     <List.Item
                       style={{
@@ -302,7 +362,155 @@ export const Hierarquizacao = () => {
               </div>
             </>
           ) : (
-            <></>
+            <>
+              <GridSelected style={{ marginBottom: "20px", marginTop: "20px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Select
+                    style={{ width: "100%" }}
+                    placeholder="Selecione o empreedimento"
+                    showSearch
+                    allowClear
+                    size="large"
+                    loading={isLoading}
+                    filterOption={filterOption}
+                    optionFilterProp="children"
+                    options={empreendimentos!?.map((empreendimento: any) => {
+                      return {
+                        label: empreendimento.label,
+                        value: empreendimento.id,
+                      };
+                    })}
+                    onChange={(value, option) =>
+                      handleChangeEmpreendimento(value, option)
+                    }
+                  />
+                </div>
+                {/* <div style={{ display: "flex", width: "100%" }}>
+                  <ButtonSolicitation
+                    onClick={handleConfirm}
+                    size="large"
+                    color="blue"
+                    variant="solid"
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        gap: "7px",
+                        padding: "20px",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        fontFamily: "Inter",
+                      }}
+                    >
+                      Iniciar hierarquização
+                    </div>
+                  </ButtonSolicitation>
+                </div> */}
+              </GridSelected>
+
+              <div
+                style={{
+                  borderRadius: "20px",
+                  marginBottom: "3px",
+                  width: "100%",
+                }}
+              >
+                <List
+                  locale={{
+                    emptyText: (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginTop: "20px",
+                        }}
+                      >
+                        <Empty description={false} />
+                        <span>Nenhuma hierarquização encontrada.</span>
+                        <span>
+                          Selecione o empreendimento para visualziar as
+                          hierarquizações registradas.
+                        </span>
+                      </div>
+                    ),
+                  }}
+                  pagination={{
+                    current: pageByTab[activeTab] || 1,
+                    pageSize: 10,
+                    onChange: handlePageChange,
+                    showSizeChanger: false,
+                  }}
+                  loading={loading}
+                  header={
+                    <>
+                      <Tabs
+                        style={{ height: "33px !importante" }}
+                        defaultActiveKey="PCD"
+                        activeKey={activeTab}
+                        onChange={(key) => {
+                          setActiveTab(key);
+                          setPageByTab((prev) => ({ ...prev, [key]: 1 }));
+                        }}
+                        // onChange={(key) => setActiveTab(key)}
+                        items={Object.entries(vagasGet!)?.map(
+                          ([key, value]: any) => ({
+                            key,
+                            label: (
+                              <span>
+                                {formatLabel(key)}{" "}
+                                <Tooltip
+                                  placement="bottom"
+                                  title={`Vagas por cota ${value?.cota}`}
+                                >
+                                  <Badge
+                                    overflowCount={9999}
+                                    count={value?.totalVagas}
+                                    style={{ backgroundColor: "#1890ff" }}
+                                  />
+                                </Tooltip>
+                              </span>
+                            ),
+                          })
+                        )}
+                      ></Tabs>
+                    </>
+                  }
+                  style={{ marginTop: 0, background: "white", padding: "3px" }}
+                  bordered
+                  dataSource={listaCombinadaGet}
+                  renderItem={(item: any) => (
+                    <List.Item
+                      style={{
+                        backgroundColor:
+                          item?.tipo === "RESERVA" ? "#fffbe6" : "#ffffff",
+                      }}
+                    >
+                      <List.Item.Meta
+                        title={
+                          <>
+                            {item?.nome}{" "}
+                            {item?.tipo === "RESERVA" && (
+                              <Tag color="gold">Cadastro Reserva</Tag>
+                            )}
+                          </>
+                        }
+                        description={item.cpf}
+                      />
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </>
           )}
 
           <ModalSorteio

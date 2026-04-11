@@ -32,8 +32,9 @@ export const ModalCreateEmpreendimento = ({
       const response = await getFaixas();
       return response!?.rows;
     },
-    retry: false,
+    retry: true,
     refetchOnWindowFocus: false,
+    enabled: isOpen ? true : false,
   });
 
   const { data: municipios = [], isLoading } = useQuery({
@@ -157,7 +158,7 @@ export const ModalCreateEmpreendimento = ({
             size="large"
             filterOption={filterOption}
             optionFilterProp="children"
-            options={faixas?.map((faixa: any) => {
+            options={faixas!?.map((faixa: any) => {
               return {
                 label: faixa?.nome,
                 value: faixa?.valorReais,
