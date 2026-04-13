@@ -72,6 +72,14 @@ export const estadoCivilOptions = [
   { label: "União Estável", value: "UNIAO_ESTAVEL" },
 ];
 
+export const deficiencias = [
+  { label: "Física", value: "fisica" },
+  { label: "Visual", value: "visual" },
+  { label: "Intelectual", value: "intelectual" },
+  { label: "Auditiva", value: "auditiva" },
+  { label: "Nanismo", value: "nanismo" },
+];
+
 export const grauInstrucao = [
   { label: "Analfabeto", value: "analfabeto" },
   { label: "Fundamental 1 Completo", value: "fundamental1Completo" },

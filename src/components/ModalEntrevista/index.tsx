@@ -8,9 +8,10 @@ import {
   Select,
   Radio,
 } from "antd";
-import { useState } from "react";
+
 import { Grid, Grid3x3 } from "./styles";
 import {
+  deficiencias,
   formatDate,
   grauInstrucao,
   maskCnpj,
@@ -125,51 +126,34 @@ export const ModalEntrevista = ({
       <Divider />
 
       <Form layout="vertical" form={form} onFinish={onFinish}>
-        {/* <Form.Item
-            label="Nome do empreendimento:"
-            name="empreendimento"
+        <Grid>
+          <Form.Item
+            label="Conjuge ausente:"
+            name="conjugeAusente"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Radio.Group size="large">
+              <Radio value={true}>Sim</Radio>
+              <Radio value={false}>Não</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            label="Grau de Instrução:"
+            name="grauInstrucao"
             rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Select
-              placeholder="Selecione o empreedimento"
+              placeholder="Selecione o grau de instrução"
               showSearch
               allowClear
               size="large"
               filterOption={filterOption}
               optionFilterProp="children"
-              options={mockEmpreendimento}
-              onChange={(value, option) =>
-                handleChangeEmpreendimento(value, option)
-              }
+              options={grauInstrucao}
             />
-          </Form.Item> */}
-
-        <Form.Item
-          label="Conjuge ausente:"
-          name="ConjugeAusente"
-          rules={[{ required: true, message: "Campo obrigatório" }]}
-        >
-          <Radio.Group size="large">
-            <Radio value={true}>Sim</Radio>
-            <Radio value={false}>Não</Radio>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item
-          label="Grau de Instrução:"
-          name="grauInstrucao"
-          rules={[{ required: true, message: "Campo obrigatório" }]}
-        >
-          <Select
-            placeholder="Selecione o grau de instrução"
-            showSearch
-            allowClear
-            size="large"
-            filterOption={filterOption}
-            optionFilterProp="children"
-            options={grauInstrucao}
-          />
-        </Form.Item>
+          </Form.Item>
+        </Grid>
 
         <Divider>Renda Comprovada</Divider>
         <Grid3x3>
@@ -368,7 +352,6 @@ export const ModalEntrevista = ({
           <Form.Item name="nomeConjuge" label="Nome cônjuge" required>
             <Input size="large" />
           </Form.Item>
-
           <Grid3x3>
             <Form.Item name="cpfConjuge" label="CPF" required>
               <Input
@@ -398,7 +381,6 @@ export const ModalEntrevista = ({
               />
             </Form.Item>
           </Grid3x3>
-
           <Grid3x3>
             <Form.Item
               name="cpfFontePagadoraConjuge"
@@ -534,7 +516,6 @@ export const ModalEntrevista = ({
               <Input size="large" />
             </Form.Item>
           </Grid3x3>
-
           <Grid3x3>
             <Form.Item
               label="Recebe BPC - Benefício de Prestação Continuada:"
@@ -569,7 +550,6 @@ export const ModalEntrevista = ({
               </Radio.Group>
             </Form.Item>
           </Grid3x3>
-
           <>
             <Grid>
               <Form.Item
@@ -590,40 +570,123 @@ export const ModalEntrevista = ({
               </Form.Item>
             </Grid>
           </>
-
           <Divider>Pessoa com deficiência no grupo familiar</Divider>
-        </>
-
-        {/* <>
+          {/* //preencher resto dos campos */}
           <Grid>
-            {cards?.map((item: any) => (
-              <SelectableCard
-                key={item.key}
-                $selected={selected === item.key}
-                onClick={() => setSelected(item.key)}
-              >
-                <h3>{item.label}</h3>
-                <h2>{item.value}</h2>
-              </SelectableCard>
-            ))}
-          </Grid>
-        </> */}
+            <Form.Item
+              name="nomeDaPessoaComDeficiencia"
+              label="Nome da pessoa com deficiencia"
+              required
+            >
+              <Input size="large" />
+            </Form.Item>
 
-        {/* <Form.Item
-            label="Classificação empreendimento:"
-            name="classificacao"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
-          >
-            <Select
-              placeholder="Selecione a classificação"
-              showSearch
-              allowClear
-              size="large"
-              filterOption={filterOption}
-              optionFilterProp="children"
-              options={faixas}
-            />
-          </Form.Item> */}
+            <Form.Item
+              name="cidPessoaComDeficiencia"
+              label="CID (Classificação Internacional de Doenças)"
+              required
+            >
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item
+              name="nomeDaPessoaComMicrocefalia"
+              label="Nome da pessoa com microcefalia"
+              required
+            >
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item
+              name="cidPessoaComMicrocefalia"
+              label="CID (Classificação Internacional de Doenças)"
+              required
+            >
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item
+              label="Será necessário promover adequação no imóvel pretendido?"
+              name="adequacaoImovelPretendido"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Radio.Group size="large">
+                <Radio value={true}>Sim</Radio>
+                <Radio value={false}>Não</Radio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+              label="Para qual deficiência?"
+              name="descriminacaoDeficiencia"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Select
+                placeholder="Selecione a deficiência"
+                showSearch
+                allowClear
+                size="large"
+                filterOption={filterOption}
+                optionFilterProp="children"
+                options={deficiencias}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Família em situação de rua e/ou com trajetória de rua?"
+              name="familiaEmSituacaoDeRua"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Radio.Group size="large">
+                <Radio value={true}>Sim</Radio>
+                <Radio value={false}>Não</Radio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+              label="Família integra o déficit habitacional local?"
+              name="familiaIntegraDeficitHabitacional"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Radio.Group size="large">
+                <Radio value={true}>Sim</Radio>
+                <Radio value={false}>Não</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Grid>
+
+          <Divider>Declarações</Divider>
+          <>
+            <span>
+              Para fins de inscrição junto ao Programa Habitacional de Interesse
+              Social, declaro(amos) que Possuo(imos) renda familiar até:
+            </span>
+
+            <Grid style={{ marginTop: "10px" }}>
+              <Form.Item
+                label="Renda familiar até R$ 2850,00"
+                name="rendaFamiliar2580"
+                rules={[{ required: true, message: "Campo obrigatório" }]}
+              >
+                <Radio.Group size="large">
+                  <Radio value={true}>Sim</Radio>
+                  <Radio value={false}>Não</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              <Form.Item
+                label="Renda familiar até R$ 4.700,00 e estou(amos) enquadrado(s) na condição de Calamidade Pública/Situação de Emergência"
+                name="rendaFamiliar4700"
+                rules={[{ required: true, message: "Campo obrigatório" }]}
+              >
+                <Radio.Group size="large">
+                  <Radio value={true}>Sim</Radio>
+                  <Radio value={false}>Não</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </Grid>
+          </>
+        </>
 
         <Divider style={{ margin: "10px 0px" }} />
         <Button

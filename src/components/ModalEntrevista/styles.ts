@@ -27,7 +27,7 @@ export const Grid = styled.div`
     margin-top: 0px;
   }
   grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  /* grid-row-gap: 30px; */
   justify-items: stretch;
   align-items: stretch;
 `;
