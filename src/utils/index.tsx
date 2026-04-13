@@ -53,6 +53,16 @@ export const maskCpf = (value: string) => {
     .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 };
 
+export const maskCnpj = (value: string) => {
+  return value
+    ?.replace(/\D/g, "")
+    .slice(0, 14)
+    .replace(/^(\d{2})(\d)/, "$1.$2")
+    .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d)/, ".$1/$2")
+    .replace(/(\d{4})(\d)/, "$1-$2");
+};
+
 export const estadoCivilOptions = [
   { label: "Solteiro(a)", value: "SOLTEIRO" },
   { label: "Casado(a)", value: "CASADO" },
@@ -60,6 +70,18 @@ export const estadoCivilOptions = [
   { label: "Separado(a)", value: "SEPARADO" },
   { label: "Viúvo(a)", value: "VIUVO" },
   { label: "União Estável", value: "UNIAO_ESTAVEL" },
+];
+
+export const grauInstrucao = [
+  { label: "Analfabeto", value: "analfabeto" },
+  { label: "Fundamental 1 Completo", value: "fundamental1Completo" },
+  { label: "Fundamental 1 Incompleto", value: "fundamental1Incompleto" },
+  { label: "Fundamental 2 Completo", value: "fundamental2Completo" },
+  { label: "Fundamental 2 Incompleto", value: "fundamental2Incompleto" },
+  { label: "Ensino Médio Completo", value: "ensidoMedioCompleto" },
+  { label: "Ensino Médio Incompleto", value: "ensidoMedioIncompleto" },
+  { label: "Ensino Superior Completo", value: "ensinoSuperiorCompleto" },
+  { label: "Ensino Superior Incompleto", value: "ensinoSuperiorIncompleto" },
 ];
 
 export const sexoOptions = [

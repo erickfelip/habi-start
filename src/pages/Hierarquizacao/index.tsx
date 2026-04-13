@@ -15,6 +15,7 @@ import {
   Badge,
   Tooltip,
   Empty,
+  Button,
 } from "antd";
 import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
@@ -26,6 +27,7 @@ import {
   getHierarquizacao,
 } from "../../services/sga.requests";
 import { useQuery } from "@tanstack/react-query";
+import { ModalEntrevista } from "../../components/ModalEntrevista";
 
 type Pessoa = {
   nome: string;
@@ -506,6 +508,39 @@ export const Hierarquizacao = () => {
                         }
                         description={item.cpf}
                       />
+
+                      <List.Item.Meta
+                        style={{
+                          marginLeft: "auto",
+
+                          // background: "red"
+                        }}
+                        title={
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <Button
+                              type="primary"
+                              htmlType="submit"
+                              block
+                              size="large"
+                              style={{
+                                marginTop: "20px",
+                                backgroundColor: "#F07620",
+                                maxWidth: "250px",
+                              }}
+                              onClick={() => setOpenSolicitationModal(true)}
+                            >
+                              Declaração de Beneficiário
+                            </Button>
+                          </div>
+                        }
+                        // description={item.cpf}
+                      />
                     </List.Item>
                   )}
                 />
@@ -513,7 +548,7 @@ export const Hierarquizacao = () => {
             </>
           )}
 
-          <ModalSorteio
+          <ModalEntrevista
             isOpen={openSolicitationModal}
             handleClose={() => setOpenSolicitationModal(false)}
           />

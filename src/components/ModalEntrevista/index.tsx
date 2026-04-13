@@ -1,0 +1,641 @@
+import {
+  Modal,
+  Divider,
+  Input,
+  Form,
+  Button,
+  //   notification,
+  Select,
+  Radio,
+} from "antd";
+import { useState } from "react";
+import { Grid, Grid3x3 } from "./styles";
+import {
+  formatDate,
+  grauInstrucao,
+  maskCnpj,
+  maskCpf,
+  maskCurrencyBRL,
+} from "../../utils";
+
+interface IOrderModalDetails {
+  isOpen: boolean;
+  handleClose: () => void;
+  orderData?: any;
+}
+
+export const ModalEntrevista = ({
+  isOpen,
+  handleClose,
+}: IOrderModalDetails) => {
+  // const queryClient = useQueryClient();
+  const [form] = Form.useForm();
+  // selecionar o empreendimento
+  console.log({ form });
+
+  const onFinish = async (values: any) => {
+    console.log({ values });
+
+    // const payload = {
+    //   empreendimento: values.empreendimento,
+    //   qtd: values.qtd,
+    //   classificacao: values.classificacao,
+    // };
+
+    // form.resetFields();
+    // notification.success({
+    //   duration: 3,
+    //   message: "Sucesso!",
+    //   description: `Novo empreendimento cadastrado.`,
+    // });
+    // handleClose();
+
+    // await createMunicipio(payload)
+    //   .then(() => {
+    //     form.resetFields();
+    //     notification.success({
+    //       duration: 3,
+    //       message: "Sucesso!",
+    //       description: `Novo município cadastrado.`,
+    //     });
+    //     queryClient.invalidateQueries({
+    //       queryKey: ["GET_MUNICIPIOS"],
+    //     });
+    //     handleClose();
+    //   })
+    //   .catch((error) => {
+    //     notification.error({
+    //       duration: 1,
+    //       message: "Erro!",
+    //       description: `${error?.response?.data?.message}`,
+    //     });
+    //   });
+  };
+
+  const filterOption = (input: any, option: any) => {
+    return option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  };
+
+  const handleCpfChange = (e: any) => {
+    const masked = maskCpf(e.target.value);
+    form.setFieldValue("cpfFontePagadora", masked);
+  };
+
+  const handleCpfFonteConjugeChange = (e: any) => {
+    const masked = maskCpf(e.target.value);
+    form.setFieldValue("cpfFontePagadoraConjuge", masked);
+  };
+
+  const handleCpfTutorChange = (e: any) => {
+    const masked = maskCpf(e.target.value);
+    form.setFieldValue("cpfTutor", masked);
+  };
+
+  const handleCpfTutorConjugeChange = (e: any) => {
+    const masked = maskCpf(e.target.value);
+    form.setFieldValue("cpfTutorConjuge", masked);
+  };
+
+  const handleCnpjChange = (e: any) => {
+    const masked = maskCnpj(e.target.value);
+    form.setFieldValue("cnpjFontePagadora", masked);
+  };
+
+  const handleCnpjConjugeChange = (e: any) => {
+    const masked = maskCnpj(e.target.value);
+    form.setFieldValue("cnpjFontePagadoraConjuge", masked);
+  };
+
+  const handleCpfConjugeChange = (e: any) => {
+    const masked = maskCpf(e.target.value);
+    form.setFieldValue("cpfConjuge", masked);
+  };
+
+  return (
+    <Modal
+      title={
+        <h3 style={{ fontFamily: "Inter" }}>Declaração de Beneficiário</h3>
+      }
+      open={isOpen}
+      onCancel={handleClose}
+      footer={null}
+      closeIcon={true}
+      width="75%"
+    >
+      <Divider />
+
+      <Form layout="vertical" form={form} onFinish={onFinish}>
+        {/* <Form.Item
+            label="Nome do empreendimento:"
+            name="empreendimento"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Select
+              placeholder="Selecione o empreedimento"
+              showSearch
+              allowClear
+              size="large"
+              filterOption={filterOption}
+              optionFilterProp="children"
+              options={mockEmpreendimento}
+              onChange={(value, option) =>
+                handleChangeEmpreendimento(value, option)
+              }
+            />
+          </Form.Item> */}
+
+        <Form.Item
+          label="Conjuge ausente:"
+          name="ConjugeAusente"
+          rules={[{ required: true, message: "Campo obrigatório" }]}
+        >
+          <Radio.Group size="large">
+            <Radio value={true}>Sim</Radio>
+            <Radio value={false}>Não</Radio>
+          </Radio.Group>
+        </Form.Item>
+
+        <Form.Item
+          label="Grau de Instrução:"
+          name="grauInstrucao"
+          rules={[{ required: true, message: "Campo obrigatório" }]}
+        >
+          <Select
+            placeholder="Selecione o grau de instrução"
+            showSearch
+            allowClear
+            size="large"
+            filterOption={filterOption}
+            optionFilterProp="children"
+            options={grauInstrucao}
+          />
+        </Form.Item>
+
+        <Divider>Renda Comprovada</Divider>
+        <Grid3x3>
+          <Form.Item
+            name="cpfFontePagadora"
+            label="CPF Fonte pagadora:"
+            //   rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input
+              size="large"
+              onChange={handleCpfChange}
+              maxLength={14}
+              placeholder="000.000.000-00"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="cnpjFontePagadora"
+            label="CNPJ Fonte pagadora:"
+            //   rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Input
+              size="large"
+              onChange={handleCnpjChange}
+              maxLength={18}
+              placeholder="00.000.000/0000-00"
+            />
+          </Form.Item>
+
+          <Form.Item name="dataAdmissão" label="Data de Admissão" required>
+            <Input
+              size="large"
+              placeholder="DD/MM/YYYY"
+              onChange={(e) => {
+                form.setFieldsValue({
+                  dataAdmissão: formatDate(e.target.value),
+                });
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="valorRendaBrutaCompravada"
+            label="Valor da Renda Bruta"
+            required
+          >
+            <Input
+              size="large"
+              inputMode="numeric"
+              placeholder="0,00"
+              value={form.getFieldValue("valorRendaBrutaCompravada")}
+              onChange={(e) => {
+                form.setFieldsValue({
+                  valorRendaBrutaCompravada: maskCurrencyBRL(e.target.value),
+                });
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="valorRendaLiquidaComprovada"
+            label="Valor da Renda Líquida"
+            required
+          >
+            <Input
+              size="large"
+              inputMode="numeric"
+              placeholder="0,00"
+              value={form.getFieldValue("valorRendaLiquidaComprovada")}
+              onChange={(e) => {
+                form.setFieldsValue({
+                  valorRendaLiquidaComprovada: maskCurrencyBRL(e.target.value),
+                });
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="mesReferenciaRendaComprovada"
+            label="Mês de Referência da Renda"
+            required
+          >
+            <Input size="large" />
+          </Form.Item>
+        </Grid3x3>
+
+        <Divider>Renda Declarada</Divider>
+
+        <Grid3x3>
+          <Form.Item
+            name="dataInicioRendaDeclarada"
+            label="Data Início da Renda"
+            required
+          >
+            <Input
+              size="large"
+              placeholder="DD/MM/YYYY"
+              onChange={(e) => {
+                form.setFieldsValue({
+                  dataInicioRendaDeclarada: formatDate(e.target.value),
+                });
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="ValorRendaLiquidaDeclarada"
+            label="Valor da Renda Líquida"
+            required
+          >
+            <Input
+              size="large"
+              inputMode="numeric"
+              placeholder="0,00"
+              value={form.getFieldValue("ValorRendaLiquidaDeclarada")}
+              onChange={(e) => {
+                form.setFieldsValue({
+                  ValorRendaLiquidaDeclarada: maskCurrencyBRL(e.target.value),
+                });
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="mesReferenciaRendaDeclarada"
+            label="Mês de Referência da Renda"
+            required
+          >
+            <Input size="large" />
+          </Form.Item>
+        </Grid3x3>
+
+        <Divider>Benefícios</Divider>
+
+        <Grid>
+          <Form.Item
+            label="Recebe BPC - Benefício de Prestação Continuada:"
+            name="recebeBpc"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Radio.Group size="large">
+              <Radio value={true}>Sim</Radio>
+              <Radio value={false}>Não</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            label="Recebe Bolsa família:"
+            name="bolsa"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Radio.Group size="large">
+              <Radio value={true}>Sim</Radio>
+              <Radio value={false}>Não</Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Grid>
+
+        <Divider>Menor assistido</Divider>
+
+        <>
+          <Form.Item
+            label="Preencher se menor de 18 anos:"
+            name="menorDe18anos"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Radio.Group size="large">
+              <Radio value={true}>Menor emancipado</Radio>
+              <Radio value={false}>Menor assistido</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Grid>
+            <Form.Item
+              name="cpfTutor"
+              label="CPF Tutor:"
+              //   rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Input
+                size="large"
+                onChange={handleCpfTutorChange}
+                maxLength={14}
+                placeholder="000.000.000-00"
+              />
+            </Form.Item>
+
+            <Form.Item name="nomeTutor" label="Nome Tutor" required>
+              <Input size="large" />
+            </Form.Item>
+          </Grid>
+        </>
+
+        <Divider>Dados Pessoais Cônjuge</Divider>
+
+        <>
+          <Form.Item name="nomeConjuge" label="Nome cônjuge" required>
+            <Input size="large" />
+          </Form.Item>
+
+          <Grid3x3>
+            <Form.Item name="cpfConjuge" label="CPF" required>
+              <Input
+                placeholder="000.000.000-00"
+                onChange={handleCpfConjugeChange}
+                size="large"
+                // disabled={loadingCep}
+              />
+            </Form.Item>
+            <Form.Item name="profissaoConjuge" label="Profissão" required>
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item
+              label="Grau de Instrução:"
+              name="grauInstrucaoConjuge"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Select
+                placeholder="Selecione o grau de instrução"
+                showSearch
+                allowClear
+                size="large"
+                filterOption={filterOption}
+                optionFilterProp="children"
+                options={grauInstrucao}
+              />
+            </Form.Item>
+          </Grid3x3>
+
+          <Grid3x3>
+            <Form.Item
+              name="cpfFontePagadoraConjuge"
+              label="CPF Fonte pagadora:"
+              //   rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Input
+                size="large"
+                onChange={handleCpfFonteConjugeChange}
+                maxLength={14}
+                placeholder="000.000.000-00"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="cnpjFontePagadoraConjuge"
+              label="CNPJ Fonte pagadora:"
+              //   rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Input
+                size="large"
+                onChange={handleCnpjConjugeChange}
+                maxLength={18}
+                placeholder="00.000.000/0000-00"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="dataAdmissãoConjuge"
+              label="Data de Admissão"
+              required
+            >
+              <Input
+                size="large"
+                placeholder="DD/MM/YYYY"
+                onChange={(e) => {
+                  form.setFieldsValue({
+                    dataAdmissãoConjuge: formatDate(e.target.value),
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="valorRendaBrutaCompravadaConjuge"
+              label="Valor da Renda Bruta Comprovada"
+              required
+            >
+              <Input
+                size="large"
+                inputMode="numeric"
+                placeholder="0,00"
+                value={form.getFieldValue("valorRendaBrutaCompravadaConjuge")}
+                onChange={(e) => {
+                  form.setFieldsValue({
+                    valorRendaBrutaCompravadaConjuge: maskCurrencyBRL(
+                      e.target.value
+                    ),
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="valorRendaLiquidaComprovadaConjuge"
+              label="Valor da Renda Líquida Comprovada"
+              required
+            >
+              <Input
+                size="large"
+                inputMode="numeric"
+                placeholder="0,00"
+                value={form.getFieldValue("valorRendaLiquidaComprovadaConjuge")}
+                onChange={(e) => {
+                  form.setFieldsValue({
+                    valorRendaLiquidaComprovadaConjuge: maskCurrencyBRL(
+                      e.target.value
+                    ),
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="mesReferenciaRendaComprovadaConjuge"
+              label="Mês de Referência da Renda Comprovada"
+              required
+            >
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item
+              name="dataInicioRendaDeclaradaConjuge"
+              label="Data Início da Renda Declarada"
+              required
+            >
+              <Input
+                size="large"
+                placeholder="DD/MM/YYYY"
+                onChange={(e) => {
+                  form.setFieldsValue({
+                    dataInicioRendaDeclaradaConjuge: formatDate(e.target.value),
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="valorRendaLiquidaDeclaradaConjuge"
+              label="Valor da Renda Líquida Declarada"
+              required
+            >
+              <Input
+                size="large"
+                inputMode="numeric"
+                placeholder="0,00"
+                value={form.getFieldValue("valorRendaLiquidaDeclaradaConjuge")}
+                onChange={(e) => {
+                  form.setFieldsValue({
+                    valorRendaLiquidaDeclaradaConjuge: maskCurrencyBRL(
+                      e.target.value
+                    ),
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="mesReferenciaRendaDeclaradaConjuge"
+              label="Mês de Referência da Renda Declarada"
+              required
+            >
+              <Input size="large" />
+            </Form.Item>
+          </Grid3x3>
+
+          <Grid3x3>
+            <Form.Item
+              label="Recebe BPC - Benefício de Prestação Continuada:"
+              name="recebeBpcConjuge"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Radio.Group size="large">
+                <Radio value={true}>Sim</Radio>
+                <Radio value={false}>Não</Radio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+              label="Recebe Bolsa família:"
+              name="recebeBolsaConjuge"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Radio.Group size="large">
+                <Radio value={true}>Sim</Radio>
+                <Radio value={false}>Não</Radio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+              label="Preencher se menor de 18 anos:"
+              name="menorDe18anosConjuge"
+              rules={[{ required: true, message: "Campo obrigatório" }]}
+            >
+              <Radio.Group size="large">
+                <Radio value={true}>Menor emancipado</Radio>
+                <Radio value={false}>Menor assistido</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Grid3x3>
+
+          <>
+            <Grid>
+              <Form.Item
+                name="cpfTutorConjuge"
+                label="CPF Tutor:"
+                //   rules={[{ required: true, message: "Campo obrigatório" }]}
+              >
+                <Input
+                  size="large"
+                  onChange={handleCpfTutorConjugeChange}
+                  maxLength={14}
+                  placeholder="000.000.000-00"
+                />
+              </Form.Item>
+
+              <Form.Item name="nomeTutorConjuge" label="Nome Tutor" required>
+                <Input size="large" />
+              </Form.Item>
+            </Grid>
+          </>
+
+          <Divider>Pessoa com deficiência no grupo familiar</Divider>
+        </>
+
+        {/* <>
+          <Grid>
+            {cards?.map((item: any) => (
+              <SelectableCard
+                key={item.key}
+                $selected={selected === item.key}
+                onClick={() => setSelected(item.key)}
+              >
+                <h3>{item.label}</h3>
+                <h2>{item.value}</h2>
+              </SelectableCard>
+            ))}
+          </Grid>
+        </> */}
+
+        {/* <Form.Item
+            label="Classificação empreendimento:"
+            name="classificacao"
+            rules={[{ required: true, message: "Campo obrigatório" }]}
+          >
+            <Select
+              placeholder="Selecione a classificação"
+              showSearch
+              allowClear
+              size="large"
+              filterOption={filterOption}
+              optionFilterProp="children"
+              options={faixas}
+            />
+          </Form.Item> */}
+
+        <Divider style={{ margin: "10px 0px" }} />
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          size="large"
+          style={{ marginTop: "20px", backgroundColor: "#F07620" }}
+        >
+          Iniciar Sorteio
+        </Button>
+      </Form>
+    </Modal>
+  );
+};
