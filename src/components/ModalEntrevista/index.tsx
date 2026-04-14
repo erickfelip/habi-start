@@ -18,6 +18,8 @@ import {
   maskCpf,
   maskCurrencyBRL,
 } from "../../utils";
+import PdfFormFiller from "../PdfFormFillter.tsx";
+import { useState } from "react";
 
 interface IOrderModalDetails {
   isOpen: boolean;
@@ -31,10 +33,13 @@ export const ModalEntrevista = ({
 }: IOrderModalDetails) => {
   // const queryClient = useQueryClient();
   const [form] = Form.useForm();
+  const [dadosPreenchidos, setDadosPreenchidos] = useState({});
   // selecionar o empreendimento
   console.log({ form });
+  console.log({ dadosPreenchidos });
 
   const onFinish = async (values: any) => {
+    setDadosPreenchidos(values);
     console.log({ values });
 
     // const payload = {
@@ -183,20 +188,20 @@ export const ModalEntrevista = ({
             />
           </Form.Item>
 
-          <Form.Item name="dataAdmissão" label="Data de Admissão" required>
+          <Form.Item name="dataAdmissao" label="Data de Admissão" required>
             <Input
               size="large"
               placeholder="DD/MM/YYYY"
               onChange={(e) => {
                 form.setFieldsValue({
-                  dataAdmissão: formatDate(e.target.value),
+                  dataAdmissao: formatDate(e.target.value),
                 });
               }}
             />
           </Form.Item>
 
           <Form.Item
-            name="valorRendaBrutaCompravada"
+            name="valorRendaBrutaComprovada"
             label="Valor da Renda Bruta"
             required
           >
@@ -204,10 +209,10 @@ export const ModalEntrevista = ({
               size="large"
               inputMode="numeric"
               placeholder="0,00"
-              value={form.getFieldValue("valorRendaBrutaCompravada")}
+              value={form.getFieldValue("valorRendaBrutaComprovada")}
               onChange={(e) => {
                 form.setFieldsValue({
-                  valorRendaBrutaCompravada: maskCurrencyBRL(e.target.value),
+                  valorRendaBrutaComprovada: maskCurrencyBRL(e.target.value),
                 });
               }}
             />
@@ -260,7 +265,7 @@ export const ModalEntrevista = ({
           </Form.Item>
 
           <Form.Item
-            name="ValorRendaLiquidaDeclarada"
+            name="valorRendaLiquidaDeclarada"
             label="Valor da Renda Líquida"
             required
           >
@@ -268,10 +273,10 @@ export const ModalEntrevista = ({
               size="large"
               inputMode="numeric"
               placeholder="0,00"
-              value={form.getFieldValue("ValorRendaLiquidaDeclarada")}
+              value={form.getFieldValue("valorRendaLiquidaDeclarada")}
               onChange={(e) => {
                 form.setFieldsValue({
-                  ValorRendaLiquidaDeclarada: maskCurrencyBRL(e.target.value),
+                  valorRendaLiquidaDeclarada: maskCurrencyBRL(e.target.value),
                 });
               }}
             />
@@ -313,7 +318,7 @@ export const ModalEntrevista = ({
         </Grid>
 
         <Divider>Menor assistido</Divider>
-
+        
         <>
           <Form.Item
             label="Preencher se menor de 18 anos:"
@@ -358,7 +363,6 @@ export const ModalEntrevista = ({
                 placeholder="000.000.000-00"
                 onChange={handleCpfConjugeChange}
                 size="large"
-                // disabled={loadingCep}
               />
             </Form.Item>
             <Form.Item name="profissaoConjuge" label="Profissão" required>
@@ -385,7 +389,6 @@ export const ModalEntrevista = ({
             <Form.Item
               name="cpfFontePagadoraConjuge"
               label="CPF Fonte pagadora:"
-              //   rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Input
                 size="large"
@@ -398,7 +401,6 @@ export const ModalEntrevista = ({
             <Form.Item
               name="cnpjFontePagadoraConjuge"
               label="CNPJ Fonte pagadora:"
-              //   rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Input
                 size="large"
@@ -409,7 +411,7 @@ export const ModalEntrevista = ({
             </Form.Item>
 
             <Form.Item
-              name="dataAdmissãoConjuge"
+              name="dataAdmissaoConjuge"
               label="Data de Admissão"
               required
             >
@@ -418,14 +420,14 @@ export const ModalEntrevista = ({
                 placeholder="DD/MM/YYYY"
                 onChange={(e) => {
                   form.setFieldsValue({
-                    dataAdmissãoConjuge: formatDate(e.target.value),
+                    dataAdmissaoConjuge: formatDate(e.target.value),
                   });
                 }}
               />
             </Form.Item>
 
             <Form.Item
-              name="valorRendaBrutaCompravadaConjuge"
+              name="valorRendaBrutaComprovadaConjuge"
               label="Valor da Renda Bruta Comprovada"
               required
             >
@@ -433,10 +435,10 @@ export const ModalEntrevista = ({
                 size="large"
                 inputMode="numeric"
                 placeholder="0,00"
-                value={form.getFieldValue("valorRendaBrutaCompravadaConjuge")}
+                value={form.getFieldValue("valorRendaBrutaComprovadaConjuge")}
                 onChange={(e) => {
                   form.setFieldsValue({
-                    valorRendaBrutaCompravadaConjuge: maskCurrencyBRL(
+                    valorRendaBrutaComprovadaConjuge: maskCurrencyBRL(
                       e.target.value
                     ),
                   });
@@ -552,11 +554,7 @@ export const ModalEntrevista = ({
           </Grid3x3>
           <>
             <Grid>
-              <Form.Item
-                name="cpfTutorConjuge"
-                label="CPF Tutor:"
-                //   rules={[{ required: true, message: "Campo obrigatório" }]}
-              >
+              <Form.Item name="cpfTutorConjuge" label="CPF Tutor:">
                 <Input
                   size="large"
                   onChange={handleCpfTutorConjugeChange}
@@ -571,7 +569,7 @@ export const ModalEntrevista = ({
             </Grid>
           </>
           <Divider>Pessoa com deficiência no grupo familiar</Divider>
-          {/* //preencher resto dos campos */}
+
           <Grid>
             <Form.Item
               name="nomeDaPessoaComDeficiencia"
@@ -699,6 +697,8 @@ export const ModalEntrevista = ({
           Iniciar Sorteio
         </Button>
       </Form>
+
+      <PdfFormFiller dados={dadosPreenchidos} />
     </Modal>
   );
 };

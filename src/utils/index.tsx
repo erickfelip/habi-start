@@ -86,8 +86,8 @@ export const grauInstrucao = [
   { label: "Fundamental 1 Incompleto", value: "fundamental1Incompleto" },
   { label: "Fundamental 2 Completo", value: "fundamental2Completo" },
   { label: "Fundamental 2 Incompleto", value: "fundamental2Incompleto" },
-  { label: "Ensino Médio Completo", value: "ensidoMedioCompleto" },
-  { label: "Ensino Médio Incompleto", value: "ensidoMedioIncompleto" },
+  { label: "Ensino Médio Completo", value: "ensinoMedioCompleto" },
+  { label: "Ensino Médio Incompleto", value: "ensinoMedioIncompleto" },
   { label: "Ensino Superior Completo", value: "ensinoSuperiorCompleto" },
   { label: "Ensino Superior Incompleto", value: "ensinoSuperiorIncompleto" },
 ];
