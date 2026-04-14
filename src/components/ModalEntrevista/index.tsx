@@ -616,7 +616,7 @@ export const ModalEntrevista = ({
 
             <Form.Item
               label="Para qual deficiência?"
-              name="descriminacaoDeficiencia"
+              name="discriminacaoDeficiencia"
               rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Select

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { PDFDocument, PDFName, PDFString } from "pdf-lib";
 import { saveAs } from "file-saver";
 import { BsFiletypePdf } from "react-icons/bs";
-import pdf from "../../assets/102.pdf";
+import pdf from "../../assets/103.pdf";
 import { Button } from "antd";
-import { grauInstrucao } from "../../utils";
+import { deficiencias, grauInstrucao } from "../../utils";
 
 // chaves do PDF só funcionam com snake_case
 // const dadosColaborador = {
@@ -91,6 +91,15 @@ export default function PdfFormFiller({ dados }: any) {
     });
   }
 
+  function preencherDeficiencia(form: any, valorSelecionado: any) {
+    preencherCheckboxExclusivo(
+      form,
+      deficiencias,
+      valorSelecionado,
+      "discriminacao_deficiencia_"
+    );
+  }
+
   async function gerarPDF() {
     setStatus("loading");
     try {
@@ -137,7 +146,16 @@ export default function PdfFormFiller({ dados }: any) {
         bpc: dadosConvertidos.recebe_bpc,
         bolsa: dadosConvertidos.bolsa,
         menor_de_18_anos: dadosConvertidos.menor_de18anos,
-        recebe_bolsa_conjuge: dadosConvertidos.recebe_bpc_conjuge,
+        recebe_bpc_conjuge: dadosConvertidos.recebe_bpc_conjuge, // trocar o field para recebe_bpc_conjuge
+        recebe_bolsa_conjuge: dadosConvertidos.recebe_bolsa_conjuge,
+        menor_de_18_anos_conjuge: dadosConvertidos.menor_de18anos_conjuge,
+        adequacao_imovel_pretendido:
+          dadosConvertidos.adequacao_imovel_pretendido,
+        familia_em_situacao_de_rua: dadosConvertidos.familia_em_situacao_de_rua,
+        familia_integra_deficit_habitacional:
+          dadosConvertidos.familia_integra_deficit_habitacional,
+        renda_familiar_2580: dadosConvertidos.renda_familiar2580,
+        renda_familiar_4700: dadosConvertidos.renda_familiar4700,
       };
 
       preencherCheckboxesBooleanos(form, camposBooleanos);
@@ -149,6 +167,7 @@ export default function PdfFormFiller({ dados }: any) {
         dadosConvertidos.grau_instrucao_conjuge,
         "grau_instrucao_conjuge_"
       );
+      preencherDeficiencia(form, dadosConvertidos.discriminacao_deficiencia);
 
       campos.forEach((field: any) => {
         const nomeCampo = field.getName();
