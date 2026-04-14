@@ -48,6 +48,7 @@ type Vagas = {
 export const Hierarquizacao = () => {
   const [tab, setTab] = useState<string>("1");
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
+  const [userData, setUserData] = useState({});
   const [selected, setSelected] = useState<any>("");
   const [loading, setLoading] = useState(false);
   const [vagas, setVagas] = useState<Vagas>({});
@@ -530,12 +531,15 @@ export const Hierarquizacao = () => {
                               size="large"
                               style={{
                                 marginTop: "20px",
-                                backgroundColor: "#F07620",
+                                backgroundColor: "#209df0",
                                 maxWidth: "250px",
                               }}
-                              onClick={() => setOpenSolicitationModal(true)}
+                              onClick={() => {
+                                setUserData(item);
+                                setOpenSolicitationModal(true);
+                              }}
                             >
-                              Declaração de Beneficiário
+                              Entrevista beneficiário
                             </Button>
                           </div>
                         }
@@ -551,6 +555,7 @@ export const Hierarquizacao = () => {
           <ModalEntrevista
             isOpen={openSolicitationModal}
             handleClose={() => setOpenSolicitationModal(false)}
+            userData={userData}
           />
         </>
       </div>

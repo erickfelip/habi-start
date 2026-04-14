@@ -8,6 +8,7 @@ import {
   Select,
   Radio,
 } from "antd";
+import { BsFiletypePdf } from "react-icons/bs";
 
 import { Grid, Grid3x3 } from "./styles";
 import {
@@ -19,24 +20,30 @@ import {
   maskCurrencyBRL,
 } from "../../utils";
 import PdfFormFiller from "../PdfFormFillter.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IOrderModalDetails {
   isOpen: boolean;
   handleClose: () => void;
-  orderData?: any;
+  userData?: any;
 }
 
 export const ModalEntrevista = ({
   isOpen,
   handleClose,
+  userData,
 }: IOrderModalDetails) => {
   // const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const [dadosPreenchidos, setDadosPreenchidos] = useState({});
+  const [callFormFiller, setCallFormFiller] = useState<boolean>(false);
   // selecionar o empreendimento
   console.log({ form });
   console.log({ dadosPreenchidos });
+
+  useEffect(() => {
+    if (!isOpen) setCallFormFiller(false);
+  }, [isOpen]);
 
   const onFinish = async (values: any) => {
     setDadosPreenchidos(values);
@@ -120,7 +127,22 @@ export const ModalEntrevista = ({
   return (
     <Modal
       title={
-        <h3 style={{ fontFamily: "Inter" }}>Declaração de Beneficiário</h3>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "start",
+            alignItems: "center",
+          }}
+        >
+          <h3 style={{ fontFamily: "Inter", marginRight: "5px" }}>
+            Declaração de Beneficiário
+          </h3>
+          <h3 style={{ fontFamily: "Inter", fontWeight: "300" }}>
+            {" "}
+            | {userData!?.nome}
+          </h3>
+        </div>
       }
       open={isOpen}
       onCancel={handleClose}
@@ -135,7 +157,7 @@ export const ModalEntrevista = ({
           <Form.Item
             label="Conjuge ausente:"
             name="conjugeAusente"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Radio.Group size="large">
               <Radio value={true}>Sim</Radio>
@@ -146,7 +168,7 @@ export const ModalEntrevista = ({
           <Form.Item
             label="Grau de Instrução:"
             name="grauInstrucao"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Select
               placeholder="Selecione o grau de instrução"
@@ -165,7 +187,7 @@ export const ModalEntrevista = ({
           <Form.Item
             name="cpfFontePagadora"
             label="CPF Fonte pagadora:"
-            //   rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Input
               size="large"
@@ -178,7 +200,7 @@ export const ModalEntrevista = ({
           <Form.Item
             name="cnpjFontePagadora"
             label="CNPJ Fonte pagadora:"
-            //   rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Input
               size="large"
@@ -297,7 +319,7 @@ export const ModalEntrevista = ({
           <Form.Item
             label="Recebe BPC - Benefício de Prestação Continuada:"
             name="recebeBpc"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Radio.Group size="large">
               <Radio value={true}>Sim</Radio>
@@ -308,7 +330,7 @@ export const ModalEntrevista = ({
           <Form.Item
             label="Recebe Bolsa família:"
             name="bolsa"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Radio.Group size="large">
               <Radio value={true}>Sim</Radio>
@@ -318,12 +340,12 @@ export const ModalEntrevista = ({
         </Grid>
 
         <Divider>Menor assistido</Divider>
-        
+
         <>
           <Form.Item
             label="Preencher se menor de 18 anos:"
             name="menorDe18anos"
-            rules={[{ required: true, message: "Campo obrigatório" }]}
+            // rules={[{ required: true, message: "Campo obrigatório" }]}
           >
             <Radio.Group size="large">
               <Radio value={true}>Menor emancipado</Radio>
@@ -335,7 +357,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="cpfTutor"
               label="CPF Tutor:"
-              //   rules={[{ required: true, message: "Campo obrigatório" }]}
+              rules={[{ required: false }]}
             >
               <Input
                 size="large"
@@ -345,7 +367,11 @@ export const ModalEntrevista = ({
               />
             </Form.Item>
 
-            <Form.Item name="nomeTutor" label="Nome Tutor" required>
+            <Form.Item
+              name="nomeTutor"
+              label="Nome Tutor"
+              rules={[{ required: false }]}
+            >
               <Input size="large" />
             </Form.Item>
           </Grid>
@@ -354,25 +380,37 @@ export const ModalEntrevista = ({
         <Divider>Dados Pessoais Cônjuge</Divider>
 
         <>
-          <Form.Item name="nomeConjuge" label="Nome cônjuge" required>
+          <Form.Item
+            name="nomeConjuge"
+            label="Nome cônjuge"
+            rules={[{ required: false }]}
+          >
             <Input size="large" />
           </Form.Item>
           <Grid3x3>
-            <Form.Item name="cpfConjuge" label="CPF" required>
+            <Form.Item
+              name="cpfConjuge"
+              label="CPF"
+              rules={[{ required: false }]}
+            >
               <Input
                 placeholder="000.000.000-00"
                 onChange={handleCpfConjugeChange}
                 size="large"
               />
             </Form.Item>
-            <Form.Item name="profissaoConjuge" label="Profissão" required>
+            <Form.Item
+              name="profissaoConjuge"
+              label="Profissão"
+              rules={[{ required: false }]}
+            >
               <Input size="large" />
             </Form.Item>
 
             <Form.Item
               label="Grau de Instrução:"
               name="grauInstrucaoConjuge"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Select
                 placeholder="Selecione o grau de instrução"
@@ -413,7 +451,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="dataAdmissaoConjuge"
               label="Data de Admissão"
-              required
+              rules={[{ required: false }]}
             >
               <Input
                 size="large"
@@ -429,7 +467,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="valorRendaBrutaComprovadaConjuge"
               label="Valor da Renda Bruta Comprovada"
-              required
+              rules={[{ required: false }]}
             >
               <Input
                 size="large"
@@ -449,7 +487,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="valorRendaLiquidaComprovadaConjuge"
               label="Valor da Renda Líquida Comprovada"
-              required
+              rules={[{ required: false }]}
             >
               <Input
                 size="large"
@@ -469,7 +507,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="mesReferenciaRendaComprovadaConjuge"
               label="Mês de Referência da Renda Comprovada"
-              required
+              rules={[{ required: false }]}
             >
               <Input size="large" />
             </Form.Item>
@@ -477,7 +515,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="dataInicioRendaDeclaradaConjuge"
               label="Data Início da Renda Declarada"
-              required
+              rules={[{ required: false }]}
             >
               <Input
                 size="large"
@@ -493,7 +531,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="valorRendaLiquidaDeclaradaConjuge"
               label="Valor da Renda Líquida Declarada"
-              required
+              rules={[{ required: false }]}
             >
               <Input
                 size="large"
@@ -513,7 +551,7 @@ export const ModalEntrevista = ({
             <Form.Item
               name="mesReferenciaRendaDeclaradaConjuge"
               label="Mês de Referência da Renda Declarada"
-              required
+              rules={[{ required: false }]}
             >
               <Input size="large" />
             </Form.Item>
@@ -522,7 +560,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Recebe BPC - Benefício de Prestação Continuada:"
               name="recebeBpcConjuge"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Radio.Group size="large">
                 <Radio value={true}>Sim</Radio>
@@ -533,7 +571,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Recebe Bolsa família:"
               name="recebeBolsaConjuge"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Radio.Group size="large">
                 <Radio value={true}>Sim</Radio>
@@ -544,7 +582,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Preencher se menor de 18 anos:"
               name="menorDe18anosConjuge"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Radio.Group size="large">
                 <Radio value={true}>Menor emancipado</Radio>
@@ -554,7 +592,11 @@ export const ModalEntrevista = ({
           </Grid3x3>
           <>
             <Grid>
-              <Form.Item name="cpfTutorConjuge" label="CPF Tutor:">
+              <Form.Item
+                name="cpfTutorConjuge"
+                label="CPF Tutor:"
+                rules={[{ required: false }]}
+              >
                 <Input
                   size="large"
                   onChange={handleCpfTutorConjugeChange}
@@ -563,7 +605,7 @@ export const ModalEntrevista = ({
                 />
               </Form.Item>
 
-              <Form.Item name="nomeTutorConjuge" label="Nome Tutor" required>
+              <Form.Item name="nomeTutorConjuge" label="Nome Tutor">
                 <Input size="large" />
               </Form.Item>
             </Grid>
@@ -574,7 +616,6 @@ export const ModalEntrevista = ({
             <Form.Item
               name="nomeDaPessoaComDeficiencia"
               label="Nome da pessoa com deficiencia"
-              required
             >
               <Input size="large" />
             </Form.Item>
@@ -582,7 +623,6 @@ export const ModalEntrevista = ({
             <Form.Item
               name="cidPessoaComDeficiencia"
               label="CID (Classificação Internacional de Doenças)"
-              required
             >
               <Input size="large" />
             </Form.Item>
@@ -590,7 +630,6 @@ export const ModalEntrevista = ({
             <Form.Item
               name="nomeDaPessoaComMicrocefalia"
               label="Nome da pessoa com microcefalia"
-              required
             >
               <Input size="large" />
             </Form.Item>
@@ -598,7 +637,6 @@ export const ModalEntrevista = ({
             <Form.Item
               name="cidPessoaComMicrocefalia"
               label="CID (Classificação Internacional de Doenças)"
-              required
             >
               <Input size="large" />
             </Form.Item>
@@ -606,7 +644,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Será necessário promover adequação no imóvel pretendido?"
               name="adequacaoImovelPretendido"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Radio.Group size="large">
                 <Radio value={true}>Sim</Radio>
@@ -617,7 +655,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Para qual deficiência?"
               name="discriminacaoDeficiencia"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Select
                 placeholder="Selecione a deficiência"
@@ -633,7 +671,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Família em situação de rua e/ou com trajetória de rua?"
               name="familiaEmSituacaoDeRua"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Radio.Group size="large">
                 <Radio value={true}>Sim</Radio>
@@ -644,7 +682,7 @@ export const ModalEntrevista = ({
             <Form.Item
               label="Família integra o déficit habitacional local?"
               name="familiaIntegraDeficitHabitacional"
-              rules={[{ required: true, message: "Campo obrigatório" }]}
+              // rules={[{ required: true, message: "Campo obrigatório" }]}
             >
               <Radio.Group size="large">
                 <Radio value={true}>Sim</Radio>
@@ -664,7 +702,7 @@ export const ModalEntrevista = ({
               <Form.Item
                 label="Renda familiar até R$ 2850,00"
                 name="rendaFamiliar2580"
-                rules={[{ required: true, message: "Campo obrigatório" }]}
+                // rules={[{ required: true, message: "Campo obrigatório" }]}
               >
                 <Radio.Group size="large">
                   <Radio value={true}>Sim</Radio>
@@ -675,7 +713,7 @@ export const ModalEntrevista = ({
               <Form.Item
                 label="Renda familiar até R$ 4.700,00 e estou(amos) enquadrado(s) na condição de Calamidade Pública/Situação de Emergência"
                 name="rendaFamiliar4700"
-                rules={[{ required: true, message: "Campo obrigatório" }]}
+                // rules={[{ required: true, message: "Campo obrigatório" }]}
               >
                 <Radio.Group size="large">
                   <Radio value={true}>Sim</Radio>
@@ -692,13 +730,14 @@ export const ModalEntrevista = ({
           htmlType="submit"
           block
           size="large"
-          style={{ marginTop: "20px", backgroundColor: "#F07620" }}
+          style={{ marginTop: "20px", backgroundColor: "#209df0" }}
+          onClick={() => setCallFormFiller(true)}
+          icon={<BsFiletypePdf />}
         >
-          Iniciar Sorteio
+          Baixar Declaração de Beneficiário
         </Button>
       </Form>
-
-      <PdfFormFiller dados={dadosPreenchidos} />
+      <PdfFormFiller dados={dadosPreenchidos} callFormFiller={callFormFiller} />
     </Modal>
   );
 };

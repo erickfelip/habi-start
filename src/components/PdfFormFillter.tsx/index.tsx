@@ -1,27 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PDFDocument, PDFName, PDFString } from "pdf-lib";
 import { saveAs } from "file-saver";
-import { BsFiletypePdf } from "react-icons/bs";
+// import { BsFiletypePdf } from "react-icons/bs";
 import pdf from "../../assets/103.pdf";
-import { Button } from "antd";
+// import { Button } from "antd";
 import { deficiencias, grauInstrucao } from "../../utils";
 
 // chaves do PDF só funcionam com snake_case
-// const dadosColaborador = {
-//   nome: "Fulano de tal",
-//   cpf: "123",
-//   data_nascimento: "15/04/1990",
-//   email: "email@email.com",
-//   telefone: "123",
-//   cargo: "123",
-//   departamento: "123",
-//   data_admissao: "123",
-//   salario: "123",
-//   matricula: "123",
-//   local_data: "123",
-// };
-
-// dados = dadosColaborador
 
 function camelToSnake(str: string) {
   return str
@@ -36,9 +21,9 @@ function converterChavesParaSnake(obj: any) {
   );
 }
 
-export default function PdfFormFiller({ dados }: any) {
+export default function PdfFormFiller({ dados, callFormFiller }: any) {
   const dadosConvertidos = converterChavesParaSnake(dados);
-  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [_status, setStatus] = useState("idle"); // idle | loading | success | error
 
   function preencherGrauInstrucao(form: any, valorSelecionado: any) {
     grauInstrucao.forEach(({ value }) => {
@@ -205,20 +190,26 @@ export default function PdfFormFiller({ dados }: any) {
     }
   }
 
-  const label = {
-    idle: "Declaração de Beneficiário (PDF)",
-    loading: "Gerando...",
-    success: "Download iniciado!",
-    error: "Erro ao gerar",
-  }[status];
+  // const label = {
+  //   idle: "Declaração de Beneficiário (PDF)",
+  //   loading: "Gerando...",
+  //   success: "Download iniciado!",
+  //   error: "Erro ao gerar",
+  // }[status];
+
+  useEffect(() => {
+    if (callFormFiller === true) gerarPDF();
+  }, [callFormFiller, dados]);
 
   return (
-    <Button
-      icon={<BsFiletypePdf />}
-      onClick={gerarPDF}
-      disabled={status === "loading"}
-    >
-      {label}
-    </Button>
+    <>
+      {/* <Button
+        icon={<BsFiletypePdf />}
+        onClick={gerarPDF}
+        disabled={status === "loading"}
+      >
+        {label}
+      </Button> */}
+    </>
   );
 }
