@@ -6,6 +6,7 @@ import {
   Label,
   LabelSub,
 } from "./styles";
+import { FaUserAltSlash } from "react-icons/fa";
 import {
   notification,
   Select,
@@ -16,17 +17,21 @@ import {
   Tooltip,
   Empty,
   Button,
+  Popover,
+  Divider,
+  Alert,
 } from "antd";
 import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
-import { ModalSorteio } from "../../components/ModalSorteio";
+
 import { formatLabel } from "../../utils";
 import {
   createHierarquizacao,
   getEmpreendimentos,
   getHierarquizacao,
+  reprovarBeneficiario,
 } from "../../services/sga.requests";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ModalEntrevista } from "../../components/ModalEntrevista";
 
 type Pessoa = {
@@ -46,6 +51,7 @@ type Vagas = {
 };
 
 export const Hierarquizacao = () => {
+  const queryClient = useQueryClient();
   const [tab, setTab] = useState<string>("1");
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [userData, setUserData] = useState({});
@@ -68,7 +74,7 @@ export const Hierarquizacao = () => {
 
   const { data: _hierarquizacao = [], isLoading: _loadingHierarquizacao } =
     useQuery({
-      queryKey: ["GET_HIERARQUIZACAO", selected],
+      queryKey: ["GET_HIERARQUIZACAO", selected, vagas],
       queryFn: async () => {
         const response = await getHierarquizacao(selected);
         const vagas = response!?.rows!?.[0]!?.resultado!?.vagas;
@@ -172,6 +178,46 @@ export const Hierarquizacao = () => {
       ...prev,
       [activeTab]: page,
     }));
+  };
+
+  const [openPopOver, setOpenPopOver] = useState<string | null>(null);
+
+  const hide = () => {
+    setOpenPopOver(null);
+  };
+
+  const handleOpenPopOverChange = (visible: boolean, id: string) => {
+    if (visible) {
+      setOpenPopOver(id);
+    } else {
+      setOpenPopOver(null);
+    }
+  };
+
+  const handleReprovarBeneficiario = async (id: string) => {
+    const payload = {
+      status: "REPROVADO",
+    };
+    await reprovarBeneficiario({ id: id, payload: payload })
+      .then(() => {
+        notification.success({
+          duration: 3,
+          message: "Sucesso!",
+          description: `beneficiário reprovado.`,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["GET_HIERARQUIZACAO"],
+        });
+        hide();
+      })
+      .catch((error) => {
+        notification.error({
+          duration: 1,
+          message: "Erro!",
+          description: `${error?.response?.data?.message}`,
+        });
+        return;
+      });
   };
 
   return (
@@ -513,8 +559,6 @@ export const Hierarquizacao = () => {
                       <List.Item.Meta
                         style={{
                           marginLeft: "auto",
-
-                          // background: "red"
                         }}
                         title={
                           <div
@@ -522,15 +566,129 @@ export const Hierarquizacao = () => {
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "flex-end",
+                              gap: "7px",
                             }}
                           >
+                            <Popover
+                              content={
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <Divider style={{ margin: "15px 0px" }} />
+
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      maxWidth: "430px",
+                                    }}
+                                  >
+                                    <Alert
+                                      message={
+                                        <span style={{ fontWeight: "bold" }}>
+                                          Atenção!
+                                        </span>
+                                      }
+                                      type="warning"
+                                      showIcon
+                                      description={
+                                        <span
+                                          style={{
+                                            fontFamily: "Inter",
+                                            fontSize: "14px",
+                                            fontWeight: "400",
+                                          }}
+                                        >
+                                          Você está prestes a reprovar o
+                                          beneficiário{" "}
+                                          <span
+                                            style={{
+                                              fontWeight: "500",
+                                              color: "black",
+                                            }}
+                                          >
+                                            {item?.nome},
+                                          </span>{" "}
+                                          tem certeza que deseja seguir com essa
+                                          ação?
+                                        </span>
+                                      }
+                                    />
+                                  </div>
+
+                                  <Divider style={{ margin: "15px 0px" }} />
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      gap: "10px",
+                                      marginLeft: "auto",
+                                    }}
+                                  >
+                                    <Button danger onClick={hide}>
+                                      Cancelar
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        handleReprovarBeneficiario(item!?.id);
+                                      }}
+                                    >
+                                      Confirmar
+                                    </Button>
+                                  </div>
+                                </div>
+                              }
+                              trigger="click"
+                              open={openPopOver === item?.id}
+                              onOpenChange={(visible) =>
+                                handleOpenPopOverChange(visible, item?.id)
+                              }
+                            >
+                              <Tooltip
+                                title="Reprovar beneficiário"
+                                placement="bottom"
+                              >
+                                <Button
+                                  style={{
+                                    cursor: "pointer",
+                                    background: "#ff16162c",
+                                    height: "40px",
+                                    width: "40px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderRadius: "5px",
+                                    boxShadow:
+                                      "rgba(0, 0, 0, 0.10) 0px 1px 3px, rgba(0, 0, 0, 0.10) 0px 1px 2px",
+                                  }}
+                                  icon={
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <FaUserAltSlash
+                                        style={{
+                                          color: "#ff2020b3",
+                                          fontSize: "19px",
+                                        }}
+                                      />
+                                    </div>
+                                  }
+                                />
+                              </Tooltip>
+                            </Popover>
+
                             <Button
                               type="primary"
                               htmlType="submit"
                               block
                               size="large"
                               style={{
-                                marginTop: "20px",
                                 backgroundColor: "#209df0",
                                 maxWidth: "250px",
                               }}

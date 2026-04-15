@@ -107,3 +107,14 @@ export const deleteUser = async ({ id }: { id: string }) => {
   const response = await api.delete(`/usuarios/${id}`);
   return response.data;
 };
+
+export const reprovarBeneficiario = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: any;
+}) => {
+  const response = await api.put(`/beneficiarios/${id}/status`, payload);
+  return response.data;
+};
