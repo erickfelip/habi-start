@@ -27,7 +27,7 @@ export const ModalSorteio = ({ isOpen, handleClose }: IOrderModalDetails) => {
       qtd: values.qtd,
       classificacao: values.classificacao,
     };
-    console.log("@sorteio", { payload });
+
     form.resetFields();
     notification.success({
       duration: 3,

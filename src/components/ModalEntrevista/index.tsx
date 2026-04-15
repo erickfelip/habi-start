@@ -37,9 +37,6 @@ export const ModalEntrevista = ({
   const [form] = Form.useForm();
   const [dadosPreenchidos, setDadosPreenchidos] = useState({});
   const [callFormFiller, setCallFormFiller] = useState<boolean>(false);
-  // selecionar o empreendimento
-  console.log({ form });
-  console.log({ dadosPreenchidos });
 
   useEffect(() => {
     if (!isOpen) setCallFormFiller(false);
@@ -47,7 +44,6 @@ export const ModalEntrevista = ({
 
   const onFinish = async (values: any) => {
     setDadosPreenchidos(values);
-    console.log({ values });
 
     // const payload = {
     //   empreendimento: values.empreendimento,
@@ -737,7 +733,11 @@ export const ModalEntrevista = ({
           Baixar Declaração de Beneficiário
         </Button>
       </Form>
-      <PdfFormFiller dados={dadosPreenchidos} callFormFiller={callFormFiller} />
+      <PdfFormFiller
+        dados={dadosPreenchidos}
+        callFormFiller={callFormFiller}
+        userData={userData}
+      />
     </Modal>
   );
 };

@@ -21,8 +21,28 @@ function converterChavesParaSnake(obj: any) {
   );
 }
 
-export default function PdfFormFiller({ dados, callFormFiller }: any) {
+export default function PdfFormFiller({
+  dados,
+  callFormFiller,
+  userData,
+}: any) {
   const dadosConvertidos = converterChavesParaSnake(dados);
+  const newData: any = {
+    ...dadosConvertidos,
+    nome: userData?.nome,
+    cpf: userData?.cpf,
+    profissao: userData?.profissao,
+    logradouro: userData?.logradouro,
+    numero: userData?.numero,
+    complemento: userData?.complemento,
+    bairro: userData?.bairro,
+    municipio: userData?.municipio,
+    uf: userData?.uf ?? undefined,
+    cep: userData?.cep,
+    telefone1: userData?.telefone1,
+    telefone2: userData?.telefone2,
+  };
+
   const [_status, setStatus] = useState("idle"); // idle | loading | success | error
 
   function preencherGrauInstrucao(form: any, valorSelecionado: any) {
@@ -156,7 +176,7 @@ export default function PdfFormFiller({ dados, callFormFiller }: any) {
 
       campos.forEach((field: any) => {
         const nomeCampo = field.getName();
-        const valor = dadosConvertidos[nomeCampo];
+        const valor = newData[nomeCampo];
 
         if (valor === undefined) return;
 
@@ -178,7 +198,6 @@ export default function PdfFormFiller({ dados, callFormFiller }: any) {
       const pdfPreenchido = await pdfDoc.save();
       const blob = new Blob([pdfPreenchido], { type: "application/pdf" });
       saveAs(blob, "documento-preenchido.pdf");
-      console.log({ blob });
       setStatus("success");
       setTimeout(() => setStatus("idle"), 2000);
     } catch (err) {
