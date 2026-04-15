@@ -39,6 +39,7 @@ import {
 import {
   createBeneficiario,
   getBeneficiarios,
+  getUserData,
 } from "../../services/sga.requests.ts";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
@@ -129,6 +130,16 @@ export const CadastroBeneficiario = () => {
     setCurrent(current - 1);
   };
 
+  const { data: userData, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
+
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
@@ -144,6 +155,7 @@ export const CadastroBeneficiario = () => {
         dataNascimento: moment(formData!?.dataNascimento, "DD/MM/YYYY").format(
           "YYYY-MM-DD"
         ),
+        idMunicipio: userData!?.idMunicipio,
         // rendaConjuge: parseCurrencyBRL(values.rendaConjuge),
       };
 
