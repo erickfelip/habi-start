@@ -7,6 +7,7 @@ import {
   //   notification,
   Select,
   Radio,
+  notification,
 } from "antd";
 import { BsFiletypePdf } from "react-icons/bs";
 
@@ -21,6 +22,7 @@ import {
 } from "../../utils";
 import PdfFormFiller from "../PdfFormFillter.tsx";
 import { useEffect, useState } from "react";
+import { updateBeneficiario } from "../../services/sga.requests.ts";
 
 interface IOrderModalDetails {
   isOpen: boolean;
@@ -45,40 +47,26 @@ export const ModalEntrevista = ({
   const onFinish = async (values: any) => {
     setDadosPreenchidos(values);
 
-    // const payload = {
-    //   empreendimento: values.empreendimento,
-    //   qtd: values.qtd,
-    //   classificacao: values.classificacao,
-    // };
-
-    // form.resetFields();
-    // notification.success({
-    //   duration: 3,
-    //   message: "Sucesso!",
-    //   description: `Novo empreendimento cadastrado.`,
-    // });
-    // handleClose();
-
-    // await createMunicipio(payload)
-    //   .then(() => {
-    //     form.resetFields();
-    //     notification.success({
-    //       duration: 3,
-    //       message: "Sucesso!",
-    //       description: `Novo município cadastrado.`,
-    //     });
-    //     queryClient.invalidateQueries({
-    //       queryKey: ["GET_MUNICIPIOS"],
-    //     });
-    //     handleClose();
-    //   })
-    //   .catch((error) => {
-    //     notification.error({
-    //       duration: 1,
-    //       message: "Erro!",
-    //       description: `${error?.response?.data?.message}`,
-    //     });
-    //   });
+    await updateBeneficiario({ idUser: userData!?.id, payload: values })
+      .then(() => {
+        form.resetFields();
+        notification.success({
+          duration: 3,
+          message: "Sucesso!",
+          description: `Entrevista realizada.`,
+        });
+        // queryClient.invalidateQueries({
+        //   queryKey: ["GET_MUNICIPIOS"],
+        // });
+        handleClose();
+      })
+      .catch((error) => {
+        notification.error({
+          duration: 1,
+          message: "Erro!",
+          description: `${error?.response?.data?.message}`,
+        });
+      });
   };
 
   const filterOption = (input: any, option: any) => {
@@ -206,7 +194,7 @@ export const ModalEntrevista = ({
             />
           </Form.Item>
 
-          <Form.Item name="dataAdmissao" label="Data de Admissão" required>
+          <Form.Item name="dataAdmissao" label="Data de Admissão">
             <Input
               size="large"
               placeholder="DD/MM/YYYY"
@@ -221,7 +209,6 @@ export const ModalEntrevista = ({
           <Form.Item
             name="valorRendaBrutaComprovada"
             label="Valor da Renda Bruta"
-            required
           >
             <Input
               size="large"
@@ -239,7 +226,6 @@ export const ModalEntrevista = ({
           <Form.Item
             name="valorRendaLiquidaComprovada"
             label="Valor da Renda Líquida"
-            required
           >
             <Input
               size="large"
@@ -257,7 +243,6 @@ export const ModalEntrevista = ({
           <Form.Item
             name="mesReferenciaRendaComprovada"
             label="Mês de Referência da Renda"
-            required
           >
             <Input size="large" />
           </Form.Item>
@@ -269,7 +254,6 @@ export const ModalEntrevista = ({
           <Form.Item
             name="dataInicioRendaDeclarada"
             label="Data Início da Renda"
-            required
           >
             <Input
               size="large"
@@ -285,7 +269,6 @@ export const ModalEntrevista = ({
           <Form.Item
             name="valorRendaLiquidaDeclarada"
             label="Valor da Renda Líquida"
-            required
           >
             <Input
               size="large"
@@ -303,7 +286,6 @@ export const ModalEntrevista = ({
           <Form.Item
             name="mesReferenciaRendaDeclarada"
             label="Mês de Referência da Renda"
-            required
           >
             <Input size="large" />
           </Form.Item>

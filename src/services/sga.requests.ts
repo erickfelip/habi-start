@@ -49,6 +49,16 @@ export const createHierarquizacao = async (payload: {
   return response.data;
 };
 
+export const updateBeneficiario = async ({
+  idUser,
+  payload,
+}: {
+  idUser: string;
+  payload: any;
+}) => {
+  const response = await api.patch(`/beneficiarios/${idUser}`, payload);
+  return response.data;
+};
 export const createEmpreendimento = async (payload: any) => {
   const response = await api.post(`/empreendimentos`, payload);
   return response.data;
