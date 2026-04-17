@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import {
-  ButtonSolicitation,
+  // ButtonSolicitation,
   Container,
   GridSelected,
   Label,
@@ -23,7 +23,6 @@ import {
 } from "antd";
 import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
-
 import { formatLabel } from "../../utils";
 import {
   createHierarquizacao,
@@ -33,6 +32,7 @@ import {
 } from "../../services/sga.requests";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ModalEntrevista } from "../../components/ModalEntrevista";
+import GerarPdfSorteio from "../../components/PdfSorteio";
 
 type Pessoa = {
   nome: string;
@@ -56,6 +56,8 @@ export const Hierarquizacao = () => {
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [userData, setUserData] = useState({});
   const [selected, setSelected] = useState<any>("");
+  console.log({ selected });
+
   const [loading, setLoading] = useState(false);
   const [vagas, setVagas] = useState<Vagas>({});
   const [vagasGet, setVagasGet] = useState<Vagas>({});
@@ -77,14 +79,21 @@ export const Hierarquizacao = () => {
       queryKey: ["GET_HIERARQUIZACAO", selected, vagas],
       queryFn: async () => {
         const response = await getHierarquizacao(selected);
+        console.log({ response });
+
         const vagas = response!?.rows!?.[0]!?.resultado!?.vagas;
+        console.log("@chamando vagas", { vagas });
         setVagasGet(vagas ?? []);
-        return response!?.rows!?.[0]!?.resultado;
+        return response!?.rows!?.[0];
       },
       retry: true,
       refetchOnWindowFocus: false,
-      enabled: selected !== null && tab.includes("2") ? true : false,
+      enabled: selected !== "" && tab.includes("2") ? true : false,
     });
+
+  const teste = selected !== "" && tab.includes("2");
+  console.log({ teste });
+  console.log({ _hierarquizacao });
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -292,28 +301,23 @@ export const Hierarquizacao = () => {
                   />
                 </div>
                 <div style={{ display: "flex", width: "100%" }}>
-                  <ButtonSolicitation
+                  <button
                     onClick={handleConfirm}
-                    size="large"
-                    color="blue"
-                    variant="solid"
+                    style={{
+                      width: "100%",
+                      background: "#1e3a5f",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "10px 22px",
+                      fontSize: 14,
+                      fontWeight: 500,
+                      cursor: "pointer",
+                      transition: "background 0.2s",
+                    }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        gap: "7px",
-                        padding: "20px",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        fontFamily: "Inter",
-                      }}
-                    >
-                      Iniciar hierarquização
-                    </div>
-                  </ButtonSolicitation>
+                    <div>Iniciar hierarquização</div>
+                  </button>
                 </div>
               </GridSelected>
 
@@ -441,30 +445,7 @@ export const Hierarquizacao = () => {
                     }
                   />
                 </div>
-                {/* <div style={{ display: "flex", width: "100%" }}>
-                  <ButtonSolicitation
-                    onClick={handleConfirm}
-                    size="large"
-                    color="blue"
-                    variant="solid"
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        gap: "7px",
-                        padding: "20px",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        fontFamily: "Inter",
-                      }}
-                    >
-                      Iniciar hierarquização
-                    </div>
-                  </ButtonSolicitation>
-                </div> */}
+                {selected !== "" && <GerarPdfSorteio dados={_hierarquizacao} />}
               </GridSelected>
 
               <div

@@ -75,7 +75,7 @@ export const ButtonExport = styled.button`
 
 export const ButtonSolicitation = styled(Button)`
   /* background: #f07620; */
-
+  background-color: #1e3a5f;
   color: white;
   display: flex;
   align-items: center;
