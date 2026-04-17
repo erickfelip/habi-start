@@ -21,12 +21,12 @@ export const ModalSorteio = ({ isOpen, handleClose }: IOrderModalDetails) => {
   const [form] = Form.useForm();
   // selecionar o empreendimento
 
-  const onFinish = async (values: any) => {
-    const payload = {
-      empreendimento: values.empreendimento,
-      qtd: values.qtd,
-      classificacao: values.classificacao,
-    };
+  const onFinish = async (_values: any) => {
+    // const payload = {
+    //   empreendimento: values.empreendimento,
+    //   qtd: values.qtd,
+    //   classificacao: values.classificacao,
+    // };
 
     form.resetFields();
     notification.success({

@@ -23,16 +23,14 @@ import {
 
 import "antd/dist/reset.css";
 import { MdDelete } from "react-icons/md";
-import { FiEye } from "react-icons/fi";
-import { useWindowSize } from "../../hooks/useWindowSize";
 import { getUsers, deleteUser } from "../../services/sga.requests";
 import { ModalCreateUser } from "../../components/ModalCreateUser";
 import { Navbar } from "../../components/NavBar";
 
 export const CadastroUsuarios = () => {
-  const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
+  const [_openOrderDetailsModal, _setOpenOrderDetailsModal] = useState(false);
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
-  const [orderData, setOrderData] = useState<any>(null);
+  const [_orderData, _setOrderData] = useState<any>(null);
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(["GET_USERDATA"]);
 
@@ -106,7 +104,7 @@ export const CadastroUsuarios = () => {
         return <>{record?.cargo}</>;
       },
     },
-        {
+    {
       title: "E-mail",
       dataIndex: "login",
       key: "login",
@@ -249,11 +247,9 @@ export const CadastroUsuarios = () => {
   ];
 
   const [orderNumber, setOrderNumber] = useState("");
-  const [filter, setFilter] = useState("orderNumber");
+  const [_filter, _setFilter] = useState("orderNumber");
   const [page, setPage] = useState(1);
   // const debouncedValue = useDebounce(orderNumber, 500);
-
-  const { width } = useWindowSize();
 
   return (
     <Container>

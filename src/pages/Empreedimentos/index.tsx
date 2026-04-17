@@ -1,23 +1,18 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { IoAlert } from "react-icons/io5";
 import {
   ButtonSolicitation,
   Container,
-  GreetignLabelSub,
   Label,
   LabelSub,
   WrapperTable,
 } from "./styles";
 import { IoAdd } from "react-icons/io5";
 import {
-  Badge,
   Divider,
-  Dropdown,
   Tooltip,
   Table,
   Tag,
-  Tabs,
   Input,
   Pagination,
   notification,
@@ -25,29 +20,22 @@ import {
   Alert,
   Popover,
 } from "antd";
-import moment from "moment";
 
 import "antd/dist/reset.css";
-import {
-  MdDelete,
-  MdOutlineFilterList,
-  MdOutlinePublishedWithChanges,
-} from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { FiEye } from "react-icons/fi";
-import { useWindowSize } from "../../hooks/useWindowSize";
+
 import {
   deleteEmpreendimento,
-  deleteMunicipio,
   getEmpreendimentos,
 } from "../../services/sga.requests";
-import { ModalCreateMunicipio } from "../../components/ModalCreateMunicipio";
 import { Navbar } from "../../components/NavBar";
 import { ModalCreateEmpreendimento } from "../../components/ModalCreateEmpreendimento";
 
 export const Empreendimentos = () => {
-  const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
+  const [_openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
-  const [orderData, setOrderData] = useState<any>(null);
+  const [_orderData, setOrderData] = useState<any>(null);
   const [openPopOver, setOpenPopOver] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
@@ -279,11 +267,9 @@ export const Empreendimentos = () => {
   ];
 
   const [orderNumber, setOrderNumber] = useState("");
-  const [filter, setFilter] = useState("orderNumber");
+  const [_filter, _setFilter] = useState("orderNumber");
   const [page, setPage] = useState(1);
   // const debouncedValue = useDebounce(orderNumber, 500);
-
-  const { width } = useWindowSize();
 
   return (
     <Container>

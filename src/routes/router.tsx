@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { getToken } from "../utils/token";
 
-export default function PrivateRoute({ children, role }: any) {
+export default function PrivateRoute({ children }: any) {
   const token = getToken();
 
   // if (loading) {

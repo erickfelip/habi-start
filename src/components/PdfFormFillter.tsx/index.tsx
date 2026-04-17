@@ -195,7 +195,7 @@ export default function PdfFormFiller({
 
       form.flatten();
 
-      const pdfPreenchido = await pdfDoc.save();
+      const pdfPreenchido: any = await pdfDoc.save();
       const blob = new Blob([pdfPreenchido], { type: "application/pdf" });
       saveAs(blob, "documento-preenchido.pdf");
       setStatus("success");

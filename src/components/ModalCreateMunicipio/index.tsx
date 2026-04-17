@@ -1,12 +1,5 @@
 import { Modal, Divider, Input, Form, Button, notification } from "antd";
-import { UserDeleteOutlined } from "@ant-design/icons";
-
-import { useState } from "react";
-
-import { IoAlert } from "react-icons/io5";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { TiDeleteOutline } from "react-icons/ti";
-import moment from "moment";
+import { useQueryClient } from "@tanstack/react-query";
 import { createMunicipio } from "../../services/sga.requests";
 
 interface IOrderModalDetails {
@@ -18,7 +11,6 @@ interface IOrderModalDetails {
 export const ModalCreateMunicipio = ({
   isOpen,
   handleClose,
-  orderData,
 }: IOrderModalDetails) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
