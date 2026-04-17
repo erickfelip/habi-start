@@ -880,6 +880,7 @@ export const CadastroBeneficiario = () => {
                 flexDirection: "row",
                 paddingBottom: "20px",
                 gap: "8px",
+                marginTop: "20px"
               }}
             >
               <Input
