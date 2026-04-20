@@ -39,13 +39,13 @@ import {
 import {
   createBeneficiario,
   getBeneficiarios,
-  getUserData,
 } from "../../services/sga.requests.ts";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import { MdOutlineFilterList } from "react-icons/md";
 import useDebounce from "../../hooks/useDebounce.tsx";
 import { stepSchemas } from "./schema.ts";
+import { queryClient } from "../../main.tsx";
 
 export const CadastroBeneficiario = () => {
   const [form] = Form.useForm();
@@ -130,15 +130,7 @@ export const CadastroBeneficiario = () => {
     setCurrent(current - 1);
   };
 
-  const { data: userData, isLoading: _isLoading } = useQuery({
-    queryKey: ["GET_USERDATA"],
-    queryFn: async () => {
-      const response = await getUserData();
-      return response;
-    },
-    retry: true,
-    refetchOnWindowFocus: false,
-  });
+  const userData = queryClient.getQueryData<any>(["GET_USERDATA"]);
 
   const handleSubmit = async () => {
     try {
@@ -880,7 +872,7 @@ export const CadastroBeneficiario = () => {
                 flexDirection: "row",
                 paddingBottom: "20px",
                 gap: "8px",
-                marginTop: "20px"
+                marginTop: "20px",
               }}
             >
               <Input
