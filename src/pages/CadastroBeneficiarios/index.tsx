@@ -24,8 +24,8 @@ import {
   WrapperSteps,
   WrapperTable,
 } from "./styles";
+import { LuCalendarSync } from "react-icons/lu";
 import { Navbar } from "../../components/NavBar";
-import PdfFormFiller from "../../components/PdfFormFillter.tsx";
 import {
   parseCurrencyBRL,
   maskCep,
@@ -46,8 +46,11 @@ import { MdOutlineFilterList } from "react-icons/md";
 import useDebounce from "../../hooks/useDebounce.tsx";
 import { stepSchemas } from "./schema.ts";
 import { queryClient } from "../../main.tsx";
+import { ModalUpdateDataNascimento } from "../../components/ModalUpdateDataNascimento/index.tsx";
 
 export const CadastroBeneficiario = () => {
+  const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
+  const [userDataSelected, setUserData] = useState<any>({});
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [formData, setFormData] = useState<any>({});
@@ -748,34 +751,22 @@ export const CadastroBeneficiario = () => {
       title: "Ações",
       key: "action",
       render: (_: any, record: any) => {
-        //as chaves do mock devem ser em snake_case
-        //para ser aplicado no pdf
-        const mockPayload = {
-          nome: record!?.nome,
-          cpf: record!?.cpf,
-          profissao: record!?.profissao,
-          // data_nascimento: record.dataNascimento, //exemplo
-          logradouro: record.logradouro,
-          complemento: record.complemento,
-          bairro: record.bairro,
-          municipio: record.municipio, // pegar do que está cadastrado no banco
-          numero: record.numero,
-          uf: record.estado,
-          cep: record.cep,
-          telefone1: record.telefone1,
-          telefone2: record.telefone2,
-        };
-
         return (
-          <div
+          <Button
+            icon={<LuCalendarSync />}
+            type="primary"
+            htmlType="submit"
+            size="middle"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
+              backgroundColor: "#209df0",
+            }}
+            onClick={() => {
+              setUserData(record);
+              setOpenSolicitationModal(true);
             }}
           >
-            <PdfFormFiller dados={mockPayload} />
-          </div>
+            Atualizar data de nascimento
+          </Button>
         );
       },
     },
@@ -947,6 +938,12 @@ export const CadastroBeneficiario = () => {
           </>
         )}
       </div>
+
+      <ModalUpdateDataNascimento
+        isOpen={openSolicitationModal}
+        handleClose={() => setOpenSolicitationModal(false)}
+        userData={userDataSelected}
+      />
     </Container>
   );
 };
