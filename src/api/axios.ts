@@ -73,7 +73,7 @@ const refreshAccessToken = async (): Promise<string> => {
   }
 
   const response = await axios.post(
-    "http://localhost:3000/auth/refresh",
+    "https://sga.startconsultorianet.com/auth/refresh",
     { refreshToken },
     {
       headers: {
