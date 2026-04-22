@@ -7,10 +7,10 @@ import { jwtDecode } from "jwt-decode";
 import {
   getToken,
   setToken,
-  removeToken,
   getRefreshToken,
   setRefreshToken,
-  removeRefreshToken,
+  // removeToken,
+  // removeRefreshToken,
 } from "../utils/token";
 
 /* -------------------------------------------------------------------------- */
@@ -109,9 +109,9 @@ api.interceptors.request.use(
           processQueue(null, newToken);
         } catch (err) {
           processQueue(err, null);
-          removeToken();
-          removeRefreshToken();
-          window.location.href = "/login";
+          // removeToken();
+          // removeRefreshToken();
+          // window.location.href = "/login";
           throw err;
         } finally {
           isRefreshing = false;
@@ -159,9 +159,9 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch (err) {
-        removeToken();
-        removeRefreshToken();
-        window.location.href = "/login";
+        // removeToken();
+        // removeRefreshToken();
+        // window.location.href = "/login";
         return Promise.reject(err);
       }
     }
