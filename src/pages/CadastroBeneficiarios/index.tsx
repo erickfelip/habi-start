@@ -730,7 +730,7 @@ export const CadastroBeneficiario = () => {
       },
     },
     {
-      title: "cpf",
+      title: "CPF",
       dataIndex: "cpf",
       key: "cpf",
       align: "start",
@@ -739,7 +739,7 @@ export const CadastroBeneficiario = () => {
       },
     },
     {
-      title: "profissao",
+      title: "Profissão",
       dataIndex: "profissao",
       key: "profissao",
       align: "start",

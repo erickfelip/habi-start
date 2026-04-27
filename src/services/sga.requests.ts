@@ -42,6 +42,11 @@ export const createMunicipio = async (payload: { nome: string }) => {
   return response.data;
 };
 
+export const createIndicacaoDireta = async (payload: any) => {
+  const response = await api.post(`/sorteio/indicacao-direta`, payload);
+  return response.data;
+};
+
 export const createHierarquizacao = async (payload: {
   idEmpreendimento: string;
 }) => {
@@ -88,7 +93,7 @@ export const getUsers = async (idMunicipio: string) => {
 
 export const getHierarquizacao = async (idEmpreendimento: string) => {
   const response = await api.get(
-    `/sorteio/?idEmpreendimento=${idEmpreendimento}&page=0&limit=100`
+    `/sorteio/?idEmpreendimento=${idEmpreendimento}&page=0&limit=10`
   );
   return response.data;
 };

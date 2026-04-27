@@ -8,6 +8,7 @@ import {
   WrapperTable,
 } from "./styles";
 import { IoAdd } from "react-icons/io5";
+import { GrGroup } from "react-icons/gr";
 import {
   Divider,
   Tooltip,
@@ -23,7 +24,6 @@ import {
 
 import "antd/dist/reset.css";
 import { MdDelete } from "react-icons/md";
-import { FiEye } from "react-icons/fi";
 
 import {
   deleteEmpreendimento,
@@ -31,6 +31,7 @@ import {
 } from "../../services/sga.requests";
 import { Navbar } from "../../components/NavBar";
 import { ModalCreateEmpreendimento } from "../../components/ModalCreateEmpreendimento";
+import { ModalIndicacaoDireta } from "../../components/ModalIndicacaoDireta";
 
 export const Empreendimentos = () => {
   const [_openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
@@ -145,23 +146,23 @@ export const Empreendimentos = () => {
               gap: "10px",
             }}
           >
-            <span
-              style={{
-                cursor: "pointer",
-                background: "#1677ff2d",
-                height: "30px",
-                width: "30px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: "5px",
-                boxShadow:
-                  "rgba(0, 0, 0, 0.10) 0px 1px 3px, rgba(0, 0, 0, 0.10) 0px 1px 2px",
-              }}
-            >
-              <Tooltip title="Detalhes">
-                <FiEye
-                  size={20}
+            <Tooltip title="Indicação direta">
+              <span
+                style={{
+                  cursor: "pointer",
+                  background: "#1677ff2d",
+                  height: "30px",
+                  width: "30px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "5px",
+                  boxShadow:
+                    "rgba(0, 0, 0, 0.10) 0px 1px 3px, rgba(0, 0, 0, 0.10) 0px 1px 2px",
+                }}
+              >
+                <GrGroup
+                  size={16}
                   color="#1677ff"
                   style={{ cursor: "pointer" }}
                   onClick={() => {
@@ -169,8 +170,8 @@ export const Empreendimentos = () => {
                     setOpenOrderDetailsModal(true);
                   }}
                 />
-              </Tooltip>
-            </span>
+              </span>
+            </Tooltip>
 
             <Popover
               content={
@@ -425,6 +426,12 @@ export const Empreendimentos = () => {
           <ModalCreateEmpreendimento
             isOpen={openSolicitationModal}
             handleClose={() => setOpenSolicitationModal(false)}
+          />
+
+          <ModalIndicacaoDireta
+            orderData={_orderData}
+            isOpen={_openOrderDetailsModal}
+            handleClose={() => setOpenOrderDetailsModal(false)}
           />
         </>
       </div>
