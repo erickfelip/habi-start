@@ -2,6 +2,7 @@ import { useState } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { saveAs } from "file-saver";
+import logoUrl from "../../assets/start.png";
 
 // ─────────────────────────────────────────────────────────────
 // CONFIGURAÇÕES
@@ -57,14 +58,24 @@ function desenharCabecalho(
   const W = doc.internal.pageSize.getWidth();
 
   // Faixa superior azul escura
-  doc.setFillColor(...CORES.azulEscuro);
+  doc.setFillColor(...CORES.laranja);
   doc.rect(0, 0, W, 28, "F");
+
+  // ── Logo ──────────────────────────────
+  doc.addImage(
+    logoUrl, // base64 ou URL importada pelo bundler
+    "PNG", // formato: "PNG", "JPEG", "WEBP"
+    W - 34, // X — distância da direita
+    3, // Y — distância do topo
+    20, // largura em mm
+    10 // altura em mm — ajuste para manter proporção
+  );
 
   // Nome do sorteio
   doc.setTextColor(...CORES.branco);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
-  doc.text(nomeDoSorteio ?? "Resultado do Sorteio", 14, 11);
+  doc.text(nomeDoSorteio ?? "Resultado da Hierarquização", 14, 11);
 
   // Data/hora
   doc.setFont("helvetica", "normal");
@@ -303,7 +314,7 @@ function gerarPdfSorteio(novaLista: any) {
 
   // Download
   const blob = doc.output("blob");
-  const nomeArquivo = `resultado-sorteio-${Date.now()}.pdf`;
+  const nomeArquivo = `resultado-hierarquizacao-${Date.now()}.pdf`;
   saveAs(blob, nomeArquivo);
 }
 
