@@ -40,7 +40,7 @@ export const CadastroUsuarios = () => {
       const response = await getUsers(user!?.idMunicipio);
       return response;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: false,
   });
 

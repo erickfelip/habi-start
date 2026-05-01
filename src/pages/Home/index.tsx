@@ -20,7 +20,7 @@ import {
 import { useGreeting } from "../../hooks/useGreeting";
 import { GiPodium } from "react-icons/gi";
 
-import start from "../../assets/logo.png";
+import start from "../../assets/LOGO SOFTWARE_HAB.png";
 import { useQuery } from "@tanstack/react-query";
 import { getUserData } from "../../services/sga.requests";
 import { Divider } from "antd";
@@ -35,8 +35,8 @@ export const Home = () => {
       const response = await getUserData();
       return response;
     },
-    retry: true,
-    refetchOnWindowFocus: false,
+    retry: false,
+    refetchOnWindowFocus: true,
   });
 
   // const logout = () => {

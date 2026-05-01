@@ -70,7 +70,7 @@ export const Hierarquizacao = () => {
       const response = await getEmpreendimentos();
       return response!?.rows;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: true,
   });
 
@@ -86,8 +86,8 @@ export const Hierarquizacao = () => {
         setVagasGet(vagas ?? []);
         return response!?.rows!?.[0];
       },
-      retry: true,
-      refetchOnWindowFocus: false,
+      retry: false,
+      refetchOnWindowFocus: true,
       enabled: selected !== "" && tab.includes("2") ? true : false,
     });
 

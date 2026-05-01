@@ -51,7 +51,7 @@ export const ModalIndicacaoDireta = ({
         });
         return response;
       },
-      retry: true,
+      retry: false,
       refetchOnWindowFocus: true,
     });
 

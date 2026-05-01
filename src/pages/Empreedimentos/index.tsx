@@ -46,7 +46,7 @@ export const Empreendimentos = () => {
       const response = await getEmpreendimentos();
       return response!?.rows;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: true,
   });
 

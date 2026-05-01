@@ -29,8 +29,8 @@ export const ModalCreateUser = ({
       const response = await getMunicipios();
       return response;
     },
-    retry: true,
-    refetchOnWindowFocus: false,
+    retry: false,
+    refetchOnWindowFocus: true,
   });
 
   const onFinish = async (values: {

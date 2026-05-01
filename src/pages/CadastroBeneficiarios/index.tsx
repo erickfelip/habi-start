@@ -75,7 +75,7 @@ export const CadastroBeneficiario = () => {
         });
         return response;
       },
-      retry: true,
+      retry: false,
       refetchOnWindowFocus: true,
     });
 

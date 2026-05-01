@@ -32,7 +32,7 @@ export const ModalCreateEmpreendimento = ({
       const response = await getFaixas();
       return response!?.rows;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: false,
     enabled: isOpen ? true : false,
   });

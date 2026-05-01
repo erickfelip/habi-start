@@ -41,7 +41,7 @@ export const Municipios = () => {
       const response = await getMunicipios();
       return response;
     },
-    retry: true,
+    retry: false,
     refetchOnWindowFocus: true,
   });
 
