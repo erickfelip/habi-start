@@ -133,36 +133,6 @@ api.interceptors.request.use(
       });
     }
 
-    // if (isTokenExpiringSoon(token)) {
-    //   if (!isRefreshing) {
-    //     isRefreshing = true;
-    //     try {
-    //       const newToken = await refreshAccessToken();
-    //       processQueue(null, newToken);
-    //     } catch (err) {
-    //       processQueue(err, null);
-    //       // removeToken();
-    //       // removeRefreshToken();
-    //       // window.location.href = "/login";
-    //       throw err;
-    //     } finally {
-    //       isRefreshing = false;
-    //     }
-    //   }
-
-    //   return new Promise((resolve, reject) => {
-    //     failedQueue.push({
-    //       resolve: (newToken: string) => {
-    //         if (config.headers) {
-    //           config.headers.Authorization = `Bearer ${newToken}`;
-    //         }
-    //         resolve(config);
-    //       },
-    //       reject: (err: any) => reject(err),
-    //     });
-    //   });
-    // }
-
     if (config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -180,6 +150,10 @@ api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
     const originalRequest: any = error.config;
+
+    if (originalRequest.url?.includes("/auth/refresh")) {
+      return Promise.reject(error);
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

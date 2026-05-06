@@ -468,7 +468,7 @@ export const Hierarquizacao = () => {
                         <Empty description={false} />
                         <span>Nenhuma hierarquização encontrada.</span>
                         <span>
-                          Selecione o empreendimento para visualziar as
+                          Selecione o empreendimento para visualizar as
                           hierarquizações registradas.
                         </span>
                       </div>
