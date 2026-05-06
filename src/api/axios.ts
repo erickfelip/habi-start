@@ -9,8 +9,8 @@ import {
   setToken,
   getRefreshToken,
   setRefreshToken,
-  // removeToken,
-  // removeRefreshToken,
+  removeToken,
+  removeRefreshToken,
 } from "../utils/token";
 
 /* -------------------------------------------------------------------------- */
@@ -165,9 +165,9 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch (err) {
-        // removeToken();
-        // removeRefreshToken();
-        // window.location.href = "/login";
+        removeToken();
+        removeRefreshToken();
+        window.location.href = "/login";
         return Promise.reject(err);
       }
     }
