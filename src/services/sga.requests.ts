@@ -10,8 +10,14 @@ export const getMunicipios = async () => {
   return response.data;
 };
 
-export const getEmpreendimentos = async () => {
-  const response = await api.get(`/empreendimentos?page=0&limit=10`);
+export const getEmpreendimentos = async ({
+  idMunicipio,
+}: {
+  idMunicipio: string;
+}) => {
+  const response = await api.get(
+    `/empreendimentos?page=0&limit=10&idMunicipio=${idMunicipio}`
+  );
   return response.data;
 };
 

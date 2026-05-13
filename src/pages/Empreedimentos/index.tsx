@@ -28,6 +28,7 @@ import { MdDelete } from "react-icons/md";
 import {
   deleteEmpreendimento,
   getEmpreendimentos,
+  getUserData,
 } from "../../services/sga.requests";
 import { Navbar } from "../../components/NavBar";
 import { ModalCreateEmpreendimento } from "../../components/ModalCreateEmpreendimento";
@@ -40,14 +41,27 @@ export const Empreendimentos = () => {
   const [openPopOver, setOpenPopOver] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data: empreendimentos = [], isLoading } = useQuery({
-    queryKey: ["GET_EMPREENDIMENTOS"],
+  const { data: userData, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
     queryFn: async () => {
-      const response = await getEmpreendimentos();
+      const response = await getUserData();
+      return response;
+    },
+    retry: false,
+    refetchOnWindowFocus: true,
+  });
+
+  const { data: empreendimentos = [], isLoading } = useQuery({
+    queryKey: ["GET_EMPREENDIMENTOS", userData],
+    queryFn: async () => {
+      const response = await getEmpreendimentos({
+        idMunicipio: userData!?.idMunicipio,
+      });
       return response!?.rows;
     },
     retry: false,
     refetchOnWindowFocus: true,
+    enabled: userData ? true : false,
   });
 
   const hide = () => {
