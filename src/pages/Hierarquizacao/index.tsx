@@ -28,6 +28,7 @@ import {
   createHierarquizacao,
   getEmpreendimentos,
   getHierarquizacao,
+  getUserData,
   reprovarBeneficiario,
 } from "../../services/sga.requests";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -64,14 +65,27 @@ export const Hierarquizacao = () => {
   const [activeTab, setActiveTab] = useState<string>("PCD");
   const [pageByTab, setPageByTab] = useState<Record<string, number>>({});
 
-  const { data: empreendimentos = [], isLoading } = useQuery({
-    queryKey: ["GET_EMPREENDIMENTOS"],
+  const { data: userDataLogged, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
     queryFn: async () => {
-      const response = await getEmpreendimentos();
+      const response = await getUserData();
+      return response;
+    },
+    retry: false,
+    refetchOnWindowFocus: true,
+  });
+
+  const { data: empreendimentos = [], isLoading } = useQuery({
+    queryKey: ["GET_EMPREENDIMENTOS", userDataLogged],
+    queryFn: async () => {
+      const response = await getEmpreendimentos({
+        idMunicipio: userDataLogged!?.idMunicipio,
+      });
       return response!?.rows;
     },
     retry: false,
     refetchOnWindowFocus: true,
+    enabled: userDataLogged ? true : false,
   });
 
   const { data: _hierarquizacao = [], isLoading: _loadingHierarquizacao } =
