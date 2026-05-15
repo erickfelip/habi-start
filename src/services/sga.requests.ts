@@ -26,14 +26,16 @@ export const getBeneficiarios = async ({
   limit = 10,
   filter,
   param,
+  idMunicipio,
 }: {
   page: number;
   limit: number;
   filter: string;
   param: string;
+  idMunicipio: string;
 }) => {
   const response = await api.get(
-    `/beneficiarios?page=${page}&limit=${limit}&${filter}=${param}`
+    `/beneficiarios?page=${page}&limit=${limit}&${filter}=${param}&idMunicipio=${idMunicipio}`
   );
   return response.data;
 };

@@ -39,6 +39,7 @@ import {
 import {
   createBeneficiario,
   getBeneficiarios,
+  getUserData,
 } from "../../services/sga.requests.ts";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
@@ -63,6 +64,16 @@ export const CadastroBeneficiario = () => {
     form.setFieldsValue(formData);
   }, [current]);
 
+  const { data: userLoggedData, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: true,
+  });
+
   const { data: beneficiarios = [], isLoading: isLoadingBeneficiarios } =
     useQuery({
       queryKey: ["GET_BENEFICIARIOS", page, filter, debouncedValue],
@@ -72,11 +83,13 @@ export const CadastroBeneficiario = () => {
           limit: 10,
           filter: filter,
           param: param,
+          idMunicipio: userLoggedData!?.idMunicipio
         });
         return response;
       },
       retry: false,
       refetchOnWindowFocus: true,
+      enabled: userLoggedData!?.idMunicipio ? true : false,
     });
 
   // const mapYupErrors = (err: any) => {
