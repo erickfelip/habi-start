@@ -44,6 +44,16 @@ export const Home = () => {
   //   navigate("/login");
   // };
 
+  const { data: userLoggedData, isLoading: _isLoadingRole } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: true,
+  });
+
   return (
     <>
       <Container>
@@ -146,16 +156,42 @@ export const Home = () => {
             </div>
           </ContainerRouteWrapper>
 
-          <ContainerRouteWrapper
-            onClick={() => navigate("/municipios")}
-            style={{
-              background: "#E6F1FB",
-              cursor: "pointer",
-              // pointerEvents: "none",
-              // opacity: "0.35",
-            }}
-          >
-            <ContainerRoute style={{ display: "flex" }}>
+          {userLoggedData!?.cargo === "ADMIN" && (
+            <ContainerRouteWrapper
+              onClick={() => navigate("/municipios")}
+              style={{
+                background: "#E6F1FB",
+                cursor: "pointer",
+                // pointerEvents: "none",
+                // opacity: "0.35",
+              }}
+            >
+              <ContainerRoute style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "start",
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    padding: "20px 20px 0px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "#B5D4F4",
+                      borderRadius: "100px",
+                      height: "70px",
+                      width: "70px",
+                    }}
+                  >
+                    <MdOutlinePlace size={"30px"} color="#0C447C" />
+                  </div>
+                </div>
+              </ContainerRoute>
+
               <div
                 style={{
                   display: "flex",
@@ -165,51 +201,27 @@ export const Home = () => {
                   padding: "20px 20px 0px",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "#B5D4F4",
-                    borderRadius: "100px",
-                    height: "70px",
-                    width: "70px",
-                  }}
-                >
-                  <MdOutlinePlace size={"30px"} color="#0C447C" />
-                </div>
+                <RouteName style={{ color: "#0C447C" }}>
+                  Cadastro de Municípios
+                </RouteName>
               </div>
-            </ContainerRoute>
 
-            <div
-              style={{
-                display: "flex",
-                alignItems: "start",
-                width: "100%",
-                justifyContent: "flex-start",
-                padding: "20px 20px 0px",
-              }}
-            >
-              <RouteName style={{ color: "#0C447C" }}>
-                Cadastro de Municípios
-              </RouteName>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "start",
-                width: "100%",
-                justifyContent: "flex-start",
-                padding: "20px",
-              }}
-            >
-              <GridRoutes>
-                <RouteSubText>Cadastro de Municios</RouteSubText>
-                <RouteSubText>Informações Gerais</RouteSubText>
-              </GridRoutes>
-            </div>
-          </ContainerRouteWrapper>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "start",
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  padding: "20px",
+                }}
+              >
+                <GridRoutes>
+                  <RouteSubText>Cadastro de Municios</RouteSubText>
+                  <RouteSubText>Informações Gerais</RouteSubText>
+                </GridRoutes>
+              </div>
+            </ContainerRouteWrapper>
+          )}
 
           <ContainerRouteWrapper
             onClick={() => navigate("/beneficiarios")}

@@ -12,6 +12,8 @@ import {
 import start from "../../assets/start.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Drawer } from "antd";
+import { getUserData } from "../../services/sga.requests";
+import { useQuery } from "@tanstack/react-query";
 
 export const Navbar = () => {
   const location = useLocation();
@@ -25,6 +27,16 @@ export const Navbar = () => {
   const onClose = () => {
     setOpen(false);
   };
+
+  const { data: userLoggedData, isLoading: _isLoadingRole } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: true,
+  });
 
   return (
     <Nav>
@@ -43,9 +55,14 @@ export const Navbar = () => {
             <li className={location.pathname === "/usuarios" ? "active" : ""}>
               <RouteLabel to="/usuarios">Usuários</RouteLabel>
             </li>
-            <li className={location.pathname === "/municipios" ? "active" : ""}>
-              <RouteLabel to="/municipios">Municípios</RouteLabel>
-            </li>
+            {userLoggedData!?.cargo === "ADMIN" && (
+              <li
+                className={location.pathname === "/municipios" ? "active" : ""}
+              >
+                <RouteLabel to="/municipios">Municípios</RouteLabel>
+              </li>
+            )}
+
             <li
               className={
                 location.pathname === "/empreendimentos" ? "active" : ""
@@ -53,10 +70,16 @@ export const Navbar = () => {
             >
               <RouteLabel to="/empreendimentos">Empreendimentos</RouteLabel>
             </li>
-            <li className={location.pathname === "/hierarquizacao" ? "active" : ""}>
+            <li
+              className={
+                location.pathname === "/hierarquizacao" ? "active" : ""
+              }
+            >
               <RouteLabel to="/hierarquizacao">Hierarquizacao</RouteLabel>
             </li>
-            <li className={location.pathname === "/beneficiarios" ? "active" : ""}>
+            <li
+              className={location.pathname === "/beneficiarios" ? "active" : ""}
+            >
               <RouteLabel to="/beneficiarios">Beneficiarios</RouteLabel>
             </li>
           </NavLinks>
@@ -107,11 +130,16 @@ export const Navbar = () => {
         <NavDrawer>
           <RouteLabelDrawer to="/home">Home</RouteLabelDrawer>
           <RouteLabelDrawer to="/usuarios">Usuários</RouteLabelDrawer>
-          <RouteLabelDrawer to="/municipios">Municípios</RouteLabelDrawer>
+          {userLoggedData!?.cargo === "ADMIN" && (
+            <RouteLabelDrawer to="/municipios">Municípios</RouteLabelDrawer>
+          )}
+
           <RouteLabelDrawer to="/empreendimentos">
             Empreendimentos
           </RouteLabelDrawer>
-          <RouteLabelDrawer to="/hierarquizacao">Hierarquizacao</RouteLabelDrawer>
+          <RouteLabelDrawer to="/hierarquizacao">
+            Hierarquizacao
+          </RouteLabelDrawer>
           <RouteLabelDrawer to="/beneficiarios">Beneficiários</RouteLabelDrawer>
         </NavDrawer>
       </Drawer>

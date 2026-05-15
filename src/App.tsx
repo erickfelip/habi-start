@@ -10,9 +10,22 @@ import { CadastroUsuarios } from "./pages/CadastroUsuarios";
 import { Empreendimentos } from "./pages/Empreedimentos";
 import { Hierarquizacao } from "./pages/Hierarquizacao";
 import { CadastroBeneficiario } from "./pages/CadastroBeneficiarios";
+import { getUserData } from "./services/sga.requests";
+import { useQuery } from "@tanstack/react-query";
 
 export const App = () => {
   // validar role do usuario para direcionar as rotas
+
+  const { data: userLoggedData, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: true,
+  });
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
@@ -47,14 +60,16 @@ export const App = () => {
         }
       /> */}
 
-      <Route
-        path="/municipios"
-        element={
-          <PrivateRoute>
-            <Municipios />
-          </PrivateRoute>
-        }
-      />
+      {userLoggedData!?.cargo === "ADMIN" && (
+        <Route
+          path="/municipios"
+          element={
+            <PrivateRoute>
+              <Municipios />
+            </PrivateRoute>
+          }
+        />
+      )}
 
       <Route
         path="/empreendimentos"
