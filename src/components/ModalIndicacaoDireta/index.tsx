@@ -18,6 +18,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createIndicacaoDireta,
   getBeneficiarios,
+  getUserData,
 } from "../../services/sga.requests";
 import { Label, SubLabel } from "./styles";
 import useDebounce from "../../hooks/useDebounce";
@@ -39,6 +40,17 @@ export const ModalIndicacaoDireta = ({
   const [param, setParam] = useState("");
   const debouncedValue = useDebounce(param, 500);
 
+
+  const { data: userLoggedData, isLoading: _isLoading } = useQuery({
+    queryKey: ["GET_USERDATA"],
+    queryFn: async () => {
+      const response = await getUserData();
+      return response;
+    },
+    retry: true,
+    refetchOnWindowFocus: true,
+  });
+
   const { data: beneficiarios = [], isLoading: isLoadingBeneficiarios } =
     useQuery({
       queryKey: ["GET_BENEFICIARIOS", page, filter, debouncedValue],
@@ -48,11 +60,13 @@ export const ModalIndicacaoDireta = ({
           limit: 10,
           filter: filter,
           param: param,
+          idMunicipio: userLoggedData!?.idMunicipio
         });
         return response;
       },
       retry: false,
       refetchOnWindowFocus: true,
+      enabled: userLoggedData!?.idMunicipio ? true : false,
     });
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
