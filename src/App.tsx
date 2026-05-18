@@ -12,9 +12,10 @@ import { Hierarquizacao } from "./pages/Hierarquizacao";
 import { CadastroBeneficiario } from "./pages/CadastroBeneficiarios";
 import { getUserData } from "./services/sga.requests";
 import { useQuery } from "@tanstack/react-query";
+import { getToken } from "./utils/token";
 
 export const App = () => {
-  // validar role do usuario para direcionar as rotas
+  const token = getToken();
 
   const { data: userLoggedData, isLoading: _isLoading } = useQuery({
     queryKey: ["GET_USERDATA"],
@@ -24,6 +25,7 @@ export const App = () => {
     },
     retry: true,
     refetchOnWindowFocus: true,
+    enabled: token ? true : false,
   });
 
   return (
