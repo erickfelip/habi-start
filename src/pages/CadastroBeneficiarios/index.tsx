@@ -83,7 +83,7 @@ export const CadastroBeneficiario = () => {
           limit: 10,
           filter: filter,
           param: param,
-          idMunicipio: userLoggedData!?.idMunicipio
+          idMunicipio: userLoggedData!?.idMunicipio,
         });
         return response;
       },
@@ -164,6 +164,7 @@ export const CadastroBeneficiario = () => {
           "YYYY-MM-DD"
         ),
         idMunicipio: userData!?.idMunicipio,
+        uf: "RN",
         // rendaConjuge: parseCurrencyBRL(values.rendaConjuge),
       };
 
