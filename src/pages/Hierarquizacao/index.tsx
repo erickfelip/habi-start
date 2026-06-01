@@ -20,6 +20,7 @@ import {
   Popover,
   Divider,
   Alert,
+  Input,
 } from "antd";
 import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
@@ -57,8 +58,6 @@ export const Hierarquizacao = () => {
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [userData, setUserData] = useState({});
   const [selected, setSelected] = useState<any>("");
-  console.log({ selected });
-
   const [loading, setLoading] = useState(false);
   const [vagas, setVagas] = useState<Vagas>({});
   const [vagasGet, setVagasGet] = useState<Vagas>({});
@@ -93,10 +92,9 @@ export const Hierarquizacao = () => {
       queryKey: ["GET_HIERARQUIZACAO", selected, vagas],
       queryFn: async () => {
         const response = await getHierarquizacao(selected);
-        console.log({ response });
 
         const vagas = response!?.rows!?.[0]!?.resultado!?.vagas;
-        console.log("@chamando vagas", { vagas });
+
         setVagasGet(vagas ?? []);
         return response!?.rows!?.[0];
       },
@@ -104,10 +102,6 @@ export const Hierarquizacao = () => {
       refetchOnWindowFocus: true,
       enabled: selected !== "" && tab.includes("2") ? true : false,
     });
-
-  const teste = selected !== "" && tab.includes("2");
-  console.log({ teste });
-  console.log({ _hierarquizacao });
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -242,6 +236,14 @@ export const Hierarquizacao = () => {
         return;
       });
   };
+
+  const [search, setSearch] = useState("");
+
+  const filteredUsers = useMemo(() => {
+    return listaCombinadaGet.filter((user: any) =>
+      user!?.nome?.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search]);
 
   return (
     <Container>
@@ -469,6 +471,15 @@ export const Hierarquizacao = () => {
                   width: "100%",
                 }}
               >
+                <Input
+                  placeholder="Informe o nome do beneficiário"
+                  allowClear
+                  size="large"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  style={{ width: "100%", marginBottom: "20px" }}
+                />
+
                 <List
                   locale={{
                     emptyText: (
@@ -498,7 +509,7 @@ export const Hierarquizacao = () => {
                   header={
                     <>
                       <Tabs
-                        style={{ height: "33px !importante" }}
+                        style={{ height: "33px !important" }}
                         defaultActiveKey="PCD"
                         activeKey={activeTab}
                         onChange={(key) => {
@@ -531,7 +542,7 @@ export const Hierarquizacao = () => {
                   }
                   style={{ marginTop: 0, background: "white", padding: "3px" }}
                   bordered
-                  dataSource={listaCombinadaGet}
+                  dataSource={search === "" ? listaCombinadaGet : filteredUsers}
                   renderItem={(item: any) => (
                     <List.Item
                       style={{
