@@ -26,7 +26,7 @@ import "antd/dist/reset.css";
 import { Navbar } from "../../components/NavBar";
 import { formatLabel } from "../../utils";
 import {
-  createHierarquizacao,
+  // createHierarquizacao,
   getEmpreendimentos,
   getHierarquizacao,
   getUserData,
@@ -58,8 +58,8 @@ export const Hierarquizacao = () => {
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
   const [userData, setUserData] = useState({});
   const [selected, setSelected] = useState<any>("");
-  const [loading, setLoading] = useState(false);
-  const [vagas, setVagas] = useState<Vagas>({});
+  const [loading, _setLoading] = useState(false);
+  const [vagas, _setVagas] = useState<Vagas>({});
   const [vagasGet, setVagasGet] = useState<Vagas>({});
   const [activeTab, setActiveTab] = useState<string>("PCD");
   const [pageByTab, setPageByTab] = useState<Record<string, number>>({});
@@ -103,33 +103,33 @@ export const Hierarquizacao = () => {
       enabled: selected !== "" && tab.includes("2") ? true : false,
     });
 
-  const handleConfirm = async () => {
-    setLoading(true);
-    const payload = {
-      idEmpreendimento: selected,
-    };
+  // const handleConfirm = async () => {
+  //   setLoading(true);
+  //   const payload = {
+  //     idEmpreendimento: selected,
+  //   };
 
-    await createHierarquizacao(payload)
-      .then((res) => {
-        const vagas: Vagas = res!?.vagas;
-        setVagas(vagas);
-        setSelected(null);
-        notification.success({
-          duration: 3,
-          message: "Sucesso!",
-          description: `Hierarquização criada.`,
-        });
-        setLoading(false);
-      })
-      .catch((error: any) => {
-        notification.error({
-          duration: 1,
-          message: "Erro!",
-          description: `${error?.response?.data?.message}`,
-        });
-        return;
-      });
-  };
+  //   await createHierarquizacao(payload)
+  //     .then((res) => {
+  //       const vagas: Vagas = res!?.vagas;
+  //       setVagas(vagas);
+  //       setSelected(null);
+  //       notification.success({
+  //         duration: 3,
+  //         message: "Sucesso!",
+  //         description: `Hierarquização criada.`,
+  //       });
+  //       setLoading(false);
+  //     })
+  //     .catch((error: any) => {
+  //       notification.error({
+  //         duration: 1,
+  //         message: "Erro!",
+  //         description: `${error?.response?.data?.message}`,
+  //       });
+  //       return;
+  //     });
+  // };
 
   const listaCombinadaPost = useMemo(() => {
     if (!vagas[activeTab]) return [];
@@ -316,7 +316,7 @@ export const Hierarquizacao = () => {
                     }
                   />
                 </div>
-                <div style={{ display: "flex", width: "100%" }}>
+                {/* <div style={{ display: "flex", width: "100%" }}>
                   <button
                     onClick={handleConfirm}
                     style={{
@@ -334,7 +334,7 @@ export const Hierarquizacao = () => {
                   >
                     <div>Iniciar hierarquização</div>
                   </button>
-                </div>
+                </div> */}
               </GridSelected>
 
               <div
