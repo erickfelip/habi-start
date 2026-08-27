@@ -13,6 +13,7 @@ import {
   Pagination,
   Dropdown,
 } from "antd";
+import { FaUserCheck } from "react-icons/fa6";
 import {
   Container,
   GridAddress,
@@ -48,9 +49,11 @@ import useDebounce from "../../hooks/useDebounce.tsx";
 import { stepSchemas } from "./schema.ts";
 import { queryClient } from "../../main.tsx";
 import { ModalUpdateDataNascimento } from "../../components/ModalUpdateDataNascimento/index.tsx";
+import { ModalComprovanteCadastro } from "../../components/ModalComprovanteCadastro/index.tsx";
 
 export const CadastroBeneficiario = () => {
   const [openSolicitationModal, setOpenSolicitationModal] = useState(false);
+  const [openComprovante, setOpenComprovante] = useState(false);
   const [userDataSelected, setUserData] = useState<any>({});
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
@@ -365,7 +368,7 @@ export const CadastroBeneficiario = () => {
               />
             </Form.Item>
 
-            <Form.Item name="email" label="E-mail" required>
+            <Form.Item name="email" label="E-mail">
               <Input size="large" />
             </Form.Item>
 
@@ -493,13 +496,13 @@ export const CadastroBeneficiario = () => {
               <Checkbox>Idosos na família</Checkbox>
             </Form.Item>
 
-            <Form.Item name="tipoMoradia" label="Tipo moradia" required>
+            <Form.Item name="tipoMoradia" label="Tipo moradia">
               <Input size="large" />
             </Form.Item>
             <Form.Item
               name="trabalhoOcupacao"
               label="Trabalho ocupação"
-              required
+              // required
             >
               <Input size="large" />
             </Form.Item>
@@ -507,7 +510,7 @@ export const CadastroBeneficiario = () => {
             <Form.Item
               name="filhos0a6Anos"
               label="Filhos de 0 a 6 anos"
-              required
+              // required
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
               }
@@ -518,7 +521,7 @@ export const CadastroBeneficiario = () => {
             <Form.Item
               name="filhos7a18Anos"
               label="Filhos de 7 a 18 anos"
-              required
+              // required
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
               }
@@ -551,13 +554,12 @@ export const CadastroBeneficiario = () => {
             <Form.Item name="cidade" label="Cidade" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="complemento" label="Complemento" required>
+            <Form.Item name="complemento" label="Complemento">
               <Input size="large" />
             </Form.Item>
             <Form.Item
               name="localStatusInscricao" // nome municipio
               label="Local do status inscrição"
-              required
             >
               <Input size="large" />
             </Form.Item>
@@ -766,21 +768,35 @@ export const CadastroBeneficiario = () => {
       key: "action",
       render: (_: any, record: any) => {
         return (
-          <Button
-            icon={<LuCalendarSync />}
-            type="primary"
-            htmlType="submit"
-            size="middle"
-            style={{
-              backgroundColor: "#209df0",
-            }}
-            onClick={() => {
-              setUserData(record);
-              setOpenSolicitationModal(true);
-            }}
-          >
-            Atualizar data de nascimento
-          </Button>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Button
+              icon={<LuCalendarSync />}
+              type="primary"
+              htmlType="submit"
+              size="middle"
+              style={{
+                backgroundColor: "#209df0",
+              }}
+              onClick={() => {
+                setUserData(record);
+                setOpenSolicitationModal(true);
+              }}
+            >
+              Atualizar data de nascimento
+            </Button>
+            <Button
+              icon={<FaUserCheck />}
+              type="default"
+              htmlType="submit"
+              size="middle"
+              onClick={() => {
+                setUserData(record);
+                setOpenComprovante(true);
+              }}
+            >
+              Consultar Comprovante
+            </Button>
+          </div>
         );
       },
     },
@@ -956,6 +972,12 @@ export const CadastroBeneficiario = () => {
       <ModalUpdateDataNascimento
         isOpen={openSolicitationModal}
         handleClose={() => setOpenSolicitationModal(false)}
+        userData={userDataSelected}
+      />
+
+      <ModalComprovanteCadastro
+        isOpen={openComprovante}
+        handleClose={() => setOpenComprovante(false)}
         userData={userDataSelected}
       />
     </Container>

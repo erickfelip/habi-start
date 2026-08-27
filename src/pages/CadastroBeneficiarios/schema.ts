@@ -15,7 +15,7 @@ export const stepSchemas = [
     emancipado: Yup.boolean().nullable(),
     estadoCivil: Yup.string().required("Estado civil é obrigatório"),
     sexo: Yup.string().required("Sexo é obrigatório"),
-    email: Yup.string().email("Email inválido").required("Email é obrigatório"),
+    email: Yup.string().nullable(),
     telefone1: Yup.string().required("Telefone é obrigatório"),
     telefone2: Yup.string().nullable(),
     mae: Yup.string().required("Nome da mãe é obrigatório"),
@@ -32,23 +32,21 @@ export const stepSchemas = [
     rendaFamiliar: Yup.string()
       .typeError("Informe um número")
       .required("Renda familiar é obrigatória"),
-    condicaoMoradia: Yup.string().required("Condição moradia é obrigatória"),
+    condicaoMoradia: Yup.string().nullable(),
     recebemBolsaFamilia: Yup.boolean().nullable(),
     deficientesNaFamilia: Yup.boolean().nullable(),
     idososNaFamilia: Yup.boolean().nullable(),
-    tipoMoradia: Yup.string().required("Tipo moradia é obrigatório"),
+    tipoMoradia: Yup.string().nullable(),
     trabalhoOcupacao: Yup.string().required("Trabalho/Ocupação é obrigatório"),
-    filhos0a6Anos: Yup.number().typeError("Informe um número").required("Campo obrigatório"),
-    filhos7a18Anos: Yup.number().typeError("Informe um número").required("Campo obrigatório"),
+    filhos0a6Anos: Yup.number().typeError("Informe um número").nullable(),
+    filhos7a18Anos: Yup.number().typeError("Informe um número").nullable(),
     cep: Yup.string().required("CEP é obrigatório"),
     logradouro: Yup.string().required("Logradouro é obrigatório"),
     numero: Yup.string().required("Número é obrigatório"),
     bairro: Yup.string().required("Bairro é obrigatório"),
     cidade: Yup.string().required("Cidade é obrigatória"),
-    complemento: Yup.string().required("Complemento é obrigatório"),
-    localStatusInscricao: Yup.string().required(
-      "Local status inscrição é obrigatório"
-    ),
+    complemento: Yup.string().nullable(),
+    localStatusInscricao: Yup.string().nullable(),
   }),
 
   // =========================
