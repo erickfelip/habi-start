@@ -667,7 +667,7 @@ export const CadastroBeneficiario = () => {
               valuePropName="checked"
               initialValue={false}
             >
-              <Checkbox>Cônjuge possui deficiencia</Checkbox>
+              <Checkbox>Cônjuge varão ausente</Checkbox>
             </Form.Item>
 
             {/* <Form.Item
