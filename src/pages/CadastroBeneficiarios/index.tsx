@@ -168,6 +168,15 @@ export const CadastroBeneficiario = () => {
         ),
         idMunicipio: userData!?.idMunicipio,
         uf: "RN",
+        complemento: formData!?.complemento?.trim()
+          ? formData!.complemento.trim()
+          : "N/A",
+        localStatusInscricao: formData!?.localStatusInscricao?.trim()
+          ? formData!.localStatusInscricao.trim()
+          : "Não informado",
+        tipoMoradia: formData!?.tipoMoradia?.trim()
+          ? formData!.tipoMoradia.trim()
+          : "Não informado",
         // rendaConjuge: parseCurrencyBRL(values.rendaConjuge),
       };
 
@@ -242,7 +251,7 @@ export const CadastroBeneficiario = () => {
         bairro: data.bairro || undefined,
         cidade: data.localidade || undefined,
         estado: data.uf || undefined,
-        complemento: data.complemento || undefined,
+        complemento: data.complemento ?? "",
       });
 
       setTimeout(() => {
@@ -368,7 +377,17 @@ export const CadastroBeneficiario = () => {
               />
             </Form.Item>
 
-            <Form.Item name="email" label="E-mail">
+            <Form.Item
+              name="email"
+              label={
+                <span>
+                  E-mail:{" "}
+                  <span style={{ fontSize: "12px", color: "#969696" }}>
+                    ex:email@email.com
+                  </span>
+                </span>
+              }
+            >
               <Input size="large" />
             </Form.Item>
 
@@ -443,6 +462,7 @@ export const CadastroBeneficiario = () => {
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : false
               }
+              initialValue={0}
             >
               <Input type="number" min={0} size="large" />
             </Form.Item>
@@ -514,6 +534,7 @@ export const CadastroBeneficiario = () => {
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
               }
+              initialValue={0}
             >
               <Input type="number" min={0} size="large" />
             </Form.Item>
@@ -525,6 +546,7 @@ export const CadastroBeneficiario = () => {
               getValueFromEvent={(e) =>
                 e.target.value ? Number(e.target.value) : 0
               }
+              initialValue={0}
             >
               <Input type="number" min={0} size="large" />
             </Form.Item>
@@ -584,9 +606,18 @@ export const CadastroBeneficiario = () => {
             <Form.Item name="nomeConjuge" label="Nome cônjuge" required>
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="estadoCivilConjuge" label="Estado civil" required>
-              <Input size="large" />
+            <Form.Item name="estadoCivilConjuge" label="Estado Civil" required>
+              <Select
+                size="large"
+                placeholder="Selecione"
+                options={estadoCivilOptions}
+                allowClear
+              />
             </Form.Item>
+
+            {/* <Form.Item name="estadoCivilConjuge" label="Estado civil" required>
+              <Input size="large" />
+            </Form.Item> */}
             <Form.Item name="profissaoConjuge" label="Profissão" required>
               <Input size="large" />
             </Form.Item>
@@ -616,20 +647,36 @@ export const CadastroBeneficiario = () => {
             </Form.Item>
 
             <Form.Item
-              name="possuiDeficienciaConjuge" // nome municipio
-              label="Cônjuge possui deficiencia"
-              required
+              name="possuiDeficienciaConjuge"
+              valuePropName="checked"
+              initialValue={false}
             >
-              <Input size="large" />
+              <Checkbox>Cônjuge possui deficiencia</Checkbox>
             </Form.Item>
 
-            <Form.Item
-              name="conjugeVaraoAusente" // nome municipio
-              label="Cônjuge varão ausente"
-              required
+            {/* <Form.Item
+              name="possuiDeficienciaConjuge" // nome municipio
+              label="Cônjuge possui deficiencia"
+              // required
             >
               <Input size="large" />
+            </Form.Item> */}
+
+            <Form.Item
+              name="conjugeVaraoAusente"
+              valuePropName="checked"
+              initialValue={false}
+            >
+              <Checkbox>Cônjuge possui deficiencia</Checkbox>
             </Form.Item>
+
+            {/* <Form.Item
+              name="conjugeVaraoAusente" // nome municipio
+              label="Cônjuge varão ausente"
+              // required
+            >
+              <Input size="large" />
+            </Form.Item> */}
           </GridAddress>
         </>
       ),
